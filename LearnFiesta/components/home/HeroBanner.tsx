@@ -7,7 +7,7 @@ import { Spacing } from '@/constants/spacing';
 export default function HeroBanner() {
   return (
     <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f' }}
+      source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCYyi2comxe12VWmP3ONrIi03TyANBlq4i9GXC5sAvBRJoczLV4_5lJV8C_jlsRrm3YkE9K4r6HHf6Q05XvCU4buZScymOyu6zD6AJksTZMxEl-unqxNVdnV5O4cwTR5lsVzpTySpQIK691xqk47ppL1p1sDT9w3jAzIsU8TAIJ0ySe-5AMQ3rED038Uq1q080HJhjolV91o9nWuAM6Sd_GZ3AC6ammrHnXlS90k3pnBOeZ2A2kZnUFWBO5AKaVlc0TmaeV8sBeLjg' }}
       style={styles.container}
       imageStyle={styles.image}
     >
