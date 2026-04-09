@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, Pressable} from "react-native";
 import Rating from "@/components/courses/Rating";
 import Price from "../ui/Price";
-import Course from "@/types/course";
+import {Course} from "@/types/course";
 import {Radius} from "@/constants/radius";
 import {Colors} from "@/constants/colors";
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                 pressed && styles.cardPressed
             ]}
         >{/* Course Image */}
-            <Image source={{ uri: course.image }} style={styles.image} />
+            <Image source={{ uri: course.imageUrl }} style={styles.image} />
 
             {/* Course Content */}
             <View style={styles.content}>
@@ -42,12 +42,12 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                 {/* Title & Subtitle */}
                 <Text style={styles.title}>{course.title}</Text>
                 <Text style={styles.subtitle}>
-                    {course.instructor} • {course.duration}
+                    {course.instructorName} • {course.duration}
                 </Text>
 
                 {/* Bottom Row: Rating + Price */}
                 <View style={styles.bottom}>
-                    <Rating rating={course.rating} reviews={course.reviews} />
+                    <Rating rating={course.rating} reviews={course.reviewsCount} />
                     <Price price={course.price} oldPrice={course.oldPrice} />
                 </View>
             </View></Pressable>
