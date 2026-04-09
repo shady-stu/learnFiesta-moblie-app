@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import SearchInput from "@/components/ui/SearchInput"
@@ -123,3 +124,14 @@ const styles = StyleSheet.create({
         borderColor: "#eee",
     },
 });
+
+import { View, Text } from 'react-native';
+
+export default function SearchScreen() {
+  return (
+    <View>
+      <Text>Search</Text>
+    </View>
+  );
+}
+
