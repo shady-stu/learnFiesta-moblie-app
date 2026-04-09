@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Pressable} from "react-native";
+import { Text, StyleSheet, ScrollView, Pressable} from "react-native";
 import {Radius} from "@/constants/radius";
 import {Colors} from "@/constants/colors";
 
@@ -9,10 +9,9 @@ type FilterChipProps = {
     onSelectFilter: (filter: string) => void;
 };
 
-export const FilterChip = (Filter: FilterChipProps) => {
-    const screenWidth = Dimensions.get("window").width;
-    const chipHeight = Math.max(36, screenWidth * 0.08); // responsive height
-    const filters = ["All", "Free", "Top Rated", "Best seller","Bookmarked"];
+export const FilterChip = ({ activeFilter, onSelectFilter }: FilterChipProps) => {
+    const filters = ["All", "Free", "Top Rated", "Best seller", "Bookmarked"];
+
     return (
         <ScrollView
             horizontal
@@ -25,15 +24,14 @@ export const FilterChip = (Filter: FilterChipProps) => {
                     key={filter}
                     style={[
                         styles.chip,
-                        { height: chipHeight },
-                        filter === Filter.activeFilter ? styles.active : styles.inactive,
+                        filter === activeFilter ? styles.active : styles.inactive,
                     ]}
-                    onPress={() => Filter.onSelectFilter(filter)}
+                    onPress={() => onSelectFilter(filter)}
                 >
                     <Text
                         style={[
                             styles.chipText,
-                            filter === Filter.activeFilter ? { color: "#fff" } : { color: Colors.primary},
+                            { color: filter === activeFilter ? "#fff" : Colors.primary },
                         ]}
                     >
                         {filter}
@@ -50,23 +48,27 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginVertical: 5,
         gap: 8,
+    },
 
-    },
     chip: {
+        paddingVertical: 8,
         paddingHorizontal: 16,
-        justifyContent: "center",
-        alignItems: "center",
         borderRadius: Radius.full,
-        minWidth: 80, // minimum width for readability
+        minWidth: 70,
+        alignItems: "center",
+        justifyContent: "center",
     },
+
     active: {
         backgroundColor: Colors.primary,
     },
+
     inactive: {
         backgroundColor: "#fff",
         borderWidth: 1,
         borderColor: "#d1c4fc",
     },
+
     chipText: {
         fontSize: 14,
         fontWeight: "500",

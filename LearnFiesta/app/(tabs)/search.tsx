@@ -10,8 +10,8 @@ import { useBookmarks } from "@/hooks/useBookmarks";
 const courses: Course[] = [
     {
         id : "1",
-        title: "Complete Python Bootcamp: From Zero to Hero",
-        instructor: "Jose Portilla",
+        title: "Complete JavaScript Bootcamp: From Zero to Hero",
+        instructor: "Jose Port",
         duration: "22 total hours",
         rating: 4.8,
         reviews: "120k",
@@ -45,7 +45,7 @@ const courses: Course[] = [
     },
     {
         id : "4",
-        title: "Python Basics for Beginners",
+        title: "Java Basics for Beginners",
         instructor: "LearnFiesta Academy",
         duration: "4 total hours",
         rating: 4.5,
@@ -57,12 +57,18 @@ const courses: Course[] = [
 ];
 
 export const SearchScreen = () => {
-    const [searchText, setSearchText] = useState("Python programing");
+    const [searchText, setSearchText] = useState<string>("");
     const [activeFilter, setActiveFilter] = useState("All");
     const { toggleBookmark, isBookmarked, bookmarked} = useBookmarks();
 
 
     const filtered = courses.filter((course) => {
+
+        const matchesSearch =
+            course.title.toLowerCase().includes(searchText.toLowerCase()) ||
+            course.instructor.toLowerCase().includes(searchText.toLowerCase());
+
+        if (!matchesSearch) return false;
         if (activeFilter === "All") return true;
         if (activeFilter === "Free") return course.price === "Free";
         if (activeFilter === "Top Rated") return course.rating >= 4.8;
@@ -79,11 +85,13 @@ export const SearchScreen = () => {
                     onSelectFilter={(filter) => setActiveFilter(filter)}
                 />
             </View>
-            <Text style={styles.resultText}>Found {courses.length} courses for "{searchText}"</Text>
+            <Text style={styles.resultText}>
+                Found {filtered.length} courses
+            </Text>
             <FlatList
                 data={filtered}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item,index  }) =>
+                renderItem={({ item}) =>
                     <CourseCard course={item}   isBookmarked={isBookmarked(item.id)}
                                                       onToggleBookmark={() => toggleBookmark(item.id)}/>
             }
