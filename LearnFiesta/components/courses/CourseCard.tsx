@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, Pressable} from "react-native";
+import {View, Text, Image, StyleSheet, TouchableOpacity, Pressable} from "react-native";
 import Rating from "@/components/courses/Rating";
 import Price from "../ui/Price";
 import {Course} from "@/types/course";
@@ -55,7 +55,7 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
 
     );
 }
-const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
     card: {
         flexDirection: "column",
