@@ -1,3 +1,4 @@
+
 import { StyleSheet, Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/themed-text';
@@ -7,7 +8,7 @@ import { Spacing } from '@/constants/spacing';
 
 type CategoryCardProps = {
   title: string;
-  icon: any;
+  icon: string; 
   backgroundColor: string;
   iconColor: string;
   onPress?: () => void;
@@ -23,7 +24,7 @@ export default function CategoryCard({
   return (
     <Pressable style={styles.card} onPress={onPress}>
       <View style={[styles.iconWrapper, { backgroundColor }]}>
-        <Ionicons name={icon} size={24} color={iconColor} />
+        <Ionicons name={icon as any} size={24} color={iconColor} />
       </View>
 
       <ThemedText numberOfLines={2} style={styles.title}>
@@ -35,7 +36,7 @@ export default function CategoryCard({
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
+    width: '100%', 
     minHeight: 132,
     backgroundColor: Colors.surface,
     borderWidth: 1,
