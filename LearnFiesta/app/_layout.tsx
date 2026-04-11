@@ -2,8 +2,10 @@ import { Stack, Redirect, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/api/services/firebase';
-
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/libr/queryClient";
 export default function RootLayout() {
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const segments = useSegments();
@@ -29,6 +31,9 @@ export default function RootLayout() {
   if (user && inAuthGroup) {
     return <Redirect href="/(tabs)" />;
   }
-
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+      <QueryClientProvider client={queryClient}>
+        <Stack screenOptions={{ headerShown: false }} />
+      </QueryClientProvider>
+  );
 }
