@@ -28,7 +28,13 @@ export default function HomeScreen() {
     isError,
     error,
   } = useCategories();
-const { data: recommendedCourses, isLoading: loadingCourses, isError: errCourses } = useRecommendedCourses();
+
+  const {
+    data: recommendedCourses,
+    isLoading: loadingCourses,
+    isError: errCourses,
+  } = useRecommendedCourses();
+
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
       <AppHeader />
@@ -45,34 +51,38 @@ const { data: recommendedCourses, isLoading: loadingCourses, isError: errCourses
         </View>
 
         <View style={styles.section}>
-  <SectionHeader title="Recommended for You" actionLabel="See More" />
+          <SectionHeader title="Recommended for You" actionLabel="See More" />
 
-  {loadingCourses ? (
-    <View style={styles.loadingWrap}>
-      <ActivityIndicator size="large" color={Colors.primary} />
-    </View>
-  ) : errCourses ? (
-    <Text style={styles.errorText}>Failed to load recommended courses</Text>
-  ) : (
-    <FlatList
-      data={recommendedCourses ?? []}
-      keyExtractor={(item) => item.id}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ gap: Spacing.md }} 
-      renderItem={({ item }) => (
-        <CourseCard
-          title={item.title}
-          instructor={item.instructorName}
-          rating={item.rating}
-          reviews={String(item.reviewsCount)}
-          price={item.price}
-          image={item.imageUrl}
-        />
-      )}
-    />
-  )}
-</View>
+          {loadingCourses ? (
+            <View style={styles.loadingWrap}>
+              <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+          ) : errCourses ? (
+            <Text style={styles.errorText}>
+              Failed to load recommended courses
+            </Text>
+          ) : (
+            <FlatList
+              data={recommendedCourses ?? []}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: Spacing.md }}
+              renderItem={({ item }) => (
+                <View style={styles.courseWrapper}>
+                  <CourseCard
+                    title={item.title}
+                    instructor={item.instructorName}
+                    rating={item.rating}
+                    reviews={String(item.reviewsCount)}
+                    price={item.price}
+                    image={item.imageUrl}
+                  />
+                </View>
+              )}
+            />
+          )}
+        </View>
 
         <View style={styles.categoriesSection}>
           <SectionHeader title="Top Categories" />
@@ -111,31 +121,42 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+
   content: {
     padding: Spacing.lg,
     gap: Spacing.xl,
     paddingBottom: 120,
   },
+
   section: {
     gap: Spacing.md,
   },
+
   categoriesSection: {
     gap: Spacing.md,
   },
+
+  courseWrapper: {
+    marginRight: 12,
+  },
+
   categoriesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
+
   categoryItem: {
-    width: '50%',
-    paddingHorizontal: Spacing.sm,
-    paddingBottom: Spacing.md,
+    width: '48%',
+    marginBottom: 12,
   },
+
   loadingWrap: {
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   errorText: {
     color: 'red',
   },
