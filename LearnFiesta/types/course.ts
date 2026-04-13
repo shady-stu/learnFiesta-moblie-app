@@ -3,11 +3,11 @@ export type Course = {
   title: string;
   instructorId: string;
   instructorName: string;
-  duration: string; // "5h 30m"
+  duration: string;
   rating: number;
   reviewsCount: number;
-  price: string; // "50" or "Free"
-  oldPrice?: string; // "100" (optional)
+  price: string;
+  oldPrice?: string;
   imageUrl: string;
   badge?: string;
 };

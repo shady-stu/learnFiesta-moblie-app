@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 type PriceProps = {
-    price: String;
-    oldPrice?: String;
+    price: string;
+    oldPrice?: string;
 };
 
 export default function Price({ price, oldPrice }: PriceProps) {
