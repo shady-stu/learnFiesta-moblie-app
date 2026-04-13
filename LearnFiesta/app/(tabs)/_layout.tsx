@@ -57,7 +57,7 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="courses"
+        name="MyCourses"
         options={{
           title: 'My Courses',
           tabBarIcon: ({ color, focused }) => (
