@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { useQuery } from "@tanstack/react-query";
+import { SafeAreaView } from "react-native-safe-area-context";
 import CourseCard, { Enrollment } from "@/components/CourseCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
@@ -32,10 +32,9 @@ export default function MyCourses() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
 
-     
       <View style={styles.tabs}>
         {(["all", "progress", "completed"] as const).map((tab) => (
           <TouchableOpacity
@@ -50,19 +49,21 @@ export default function MyCourses() {
         ))}
       </View>
 
-  
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>No courses found</Text>
         </View>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
           {filteredEnrollments.map((item) => (
             <CourseCard key={item.id} enrollment={item} />
           ))}
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
