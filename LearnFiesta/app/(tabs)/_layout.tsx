@@ -1,8 +1,12 @@
+
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
@@ -14,9 +18,9 @@ export default function TabsLayout() {
           left: 0,
           right: 0,
           bottom: 0,
-          height: 78,
+          height: 60 + insets.bottom, 
           paddingTop: 8,
-          paddingBottom: 12,
+          paddingBottom: insets.bottom || 12, 
           backgroundColor: Colors.surface,
           borderTopWidth: 1,
           borderTopColor: Colors.border,
@@ -57,7 +61,7 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="courses"
+        name="MyCourses"
         options={{
           title: 'My Courses',
           tabBarIcon: ({ color, focused }) => (
