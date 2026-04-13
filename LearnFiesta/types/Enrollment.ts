@@ -5,6 +5,6 @@ export type Enrollment = {
   progress: number;
   lessonsDone: number;
   totalLessons: number;
-  img: { uri: string };
+  img: string;
   status: "progress" | "completed";
 };
