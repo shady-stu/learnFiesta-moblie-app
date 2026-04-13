@@ -13,7 +13,7 @@ export type Enrollment = {
   progress: number;
   lessonsDone: number;
   totalLessons: number;
-  img: { uri: string };
+  img: string;
   status: "progress" | "completed";
 };
 
@@ -22,7 +22,7 @@ const CourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
 
   return (
     <View style={s.card}>
-      <Image source={enrollment.img} style={s.image} />
+     <Image source={{ uri: enrollment.img }} style={s.image} />
 
       <View style={s.info}>
         <View style={s.row}>
