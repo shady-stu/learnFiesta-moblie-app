@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: 140, // taller image for top
+        height: 140,
         borderRadius: 12,
-        marginBottom: 10, // spacing below image
+        marginBottom: 10,
     },
     content: {
         flex: 1,
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     },
     cardPressed: {
         backgroundColor: "#f3f4f6",
-        transform: [{ scale: 0.98 }], // light gray like hover:bg-gray-100
+        transform: [{ scale: 0.98 }],
     },
 });
