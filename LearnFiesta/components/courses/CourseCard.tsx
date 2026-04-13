@@ -21,12 +21,12 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                 styles.card,
                 pressed && styles.cardPressed
             ]}
-        >{/* Course Image */}
+        >
             <Image source={{ uri: course.imageUrl }} style={styles.image} />
 
-            {/* Course Content */}
+
             <View style={styles.content}>
-                {/* Top Row: Badge + Bookmark */}
+
                 <View style={styles.topRow}>
                     {course.badge && <Text style={styles.badge}>{course.badge.toUpperCase()}</Text>}
 
@@ -39,13 +39,13 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                     </TouchableOpacity>
                 </View>
 
-                {/* Title & Subtitle */}
+
                 <Text style={styles.title}>{course.title}</Text>
                 <Text style={styles.subtitle}>
                     {course.instructorName} • {course.duration}
                 </Text>
 
-                {/* Bottom Row: Rating + Price */}
+
                 <View style={styles.bottom}>
                     <Rating rating={course.rating} reviews={course.reviewsCount} />
                     <Price price={course.price} oldPrice={course.oldPrice} />
