@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { onAuthStateChanged } from 'firebase/auth';
 
 import AppHeader from '@/components/ui/AppHeader';
 import SectionHeader from '@/components/ui/SectionHeader';
@@ -19,29 +20,36 @@ import CategoryCard from '@/components/home/CategoryCard';
 
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
+
 import { useRecommendedCourses } from '@/hooks/useRecommendedCourses';
 import { useCategories } from '@/hooks/useCategories';
 import { auth } from '@/api/services/firebase';
 
 export default function HomeScreen() {
-
+  // 🔐 Auth protection (correct way)
   useEffect(() => {
-    if (!auth.currentUser) {
-      router.replace('/login');
-    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace('/login');
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
+  // 📦 React Query: Categories
   const {
     data: categories,
-    isLoading,
-    isError,
-    error,
+    isLoading: loadingCategories,
+    isError: categoriesError,
+    error: categoriesErrObj,
   } = useCategories();
 
+  // 📦 React Query: Recommended Courses
   const {
     data: recommendedCourses,
     isLoading: loadingCourses,
-    isError: errCourses,
+    isError: coursesError,
   } = useRecommendedCourses();
 
   return (
@@ -54,11 +62,13 @@ export default function HomeScreen() {
       >
         <HeroBanner />
 
+        {/* Continue Learning */}
         <View style={styles.section}>
           <SectionHeader title="Continue Learning" actionLabel="View All" />
           <ContinueLearningCard />
         </View>
 
+        {/* Recommended Courses */}
         <View style={styles.section}>
           <SectionHeader title="Recommended for You" actionLabel="See More" />
 
@@ -66,7 +76,7 @@ export default function HomeScreen() {
             <View style={styles.loadingWrap}>
               <ActivityIndicator size="large" color={Colors.primary} />
             </View>
-          ) : errCourses ? (
+          ) : coursesError ? (
             <Text style={styles.errorText}>
               Failed to load recommended courses
             </Text>
@@ -93,17 +103,20 @@ export default function HomeScreen() {
           )}
         </View>
 
+        {/* Categories */}
         <View style={styles.categoriesSection}>
           <SectionHeader title="Top Categories" />
 
-          {isLoading ? (
+          {loadingCategories ? (
             <View style={styles.loadingWrap}>
               <ActivityIndicator size="large" color={Colors.primary} />
             </View>
-          ) : isError ? (
+          ) : categoriesError ? (
             <Text style={styles.errorText}>
               Failed to load categories
-              {error ? `: ${(error as any)?.message ?? ''}` : ''}
+              {categoriesErrObj
+                ? `: ${(categoriesErrObj as any)?.message ?? ''}`
+                : ''}
             </Text>
           ) : (
             <View style={styles.categoriesGrid}>
@@ -124,7 +137,6 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
