@@ -50,13 +50,16 @@ export default function Login() {
                 data.password
             );
 
-            // 🎯 ROLE BASED NAVIGATION
+            console.log(
+                "✅ Login success, token stored:",
+                user.token ? "present" : "missing"
+            );
+
             if (user.role === "instructor") {
                 router.replace("/(tabs)");
             } else {
                 router.replace("/(tabs)");
             }
-
         } catch (e: any) {
             setError(e.message);
         } finally {
@@ -124,14 +127,21 @@ export default function Login() {
                     </TouchableOpacity>
                 </View>
 
+                {/* ✅ UPDATED FOOTER */}
                 <Text style={styles.footer}>
                     Don’t have an account?{" "}
-                    <Text style={styles.link}>Register</Text>
+                    <Text
+                        style={styles.link}
+                        onPress={() => router.push("/register")}
+                    >
+                        Register
+                    </Text>
                 </Text>
             </View>
         </SafeAreaView>
     );
 }
+
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
