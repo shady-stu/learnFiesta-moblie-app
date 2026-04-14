@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, Pressable} from "react-native";
+import {View, Text, Image, StyleSheet, TouchableOpacity, Pressable} from "react-native";
 import Rating from "@/components/courses/Rating";
 import Price from "../ui/Price";
 import {Course} from "@/types/course";
@@ -21,12 +21,12 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                 styles.card,
                 pressed && styles.cardPressed
             ]}
-        >{/* Course Image */}
+        >
             <Image source={{ uri: course.imageUrl }} style={styles.image} />
 
-            {/* Course Content */}
+
             <View style={styles.content}>
-                {/* Top Row: Badge + Bookmark */}
+
                 <View style={styles.topRow}>
                     {course.badge && <Text style={styles.badge}>{course.badge.toUpperCase()}</Text>}
 
@@ -39,13 +39,13 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                     </TouchableOpacity>
                 </View>
 
-                {/* Title & Subtitle */}
+
                 <Text style={styles.title}>{course.title}</Text>
                 <Text style={styles.subtitle}>
                     {course.instructorName} • {course.duration}
                 </Text>
 
-                {/* Bottom Row: Rating + Price */}
+
                 <View style={styles.bottom}>
                     <Rating rating={course.rating} reviews={course.reviewsCount} />
                     <Price price={course.price} oldPrice={course.oldPrice} />
@@ -55,7 +55,7 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
 
     );
 }
-const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
     card: {
         flexDirection: "column",
@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: 140, // taller image for top
+        height: 140,
         borderRadius: 12,
-        marginBottom: 10, // spacing below image
+        marginBottom: 10,
     },
     content: {
         flex: 1,
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     },
     cardPressed: {
         backgroundColor: "#f3f4f6",
-        transform: [{ scale: 0.98 }], // light gray like hover:bg-gray-100
+        transform: [{ scale: 0.98 }],
     },
 });
