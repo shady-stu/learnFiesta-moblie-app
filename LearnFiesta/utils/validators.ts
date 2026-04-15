@@ -13,3 +13,36 @@ export const validatePassword = (password: string): string | null => {
 
     return null;
 };
+
+
+export type RegisterFormData = {
+    fullName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    agreeTerms: boolean;
+};
+
+export type RegisterFormErrors = {
+    fullName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+    agreeTerms?: string;
+};
+
+export const validateRegisterForm = (
+    data: RegisterFormData
+): RegisterFormErrors => {
+    const errors: RegisterFormErrors = {};
+    if (!data.fullName.trim()) errors.fullName = "Full name is required";
+    const emailErr = validateEmail(data.email);
+    if (emailErr) errors.email = emailErr;
+    const pwdErr = validatePassword(data.password);
+    if (pwdErr) errors.password = pwdErr;
+    if (data.password !== data.confirmPassword)
+        errors.confirmPassword = "Passwords do not match";
+    if (!data.agreeTerms)
+        errors.agreeTerms = "You must agree to the Terms & Conditions";
+    return errors;
+};
