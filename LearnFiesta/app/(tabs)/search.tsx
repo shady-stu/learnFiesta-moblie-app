@@ -6,6 +6,7 @@ import CourseCard  from "@/components/courses/CourseCard";
 import {Colors} from "@/constants/colors";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import {useCourses} from "@/libr/useCourses";
+import LoadingView from "@/components/ui/LoadingView";
 
 export default function Search() {
     const { data: courses = [], isLoading, error } = useCourses();
@@ -14,7 +15,7 @@ export default function Search() {
     const { toggleBookmark, isBookmarked, bookmarked} = useBookmarks();
 
     if (isLoading) {
-        return <Text>Loading...</Text>;
+        return <LoadingView />;
     }
 
     if (error) {
