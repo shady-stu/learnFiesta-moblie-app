@@ -8,6 +8,7 @@ export const registerUser = async (
     password: string,
     fullName: string
 ): Promise<void> => {
+
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     const uid = userCred.user.uid;
 
@@ -20,7 +21,9 @@ export const registerUser = async (
         createdAt: serverTimestamp(),
     });
 
-    await setDoc(doc(db, "roles", uid), { role: "student" });
+    await setDoc(doc(db, "roles", uid), {
+        role: "student",
+    });
 
     const token = await userCred.user.getIdToken();
     await storeToken(token);

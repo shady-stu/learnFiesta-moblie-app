@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
@@ -33,6 +33,13 @@ export default function Login() {
         const passwordError = validatePassword(data.password);
 
         if (emailError || passwordError) {
+            if (passwordError && passwordError.includes("6")) {
+                Alert.alert("Invalid Password", "Password must be at least 6 characters long.");
+            } else if (emailError) {
+                Alert.alert("Invalid Email", emailError);
+            } else if (passwordError) {
+                Alert.alert("Invalid Password", passwordError);
+            }
             setErrors({
                 email: emailError ?? undefined,
                 password: passwordError ?? undefined,
@@ -45,15 +52,9 @@ export default function Login() {
             setError(null);
             setErrors({});
 
-            const user: AuthUser = await loginUser(
-                data.email,
-                data.password
-            );
+            const user: AuthUser = await loginUser(data.email, data.password);
 
-            console.log(
-                "✅ Login success, token stored:",
-                user.token ? "present" : "missing"
-            );
+            console.log("✅ Login success, token stored:", user.token ? "present" : "missing");
 
             if (user.role === "instructor") {
                 router.replace("/(tabs)");
@@ -62,6 +63,7 @@ export default function Login() {
             }
         } catch (e: any) {
             setError(e.message);
+            Alert.alert("Login Failed", e.message);
         } finally {
             setLoading(false);
         }
@@ -71,7 +73,6 @@ export default function Login() {
         <SafeAreaView style={styles.screen}>
             <View style={styles.card}>
                 <Text style={styles.logo}>🎓 LearnFiesta</Text>
-
                 <Text style={styles.title}>Welcome back</Text>
                 <Text style={styles.subtitle}>
                     Log in to your account to continue your learning journey.
@@ -121,19 +122,14 @@ export default function Login() {
                     <TouchableOpacity style={styles.socialBtn}>
                         <Text>Google</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.socialBtn}>
                         <Text>Apple</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* ✅ UPDATED FOOTER */}
                 <Text style={styles.footer}>
                     Don’t have an account?{" "}
-                    <Text
-                        style={styles.link}
-                        onPress={() => router.push("/register")}
-                    >
+                    <Text style={styles.link} onPress={() => router.push("/register")}>
                         Register
                     </Text>
                 </Text>
@@ -141,6 +137,7 @@ export default function Login() {
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     screen: {
