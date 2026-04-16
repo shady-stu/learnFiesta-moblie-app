@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,28 +7,18 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-
 import AppHeader from '@/components/ui/AppHeader';
 import SectionHeader from '@/components/ui/SectionHeader';
 import HeroBanner from '@/components/home/HeroBanner';
 import ContinueLearningCard from '@/components/home/ContinueLearningCard';
 import CourseCard from '@/components/home/CourseCard';
 import CategoryCard from '@/components/home/CategoryCard';
-
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { useRecommendedCourses } from '@/hooks/useRecommendedCourses';
 import { useCategories } from '@/hooks/useCategories';
-import { auth } from '@/api/services/firebase';
 
 export default function HomeScreen() {
-
-  useEffect(() => {
-    if (!auth.currentUser) {
-      router.replace('/login');
-    }
-  }, []);
 
   const {
     data: categories,
