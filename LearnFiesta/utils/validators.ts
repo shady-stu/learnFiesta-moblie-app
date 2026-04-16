@@ -37,10 +37,14 @@ export const validateRegisterForm = (
     }
 
     const emailError = validateEmail(data.email);
-    if (emailError) errors.email = emailError;
+    if (emailError) {
+        errors.email = emailError;
+    }
 
     const passwordError = validatePassword(data.password);
-    if (passwordError) errors.password = passwordError;
+    if (passwordError) {
+        errors.password = passwordError;
+    }
 
     if (data.password !== data.confirmPassword) {
         errors.confirmPassword = "Passwords do not match";

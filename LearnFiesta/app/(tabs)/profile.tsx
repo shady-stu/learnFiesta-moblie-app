@@ -1,8 +1,6 @@
 import { View, Text, Button, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { logoutUser } from '@/api/services/authService/authService';
-import { auth } from '@/api/services/firebase';
-import { signOut } from 'firebase/auth';
 
 export default function ProfileScreen() {
     const handleLogout = async () => {
