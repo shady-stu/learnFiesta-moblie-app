@@ -192,4 +192,7 @@ const styles = StyleSheet.create({
     dividerText: { marginHorizontal: 10, fontSize: 12, color: "#888" },
     socialRow: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
     socialBtn: { flex: 1, padding: 12, borderWidth: 1, borderColor: "#ddd", borderRadius: 10, alignItems: "center" },
+
 });
+
+
