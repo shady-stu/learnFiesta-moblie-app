@@ -6,51 +6,75 @@ import Button from "@/components/common/Button";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Checkbox from "expo-checkbox";
-import { validateRegisterForm, RegisterFormData, RegisterFormErrors } from "@/utils/validators";
+import {validatePassword } from "@/utils/validators";
 import { registerUser, getFirebaseErrorMessage } from "@/api/services/authService/registerService";
 
+type RegisterFormData = {fullName: string; email: string; password: string;  confirmPassword: string; agreeTerms: boolean;};
+
 export default function Register() {
-    const { control, handleSubmit } = useForm<RegisterFormData>({
+    const { control, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>({
         defaultValues: {
-            fullName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            agreeTerms: false,
-        },
+            fullName: "",email: "",password: "",confirmPassword: "",agreeTerms: false,},mode: "onChange",
     });
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [errors, setErrors] = useState<RegisterFormErrors>({});
+    const [firebaseError, setFirebaseError] = useState<string | null>(null);
+    const password = watch("password");
+    const validateFullName = (value: string) => {
+        if (!value.trim()) return "Full name is required";
+        if (value.trim().length < 3) return "Name must be at least 3 characters";
+        return true;
+    };
+
+    const validateEmailField = (value: string) => {
+        if (!value) return "Email is required";
+
+        const email = value.trim().toLowerCase();
+        const atIndex = email.indexOf('@');
+        if (atIndex === -1) return "Email must contain @";
+        const localPart = email.substring(0, atIndex);
+        const domainPart = email.substring(atIndex + 1);
+
+        if (localPart.length < 3) return "Email local part is too short (minimum 3 characters)";
+        const dotIndex = domainPart.lastIndexOf('.');
+        if (dotIndex === -1) return "Email domain must contain a dot (e.g., domain.com)";
+        const domainName = domainPart.substring(0, dotIndex);
+        const tld = domainPart.substring(dotIndex + 1);
+
+        if (domainName.length < 3) return "Email domain name is too short (minimum 3 characters)";
+        if (tld.length < 2) return "Email TLD is too short (e.g., .com, .org)";
+        const commonTLDs = ['com', 'net', 'org', 'edu', 'gov', 'io', 'co', 'uk', 'us', 'de', 'fr', 'es', 'it', 'nl', 'br', 'in', 'jp', 'cn', 'au', 'ca'];        return true;
+    };
+    const validatePasswordField = (value: string) => {
+        if (!value) return "Password is required";
+        const pwdError = validatePassword(value);
+        if (pwdError) return pwdError;
+        return true;
+    };
+
+    const validateConfirmPassword = (value: string) => {
+        if (!value) return "Please confirm your password";
+        if (value !== password) return "Passwords do not match";
+        return true;
+    };
 
     const onSubmit = async (data: RegisterFormData) => {
-        const validationErrors = validateRegisterForm(data);
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            // Show alert for the first validation error
-            if (validationErrors.fullName) {
-                Alert.alert("Missing Name", validationErrors.fullName);
-            } else if (validationErrors.email) {
-                Alert.alert("Invalid Email", validationErrors.email);
-            } else if (validationErrors.password) {
-                Alert.alert("Weak Password", validationErrors.password);
-            } else if (validationErrors.confirmPassword) {
-                Alert.alert("Password Mismatch", validationErrors.confirmPassword);
-            } else if (validationErrors.agreeTerms) {
-                Alert.alert("Agreement Required", validationErrors.agreeTerms);
+        if (Object.keys(errors).length > 0 || !data.agreeTerms) {
+            if (!data.agreeTerms) {
+                Alert.alert("Agreement Required", "You must agree to the Terms & Conditions.");
+            } else {
+                Alert.alert("Validation Error", "Please fix the red errors above.");
             }
             return;
         }
         setLoading(true);
-        setError(null);
-        setErrors({});
+        setFirebaseError(null);
         try {
             await registerUser(data.email, data.password, data.fullName);
             router.replace("/(tabs)");
         } catch (err: any) {
             const msg = getFirebaseErrorMessage(err.code);
-            setError(msg);
+            setFirebaseError(msg);
             Alert.alert("Registration Failed", msg);
         } finally {
             setLoading(false);
@@ -69,59 +93,73 @@ export default function Register() {
                     <Controller
                         control={control}
                         name="fullName"
+                        rules={{ validate: validateFullName }}
                         render={({ field }) => (
-                            <Input
-                                label="Full Name"
-                                placeholder="Enter your full name"
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                error={errors.fullName}
-                            />
+                            <View>
+                                <Input
+                                    label="Full Name"
+                                    placeholder="Enter your full name"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onBlur={field.onBlur}
+                                />
+                                {errors.fullName && <Text style={styles.errorText}>{errors.fullName.message}</Text>}
+                            </View>
                         )}
                     />
 
                     <Controller
                         control={control}
                         name="email"
+                        rules={{ validate: validateEmailField }}
                         render={({ field }) => (
-                            <Input
-                                label="Email"
-                                placeholder="example@email.com"
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                error={errors.email}
-                                autoCapitalize="none"
-                            />
+                            <View>
+                                <Input
+                                    label="Email"
+                                    placeholder="example@email.com"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onBlur={field.onBlur}
+                                    autoCapitalize="none"
+                                />
+                                {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+                            </View>
                         )}
                     />
 
                     <Controller
                         control={control}
                         name="password"
+                        rules={{ validate: validatePasswordField }}
                         render={({ field }) => (
-                            <Input
-                                label="Password"
-                                placeholder="Create a password"
-                                secureTextEntry
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                error={errors.password}
-                            />
+                            <View>
+                                <Input
+                                    label="Password"
+                                    placeholder="Create a password"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onBlur={field.onBlur}
+                                />
+                                {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+                            </View>
                         )}
                     />
 
                     <Controller
                         control={control}
                         name="confirmPassword"
+                        rules={{ validate: validateConfirmPassword }}
                         render={({ field }) => (
-                            <Input
-                                label="Confirm Password"
-                                placeholder="Confirm your password"
-                                secureTextEntry
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                error={errors.confirmPassword}
-                            />
+                            <View>
+                                <Input
+                                    label="Confirm Password"
+                                    placeholder="Confirm your password"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onBlur={field.onBlur}
+                                />
+                                {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+                            </View>
                         )}
                     />
 
@@ -129,6 +167,7 @@ export default function Register() {
                         <Controller
                             control={control}
                             name="agreeTerms"
+                            rules={{ required: "You must agree to the terms" }}
                             render={({ field }) => (
                                 <Checkbox
                                     value={field.value}
@@ -141,8 +180,8 @@ export default function Register() {
                             I agree to the Terms & Conditions and Privacy Policy
                         </Text>
                     </View>
-                    {errors.agreeTerms && <Text style={styles.errorText}>{errors.agreeTerms}</Text>}
-                    {error && <Text style={styles.errorText}>{error}</Text>}
+                    {errors.agreeTerms && <Text style={styles.errorText}>{errors.agreeTerms.message}</Text>}
+                    {firebaseError && <Text style={styles.errorText}>{firebaseError}</Text>}
 
                     <Button
                         title={loading ? "Creating Account..." : "Sign Up →"}
