@@ -26,7 +26,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { auth } from '@/api/services/firebase';
 
 export default function HomeScreen() {
-  // 🔐 Auth protection (correct way)
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -37,7 +37,7 @@ export default function HomeScreen() {
     return unsubscribe;
   }, []);
 
-  // 📦 React Query: Categories
+  
   const {
     data: categories,
     isLoading: loadingCategories,
@@ -45,7 +45,7 @@ export default function HomeScreen() {
     error: categoriesErrObj,
   } = useCategories();
 
-  // 📦 React Query: Recommended Courses
+ 
   const {
     data: recommendedCourses,
     isLoading: loadingCourses,
@@ -62,13 +62,13 @@ export default function HomeScreen() {
       >
         <HeroBanner />
 
-        {/* Continue Learning */}
+       
         <View style={styles.section}>
           <SectionHeader title="Continue Learning" actionLabel="View All" />
           <ContinueLearningCard />
         </View>
 
-        {/* Recommended Courses */}
+       
         <View style={styles.section}>
           <SectionHeader title="Recommended for You" actionLabel="See More" />
 
@@ -103,7 +103,7 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* Categories */}
+        
         <View style={styles.categoriesSection}>
           <SectionHeader title="Top Categories" />
 
