@@ -24,7 +24,7 @@ export default function RootLayout() {
 
   const inAuthGroup = segments[0] === '(auth)';
 
-  if (!user && !inAuthGroup) {
+  if (!user && !inAuthGroup && !loading) {
     return <Redirect href="/login" />;
   }
 
