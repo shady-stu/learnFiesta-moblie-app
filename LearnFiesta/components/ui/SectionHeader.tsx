@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
@@ -6,22 +6,22 @@ import { Spacing } from '@/constants/spacing';
 type SectionHeaderProps = {
   title: string;
   actionLabel?: string;
-  onPressAction?: () => void;
+  onPress?: () => void;
 };
 
 export default function SectionHeader({
   title,
   actionLabel,
-  onPressAction,
+  onPress: onPressAction,
 }: SectionHeaderProps) {
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>{title}</ThemedText>
 
       {actionLabel ? (
-        <Pressable onPress={onPressAction}>
+        <TouchableOpacity onPress={onPressAction}>
           <ThemedText style={styles.action}>{actionLabel}</ThemedText>
-        </Pressable>
+        </TouchableOpacity>
       ) : null}
     </View>
   );

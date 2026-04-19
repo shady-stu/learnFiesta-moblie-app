@@ -1,4 +1,3 @@
-
 import { StyleSheet, Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/themed-text';
@@ -8,7 +7,7 @@ import { Spacing } from '@/constants/spacing';
 
 type CategoryCardProps = {
   title: string;
-  icon: string; 
+  icon: string;
   backgroundColor: string;
   iconColor: string;
   onPress?: () => void;
@@ -22,7 +21,19 @@ export default function CategoryCard({
   onPress,
 }: CategoryCardProps) {
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: '#eee' }}
+      hitSlop={10}
+      accessibilityRole="button"
+      style={({ pressed }) => [
+        styles.card,
+        pressed && {
+          opacity: 0.7,
+          transform: [{ scale: 0.98 }],
+        },
+      ]}
+    >
       <View style={[styles.iconWrapper, { backgroundColor }]}>
         <Ionicons name={icon as any} size={24} color={iconColor} />
       </View>
@@ -36,7 +47,7 @@ export default function CategoryCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: '100%', 
+    width: '100%',
     minHeight: 132,
     backgroundColor: Colors.surface,
     borderWidth: 1,
@@ -53,6 +64,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
   },
+
   iconWrapper: {
     width: 56,
     height: 56,
@@ -60,6 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   title: {
     fontSize: 15,
     lineHeight: 20,
