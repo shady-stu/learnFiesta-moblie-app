@@ -10,7 +10,7 @@ type CourseCardProps = {
   instructor: string;
   rating: number;
   reviews: string;
-  price: string;
+  price: string
   image: string;
 };
 
@@ -22,15 +22,28 @@ export default function CourseCard({
   price,
   image,
 }: CourseCardProps) {
+
+  
+  const renderPrice = () => {
+  if(price === 'Free') {
+    return 'Free';
+  } else {
+    return `$${price}`;
+  }
+  };
+
   return (
     <View style={styles.card}>
       <Image source={{ uri: image }} style={styles.image} />
+
       <View style={styles.content}>
         <ThemedText numberOfLines={2} style={styles.title}>
           {title}
         </ThemedText>
 
-        <ThemedText style={styles.instructor}>{instructor}</ThemedText>
+        <ThemedText style={styles.instructor}>
+          {instructor}
+        </ThemedText>
 
         <View style={styles.ratingRow}>
           <ThemedText style={styles.rating}>{rating}</ThemedText>
@@ -39,17 +52,19 @@ export default function CourseCard({
         </View>
 
         <View style={styles.footer}>
-          <ThemedText style={styles.price}>{price}</ThemedText>
-
-          <Pressable style={styles.favoriteButton}>
-            <Ionicons name="heart-outline" size={18} color={Colors.textPrimary} />
+          
+          <ThemedText style={styles.price}>
+            {renderPrice()}
+          </ThemedText>
+          <Pressable style={styles.addtocart}>
+            <Ionicons name="cart" size={16} color={Colors.textSecondary} />
           </Pressable>
+         
         </View>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   card: {
     width: 240,
@@ -103,7 +118,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.primary,
   },
-  favoriteButton: {
+  addtocart: {
     width: 32,
     height: 32,
     borderRadius: Radius.sm,
