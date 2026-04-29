@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams } from 'expo-router';
-
 import CourseCard from '@/components/home/CourseCard';
 import { useCoursesByCategory } from '@/hooks/useCoursesByCategory';
 import { Colors } from '@/constants/colors';
