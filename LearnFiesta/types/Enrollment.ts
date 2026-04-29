@@ -1,5 +1,6 @@
 export type Enrollment = {
   id: string;
+  courseId: string;
   title: string;
   author: string;
   progress: number;

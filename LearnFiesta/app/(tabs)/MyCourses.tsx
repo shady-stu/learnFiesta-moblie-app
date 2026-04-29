@@ -1,7 +1,9 @@
+// app/(tabs)/MyCourses.tsx
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CourseCard, { Enrollment } from "@/components/CourseCard";
+import { useRouter } from "expo-router";
+import CourseCard from "@/components/CourseCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
@@ -10,8 +12,8 @@ import LoadingView from "@/components/ui/LoadingView";
 import { useCourse } from "@/hooks/use-course";
 
 export default function MyCourses() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"all" | "progress" | "completed">("all");
-
   const { data: enrollments = [], isLoading, isError } = useCourse();
 
   const filteredEnrollments = enrollments.filter((item) => {
@@ -19,10 +21,10 @@ export default function MyCourses() {
     return item.status === activeTab;
   });
 
-  if (isLoading) {
-    return <LoadingView />;
-  }
-
+ const handleLessonPress = (courseId: string) => {
+  router.push(`/lesson/${courseId}`);
+};
+  if (isLoading) return <LoadingView />;
   if (isError) {
     return (
       <View style={styles.centerContainer}>
@@ -54,67 +56,33 @@ export default function MyCourses() {
           <Text style={styles.emptyText}>No courses found</Text>
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        >
-          {filteredEnrollments.map((item) => (
-            <CourseCard key={item.id} enrollment={item} />
-          ))}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+        {filteredEnrollments.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => router.push(`/lesson/${(item as any).courseId}`)}
+          >
+            <CourseCard
+              enrollment={item}
+            />
+          </TouchableOpacity>
+        ))}
         </ScrollView>
       )}
     </SafeAreaView>
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Spacing.lg,
-    backgroundColor: Colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  header: {
-    fontSize: Typography.title,
-    fontWeight: "bold",
-    marginBottom: Spacing.md,
-    color: Colors.textPrimary,
-  },
-  tabs: {
-    flexDirection: "row",
-    gap: Spacing.sm,
-    marginBottom: Spacing.lg,
-  },
-  tab: {
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    backgroundColor: Colors.muted,
-    borderRadius: Radius.full,
-  },
-  tabActive: {
-    backgroundColor: Colors.primary,
-  },
-  tabText: {
-    color: Colors.textSecondary,
-    fontSize: Typography.caption,
-  },
-  tabTextActive: {
-    color: Colors.white,
-    fontSize: Typography.caption,
-    fontWeight: "600",
-  },
-  empty: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50,
-  },
-  emptyText: {
-    color: Colors.textSecondary,
-    fontSize: Typography.subheading,
-  },
+  container: { flex: 1, padding: Spacing.lg, backgroundColor: Colors.background },
+  centerContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  header: { fontSize: Typography.title, fontWeight: "bold", marginBottom: Spacing.md, color: Colors.textPrimary },
+  tabs: { flexDirection: "row", gap: Spacing.sm, marginBottom: Spacing.lg },
+  tab: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, backgroundColor: Colors.muted, borderRadius: Radius.full },
+  tabActive: { backgroundColor: Colors.primary },
+  tabText: { color: Colors.textSecondary, fontSize: Typography.caption },
+  tabTextActive: { color: Colors.white, fontSize: Typography.caption, fontWeight: "600" },
+  empty: { flex: 1, justifyContent: "center", alignItems: "center", marginTop: 50 },
+  emptyText: { color: Colors.textSecondary, fontSize: Typography.subheading },
 });
