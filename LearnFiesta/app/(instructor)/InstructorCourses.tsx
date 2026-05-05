@@ -1,4 +1,3 @@
-// InstructorCourses.tsx
 import React from 'react';
 import {
   View,
@@ -18,7 +17,7 @@ import PerformanceCard from '@/components/PerformanceCard';
 import { useInstructor } from '@/hooks/useInstructor';
 
 const InstructorCourses = () => {
-  const { data: Instructor = [], isLoading, isError } = useInstructor();
+  const { data: instructors = [], isLoading, isError } = useInstructor();
 
   if (isLoading) return <LoadingView />;
 
@@ -30,17 +29,16 @@ const InstructorCourses = () => {
     );
   }
 
-  const activeCourses = Instructor.filter((c) => c.isActive);
-  const inactiveCourses = Instructor.filter((c) => !c.isActive);
-  const totalStudents = Instructor.reduce((sum, c) => sum + (c.students || 0), 0);
-  const totalRevenue = Instructor.reduce((sum, c) => sum + (c.revenue || 0), 0);
+  const activeCourses = instructors.filter((c) => c.isActive);
+  const inactiveCourses = instructors.filter((c) => !c.isActive);
+
+  const totalStudents = instructors.reduce((sum, c) => sum + (c.students || 0), 0);
+  const totalRevenue = instructors.reduce((sum, c) => sum + (c.revenue || 0), 0);
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Instructor Courses</Text>
           <Text style={styles.headerSubtitle}>
@@ -49,13 +47,13 @@ const InstructorCourses = () => {
         </View>
 
         <Text style={styles.sectionTitle}>Active Courses</Text>
-        {Instructor.filter(c => c.isActive).map((course) => (
-          <InstructorCard key={course.title} {...course} />
+        {activeCourses.map((course) => (
+          <InstructorCard key={course.id} {...course} />
         ))}
 
         <Text style={styles.sectionTitle}>Other Courses</Text>
-        {Instructor.filter(c => !c.isActive).map((course) => (
-          <InstructorCard key={course.title} {...course} />
+        {inactiveCourses.map((course) => (
+          <InstructorCard key={course.id} {...course} />
         ))}
 
         <PerformanceCard

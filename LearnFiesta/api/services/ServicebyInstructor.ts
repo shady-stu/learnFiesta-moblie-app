@@ -1,20 +1,38 @@
-// api/services/ServicebyInstructor.ts
-import { db } from '@/api/services/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import type { Instructor } from '@/components/InstructorCard';
+import { db } from "@/api/services/firebase";
+import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import type { Instructor } from "@/components/InstructorCard";
 
 export async function getUserInstructors(): Promise<Instructor[]> {
-  const instructorsRef = collection(db, 'Instructor');
-  const snapshot = await getDocs(instructorsRef);
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
 
-  console.log("snapshot empty?", snapshot.empty);
-  console.log("docs count:", snapshot.docs.length);
-  console.log("raw data:", snapshot.docs.map(d => d.data()));
+  if (!currentUser) return [];
 
-  if (snapshot.empty) return [];
+ const q = query(
+  collection(db, "Instructor"),
+  where("usersId", "==", currentUser.uid) 
+);
 
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Instructor[];
+  const snap = await getDocs(q);
+  if (snap.empty) return [];
+
+  return Promise.all(
+    snap.docs.map(async (d) => {
+      const data = d.data();
+      const courseSnap = await getDoc(doc(db, "courses", data.courseId));
+      const course = courseSnap.data();
+
+      return {
+        id: d.id,
+        courseId: data.courseId,
+        title: course?.title ?? "",
+        imageUrl: course?.imageUrl ?? "",
+        students: data.students ?? 0,
+        revenue: data.revenue ?? 0,
+        rating: data.rating ?? 0,
+        isActive: data.isActive ?? false,
+      };
+    })
+  );
 }
