@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CourseCard, { Enrollment } from "@/components/CourseCard";
+import CourseCard from "@/components/CourseCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
@@ -14,14 +14,7 @@ export default function MyCourses() {
 
   const { data: enrollments = [], isLoading, isError } = useCourse();
 
-  const filteredEnrollments = enrollments.filter((item) => {
-    if (activeTab === "all") return true;
-    return item.status === activeTab;
-  });
-
-  if (isLoading) {
-    return <LoadingView />;
-  }
+  if (isLoading) return <LoadingView />;
 
   if (isError) {
     return (
@@ -30,6 +23,11 @@ export default function MyCourses() {
       </View>
     );
   }
+
+  const filteredEnrollments = enrollments.filter((item) => {
+    if (activeTab === "all") return true;
+    return item.status === activeTab;
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,10 +52,7 @@ export default function MyCourses() {
           <Text style={styles.emptyText}>No courses found</Text>
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        >
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           {filteredEnrollments.map((item) => (
             <CourseCard key={item.id} enrollment={item} />
           ))}

@@ -1,5 +1,6 @@
 import { Redirect } from 'expo-router';
+import InstructorCourses from './(instructor)/InstructorCourses';
 
 export default function AppIndex() {
-    return <Redirect href="/login" />;
+    return <InstructorCourses />;
 }

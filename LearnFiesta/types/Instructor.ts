@@ -1,10 +1,12 @@
 export type Instructor = {
   id: string;
+  courseId: string;
+
   title: string;
-  name: string;
+  imageUrl: string;
+
   students: number;
   revenue: number;
   rating: number;
   isActive: boolean;
-  imageUrl?: string;
 };
