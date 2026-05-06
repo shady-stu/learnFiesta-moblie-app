@@ -86,4 +86,62 @@ const InstructorCourses = () => {
   );
 };
 
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  scrollContent: {
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: 100,
+  },
+  header: {
+    paddingTop: Spacing.xl,
+    paddingBottom: Spacing.lg,
+  },
+  headerTitle: {
+    fontSize: Typography.title,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+  headerSubtitle: {
+    fontSize: Typography.caption,
+    color: Colors.textSecondary,
+    marginBottom: Spacing.lg,
+  },
+  sectionTitle: {
+    fontSize: Typography.subheading,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+    marginBottom: Spacing.sm,
+  },
+
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  testButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: Radius.full,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+  },
+  testButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
+  },
+});
+
 export default InstructorCourses;
