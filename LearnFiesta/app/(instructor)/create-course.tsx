@@ -17,7 +17,9 @@ type FormData = {
 };
 
 export default function CreateCourseScreen() {
+
     const { control, handleSubmit, setValue } = useForm<FormData>();
+
 
     const { mutateAsync, isPending } = useCreateCourse();
 
