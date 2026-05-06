@@ -85,7 +85,6 @@ const InstructorCourses = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
