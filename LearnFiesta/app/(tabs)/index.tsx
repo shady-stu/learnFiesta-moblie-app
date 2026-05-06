@@ -138,6 +138,16 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
+      <Pressable
+          onPress={() =>
+              router.push({
+                pathname: '/create-course',
+              })
+          }
+          style={styles.testButton}
+      >
+        <Text style={styles.testButtonText}>Create Course</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
@@ -185,5 +195,23 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: 'red',
+  },
+
+  testButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: 999,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+  },
+  testButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
   },
 });
