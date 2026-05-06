@@ -16,7 +16,7 @@ type FormData = {
   thumbnail?: string;
 };
 
-export const CreateCourseScreen = () => {
+export default function CreateCourseScreen() {
   const { control, handleSubmit, setValue } = useForm<FormData>();
 
   const { mutateAsync, isPending } = useCreateCourse();
