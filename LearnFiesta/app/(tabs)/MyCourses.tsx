@@ -1,8 +1,14 @@
-// app/(tabs)/MyCourses.tsx
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+
 import CourseCard from "@/components/CourseCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
@@ -13,18 +19,13 @@ import { useCourse } from "@/hooks/use-course";
 
 export default function MyCourses() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"all" | "progress" | "completed">("all");
+  const [activeTab, setActiveTab] =
+    useState<"all" | "progress" | "completed">("all");
+
   const { data: enrollments = [], isLoading, isError } = useCourse();
 
-  const filteredEnrollments = enrollments.filter((item) => {
-    if (activeTab === "all") return true;
-    return item.status === activeTab;
-  });
-
- const handleLessonPress = (courseId: string) => {
-  router.push(`/lesson/${courseId}`);
-};
   if (isLoading) return <LoadingView />;
+
   if (isError) {
     return (
       <View style={styles.centerContainer}>
@@ -33,10 +34,20 @@ export default function MyCourses() {
     );
   }
 
+  const filteredEnrollments = enrollments.filter((item) => {
+    if (activeTab === "all") return true;
+    return item.status === activeTab;
+  });
+
+  const handleLessonPress = (courseId: string) => {
+    router.push(`/lesson/${courseId}`);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
 
+      {/* Tabs */}
       <View style={styles.tabs}>
         {(["all", "progress", "completed"] as const).map((tab) => (
           <TouchableOpacity
@@ -44,35 +55,48 @@ export default function MyCourses() {
             style={[styles.tab, activeTab === tab && styles.tabActive]}
             onPress={() => setActiveTab(tab)}
           >
-            <Text style={activeTab === tab ? styles.tabTextActive : styles.tabText}>
-              {tab === "all" ? "All" : tab === "progress" ? "In Progress" : "Completed"}
+            <Text
+              style={
+                activeTab === tab
+                  ? styles.tabTextActive
+                  : styles.tabText
+              }
+            >
+              {tab === "all"
+                ? "All"
+                : tab === "progress"
+                ? "In Progress"
+                : "Completed"}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
+      {/* Empty state */}
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>No courses found</Text>
         </View>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {filteredEnrollments.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            onPress={() => router.push(`/lesson/${(item as any).courseId}`)}
-          >
-            <CourseCard
-              enrollment={item}
-            />
-          </TouchableOpacity>
-        ))}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
+          {filteredEnrollments.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() =>
+                handleLessonPress((item as any).courseId)
+              }
+            >
+              <CourseCard enrollment={item} />
+            </TouchableOpacity>
+          ))}
         </ScrollView>
       )}
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: Spacing.lg, backgroundColor: Colors.background },

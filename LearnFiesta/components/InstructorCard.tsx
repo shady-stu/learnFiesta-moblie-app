@@ -7,15 +7,17 @@ import { Typography } from '@/constants/typography';
 import { Radius } from '@/constants/radius';
 
 export type Instructor = {
-  id?: string;
+  id: string;
+  courseId: string;
+
   title: string;
+  imageUrl: string;
+
   students: number;
   revenue: number;
   rating: number;
-  isActive?: boolean;
-  imageUrl?: string;
+  isActive: boolean;
 };
-
 const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }: Instructor) => {
   return (
     <View style={styles.card}>
@@ -51,8 +53,13 @@ const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }
           <View>
             <Text style={styles.cardStatLabel}>Rating</Text>
             <Text style={styles.cardStatValue}>
-              {rating > 0 ? `${rating} ★` : 'N/A'}
-            </Text>
+  {rating > 0 ? (
+    <>
+      <Text>{rating} </Text>
+      <Text style={{ color: '#F59E0B' }}>★</Text>
+    </>
+  ) : 'N/A'}
+</Text>
           </View>
         </View>
 

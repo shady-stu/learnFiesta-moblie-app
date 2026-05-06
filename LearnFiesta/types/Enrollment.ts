@@ -3,9 +3,9 @@ export type Enrollment = {
   courseId: string;
   title: string;
   author: string;
+  img: string;
+  totalLessons: number;
   progress: number;
   lessonsDone: number;
-  totalLessons: number;
-  img: string;
   status: "progress" | "completed";
 };
