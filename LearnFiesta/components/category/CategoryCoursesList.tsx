@@ -37,11 +37,13 @@ export default function CategoryCoursesList({
       }
       renderItem={({ item }) => (
         <CourseCard
+          key={item.id}
           title={item.title}
           instructor={item.instructorName}
           rating={item.rating}
           reviews={String(item.reviewsCount)}
           price={item.price}
+          oldPrice={item.oldPrice}
           image={item.imageUrl}
         />
       )}

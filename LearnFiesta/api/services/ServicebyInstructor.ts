@@ -1,4 +1,3 @@
-// api/services/ServicebyInstructor.ts
 import { db } from '@/api/services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import type { Instructor } from '@/components/InstructorCard';

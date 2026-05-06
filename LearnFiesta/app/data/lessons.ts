@@ -7,7 +7,7 @@ export const lessons = [
     description:
       'In this introductory lesson, we will explore the fundamental principles of user interface and user experience design, focusing on user-centric methodologies and the modern design workflow.',
     thumbnail: 'https://picsum.photos/id/20/800/450',
-    videoUrl: 'https://example.com/video.mp4', // استبدل برابط فيديو حقيقي
+    videoUrl: 'https://example.com/video.mp4', 
     notes: [
       {
         id: 'n1',
