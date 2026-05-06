@@ -4,14 +4,16 @@ import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';
 import { Spacing } from '@/constants/spacing';
-
+import Price from "@/components/ui/Price";
 type CourseCardProps = {
   title: string;
   instructor: string;
   rating: number;
   reviews: string;
-  price: string
+  price: number;
+  oldPrice?: number;
   image: string;
+  
 };
 
 export default function CourseCard({
@@ -20,17 +22,9 @@ export default function CourseCard({
   rating,
   reviews,
   price,
+  oldPrice,
   image,
 }: CourseCardProps) {
-
-  
-  const renderPrice = () => {
-  if(price === 'Free') {
-    return 'Free';
-  } else {
-    return `$${price}`;
-  }
-  };
 
   return (
     <View style={styles.card}>
@@ -53,9 +47,13 @@ export default function CourseCard({
 
         <View style={styles.footer}>
           
-          <ThemedText style={styles.price}>
-            {renderPrice()}
-          </ThemedText>
+          <View style={styles.footer}>
+  <Price  price={price} oldPrice={oldPrice} />
+
+  <Pressable style={styles.addtocart}>
+    <Ionicons name="cart" size={16} color={Colors.textSecondary} />
+  </Pressable>
+</View>
           <Pressable style={styles.addtocart}>
             <Ionicons name="cart" size={16} color={Colors.textSecondary} />
           </Pressable>
