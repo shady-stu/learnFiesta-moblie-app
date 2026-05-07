@@ -1,30 +1,24 @@
 export const uploadToCloudinary = async (imageUri: string) => {
-  const data = new FormData();
+  const formData = new FormData();
 
-  data.append("file", {
+  formData.append("file", {
     uri: imageUri,
+    name: "upload.jpg",
     type: "image/jpeg",
-    name: "photo.jpg",
   } as any);
 
-  data.append("upload_preset", "learnfiesta_upload");
-  data.append("cloud_name", "dbnklkk18");
+  formData.append("upload_preset", "learnfiesta_upload");
 
   const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dbnklkk18/image/upload",
+    "https://api.cloudinary.com/v1_1/dbnklkkl8/image/upload",
     {
       method: "POST",
-      body: data,
+      body: formData,
     }
   );
 
-  const result = await res.json();
+  const text = await res.text();
+  console.log("RAW RESPONSE:", text);
 
-  console.log("CLOUDINARY RESPONSE:", result);
-
-  if (!result.secure_url) {
-    throw new Error("Upload failed");
-  }
-
-  return result.secure_url;
+  return JSON.parse(text);
 };
