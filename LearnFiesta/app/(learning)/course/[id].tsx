@@ -24,29 +24,12 @@ export default function CourseDetailsScreen() {
     const renderTabContent = () => {
         if (!course) return null;
 
-        if (activeTab === "Curriculum") {
-            return <CurriculumTab courseId={course.id} />;
-        }
+        if (activeTab === "Curriculum") { return <CurriculumTab courseId={course.id} />; }
+        if (activeTab === "Resources") { return <ResourcesTab courseId={course.id}/>; }
+        if (activeTab === "What you'll learn") { return ( <LearnTab items={course.whatYouWillLearn || []} /> ); }
+        if (activeTab === "Description") { return ( <DescriptionTab description={course.description || ""}/> ); }
 
-        if (activeTab === "Resources") {
-            return <ResourcesTab courseId={course.id}/>;
-        }
 
-        if (activeTab === "What you'll learn") {
-            return (
-                <LearnTab items={course.whatYouWillLearn || []} />
-            );
-        }
-
-        if (activeTab === "Description") {
-            return (
-                <DescriptionTab
-                    description={course.description || ""}
-                />
-            );
-        }
-
-        return null;
     };
 
     if (isLoading) {
