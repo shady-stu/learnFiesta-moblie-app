@@ -1,3 +1,4 @@
+import "@/api/services/firebase";
 import { Stack, Redirect, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
