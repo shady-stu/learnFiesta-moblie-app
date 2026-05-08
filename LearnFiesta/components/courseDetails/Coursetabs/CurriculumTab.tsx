@@ -1,23 +1,63 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import CourseContentHeader from "@/components/courseDetails/CourseContentHeader";
-import SectionCard from "@/components/courseDetails/ SectionCard";
+import SectionCard from "@/components/courseDetails/SectionCard";
 import LectureRow from "@/components/courseDetails/ LectureRow";
+import { useLessons } from "@/libr/useLessons";
+type Props = {
+    courseId: string;
+};
 
-export default function CurriculumTab() {
+export default function CurriculumTab({ courseId }: Props) {
+    const { data: lessons, isLoading } = useLessons(courseId);
+    if (isLoading) {
+        return <Text>Loading lessons...</Text>;
+    }
+
+    if (!lessons || lessons.length === 0) {
+        return <Text>No lessons available</Text>;
+    }
+
+    // group lessons by section
+    const groupedLessons = lessons.reduce((acc, lesson) => {
+        if (!acc[lesson.section]) {
+            acc[lesson.section] = [];
+        }
+
+        acc[lesson.section].push(lesson);
+
+        return acc;
+    }, {} as Record<string, typeof lessons>);
+
+    const sections = Object.entries(groupedLessons);
+
     return (
         <View>
-            <CourseContentHeader sectionCount={12} lectureCount={142} />
+            <CourseContentHeader
+                sectionCount={sections.length}
+                lectureCount={lessons.length}
+            />
 
-            <SectionCard number={1} title="Introduction to UI/UX Design">
-                <LectureRow title="What is UI/UX?" duration="05:24" type="video" isLocked={false} />
-                <LectureRow title="Design Thinking Overview" duration="08:10" type="video" isLocked />
-                <LectureRow title="Tools of the Trade" type="article" isLocked />
-            </SectionCard>
-
-            <SectionCard number={2} title="Wireframing & Prototyping" defaultExpanded={false}>
-                <LectureRow title="Low-fidelity Wireframes" duration="10:00" type="quiz" isLocked />
-            </SectionCard>
+            {sections.map(([sectionName, sectionLessons], index) => (
+                <SectionCard
+                    key={sectionName}
+                    number={index + 1}
+                    title={sectionName}
+                    defaultExpanded={index === 0}
+                >
+                    {sectionLessons
+                        .sort((a, b) => a.order - b.order)
+                        .map((lesson) => (
+                            <LectureRow
+                                key={lesson.id}
+                                title={lesson.title}
+                                duration={lesson.duration || ""}
+                                type={lesson.type}
+                                isLocked={lesson.isLocked}
+                            />
+                        ))}
+                </SectionCard>
+            ))}
         </View>
     );
 }

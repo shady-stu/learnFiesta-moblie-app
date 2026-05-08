@@ -2,14 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const items = [
-    "Understand UI/UX fundamentals",
-    "Create wireframes and prototypes",
-    "Use design tools effectively : Figma, Adobe",
-    "Apply design thinking process",
-];
+type Props = {
+    items: string[];
+};
 
-export default function LearnTab() {
+export default function LearnTab({ items }: Props) {
     return (
         <View style={styles.container}>
             {items.map((item, index) => (
@@ -21,6 +18,7 @@ export default function LearnTab() {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
