@@ -6,6 +6,8 @@ import {Course} from "@/types/course";
 import {Radius} from "@/constants/radius";
 import {Colors} from "@/constants/colors";
 import { Ionicons } from '@expo/vector-icons';
+import Badge from "@/components/ui/Badge";
+import {router, useRouter} from "expo-router";
 type Props = {
     course: Course;
     isBookmarked: boolean;
@@ -13,22 +15,21 @@ type Props = {
 };
 
 export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Props) {
+    const router = useRouter();
     return (
 
-        <Pressable
 
-            style={({ pressed }) => [
-                styles.card,
-                pressed && styles.cardPressed
+        <Pressable
+            onPress={() => router.push({pathname: "/course/[id]", params: { id: course.id },})}
+            style={({ pressed }) =>
+                [styles.card, pressed && styles.cardPressed
             ]}
         >
             <Image source={{ uri: course.imageUrl }} style={styles.image} />
 
-
             <View style={styles.content}>
-
                 <View style={styles.topRow}>
-                    {course.badge && <Text style={styles.badge}>{course.badge.toUpperCase()}</Text>}
+                    {course.badge && <Badge label={course.badge} />}
 
                     <TouchableOpacity onPress={onToggleBookmark}>
                         <Ionicons

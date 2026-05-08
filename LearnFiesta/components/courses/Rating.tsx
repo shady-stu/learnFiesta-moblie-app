@@ -8,11 +8,25 @@ type RatingProps = {
 };
 
 export default function Rating({ rating, reviews }: RatingProps) {
+
+    const formatReviews = () => {
+        const num = Number(reviews);
+
+        if (num === 1) return "1 Student";
+
+        if (num >= 1000) {
+            const formatted = (num / 1000).toFixed(num >= 10000 ? 0 : 1);
+            return `${formatted}K Students`;
+        }
+
+        return `${num} Students`;
+    };
+
     return (
         <View style={styles.row}>
             <Text style={styles.rating}>{rating}</Text>
             <Ionicons name="star" size={16} color="#FFD700" />
-            <Text style={styles.reviews}>{reviews}</Text>
+            <Text style={styles.reviews}>{formatReviews()}</Text>
         </View>
     );
 }

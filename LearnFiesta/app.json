@@ -41,12 +41,7 @@
         }
       ],
       "expo-secure-store",
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow LearnFiesta to access your camera to take profile pictures."
-        }
-      ]
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

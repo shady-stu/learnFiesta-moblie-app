@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
 import CourseCard from "@/components/CourseCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
@@ -10,7 +18,9 @@ import LoadingView from "@/components/ui/LoadingView";
 import { useCourse } from "@/hooks/use-course";
 
 export default function MyCourses() {
-  const [activeTab, setActiveTab] = useState<"all" | "progress" | "completed">("all");
+  const router = useRouter();
+  const [activeTab, setActiveTab] =
+    useState<"all" | "progress" | "completed">("all");
 
   const { data: enrollments = [], isLoading, isError } = useCourse();
 
@@ -29,10 +39,15 @@ export default function MyCourses() {
     return item.status === activeTab;
   });
 
+  const handleLessonPress = (courseId: string) => {
+    router.push(`/lesson/${courseId}`);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
 
+      {/* Tabs */}
       <View style={styles.tabs}>
         {(["all", "progress", "completed"] as const).map((tab) => (
           <TouchableOpacity
@@ -40,21 +55,42 @@ export default function MyCourses() {
             style={[styles.tab, activeTab === tab && styles.tabActive]}
             onPress={() => setActiveTab(tab)}
           >
-            <Text style={activeTab === tab ? styles.tabTextActive : styles.tabText}>
-              {tab === "all" ? "All" : tab === "progress" ? "In Progress" : "Completed"}
+            <Text
+              style={
+                activeTab === tab
+                  ? styles.tabTextActive
+                  : styles.tabText
+              }
+            >
+              {tab === "all"
+                ? "All"
+                : tab === "progress"
+                ? "In Progress"
+                : "Completed"}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
+      {/* Empty state */}
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>No courses found</Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
           {filteredEnrollments.map((item) => (
-            <CourseCard key={item.id} enrollment={item} />
+            <TouchableOpacity
+              key={item.id}
+              onPress={() =>
+                handleLessonPress((item as any).courseId)
+              }
+            >
+              <CourseCard enrollment={item} />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       )}
@@ -63,53 +99,14 @@ export default function MyCourses() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Spacing.lg,
-    backgroundColor: Colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  header: {
-    fontSize: Typography.title,
-    fontWeight: "bold",
-    marginBottom: Spacing.md,
-    color: Colors.textPrimary,
-  },
-  tabs: {
-    flexDirection: "row",
-    gap: Spacing.sm,
-    marginBottom: Spacing.lg,
-  },
-  tab: {
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    backgroundColor: Colors.muted,
-    borderRadius: Radius.full,
-  },
-  tabActive: {
-    backgroundColor: Colors.primary,
-  },
-  tabText: {
-    color: Colors.textSecondary,
-    fontSize: Typography.caption,
-  },
-  tabTextActive: {
-    color: Colors.white,
-    fontSize: Typography.caption,
-    fontWeight: "600",
-  },
-  empty: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50,
-  },
-  emptyText: {
-    color: Colors.textSecondary,
-    fontSize: Typography.subheading,
-  },
+  container: { flex: 1, padding: Spacing.lg, backgroundColor: Colors.background },
+  centerContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  header: { fontSize: Typography.title, fontWeight: "bold", marginBottom: Spacing.md, color: Colors.textPrimary },
+  tabs: { flexDirection: "row", gap: Spacing.sm, marginBottom: Spacing.lg },
+  tab: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, backgroundColor: Colors.muted, borderRadius: Radius.full },
+  tabActive: { backgroundColor: Colors.primary },
+  tabText: { color: Colors.textSecondary, fontSize: Typography.caption },
+  tabTextActive: { color: Colors.white, fontSize: Typography.caption, fontWeight: "600" },
+  empty: { flex: 1, justifyContent: "center", alignItems: "center", marginTop: 50 },
+  emptyText: { color: Colors.textSecondary, fontSize: Typography.subheading },
 });
