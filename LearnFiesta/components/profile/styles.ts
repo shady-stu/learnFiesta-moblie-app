@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 
 export const profileStyles = StyleSheet.create({
