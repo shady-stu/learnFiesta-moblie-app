@@ -1,6 +1,6 @@
-import {collection, getDocs, query, where,} from "firebase/firestore";
 import { db } from "@/api/services/firebase";
 import { Resource } from "@/types/lesson";
+import {collection, getDocs, query, where,} from "firebase/firestore";
 
 export const fetchResources = async (courseId: string): Promise<Resource[]> => {
 
@@ -15,6 +15,6 @@ export const fetchResources = async (courseId: string): Promise<Resource[]> => {
              title: data.title,
              type: data.type,
              url: data.url,
-        };
-    });
-};
+         };
+      });
+ };
