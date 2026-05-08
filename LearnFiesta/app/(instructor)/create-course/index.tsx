@@ -10,6 +10,7 @@ import TextAreaField from "@/components/inputs/TextAreaField";
 import ImageUploader from "@/components/upload/ImageUploader";
 import { useCreateCourse } from "@/hooks/useCreateCourse";
 import { useCategories } from '@/hooks/useCategories';
+import { useRouter } from "expo-router";
 
 // 1. Define your Zod Validation Schema
 const courseSchema = z.object({
@@ -31,6 +32,7 @@ type FormData = z.infer<typeof courseSchema>;
 export default function CreateCourseScreen() {
   const { mutateAsync, isPending } = useCreateCourse();
 const { data: categories = [], isLoading } = useCategories();
+const router = useRouter();
 
   const {
     control,
@@ -51,16 +53,24 @@ const { data: categories = [], isLoading } = useCategories();
 const thumbnail = watch("thumbnail");
   const onSubmit = async (data: FormData) => {
     try {
-      await mutateAsync({
+  
+      const courseId = await mutateAsync({
         ...data,
         price: Number(data.price),
       });
+      
       alert("Course created successfully");
+
+     
+      router.push({
+        pathname: "/(instructor)/create-course/curriculum/[id]",
+        params: { id: String(courseId) }
+      });
+
     } catch (e) {
       alert("Failed to create course");
     }
   };
-
   return (
     <ScrollView
       style={styles.container}

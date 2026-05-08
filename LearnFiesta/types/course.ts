@@ -13,8 +13,12 @@ export type Course = {
 };
 export interface CreateCourseDTO {
   title: string;
-  category: string;
   description: string;
+  category: string;
+  imageUrl: string;
   price: number;
-  thumbnail?: string;
+  categoryName?: string;
+  instructorId?: string;
+  instructorName?: string;
+  whatYouWillLearn?: string[];
 }
