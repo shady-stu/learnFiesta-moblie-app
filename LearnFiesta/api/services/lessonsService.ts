@@ -11,6 +11,7 @@ export const fetchLessons = async (courseId: string): Promise<Lesson[]> => {
     const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) => {
         const data = doc.data();
+
         return {
             id: doc.id,
             courseId: data.courseId,
