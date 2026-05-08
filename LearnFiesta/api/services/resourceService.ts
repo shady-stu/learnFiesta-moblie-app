@@ -1,6 +1,7 @@
-import { db } from "@/api/services/firebase";
-import { Resource } from "@/types/lesson";
-import {collection, getDocs, query, where,} from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {Resource} from "@/types/lesson";
+import {db} from "@/api/services/firebase";
+
 
 export const fetchResources = async (courseId: string): Promise<Resource[]> => {
 
