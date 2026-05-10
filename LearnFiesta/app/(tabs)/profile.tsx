@@ -10,16 +10,20 @@ import AvatarWithCamera from '@/components/profile/AvatarWithCamera';
 import EditProfileModal from '@/components/profile/EditProfileModal';
 import StatsCard from '@/components/profile/StatsCard';
 import SettingsList from '@/components/profile/SettingsList';
+import InstructorAccessCard from '@/components/profile/InstructorAccessCard';
+import { useCurrentUserRole } from '@/hooks/useCurrentUserRole';
 
 type UserProfile = {
     name: string;
     email: string;
+    role?: string;
     coursesCompleted: number;
     hoursLearned: number;
     photoURL: string;
 };
 
 export default function ProfileScreen() {
+    const { isInstructor } = useCurrentUserRole();
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
@@ -51,7 +55,7 @@ export default function ProfileScreen() {
             setProfile(prev => prev ? { ...prev, name: newName } : null);
             setModalVisible(false);
             Alert.alert('Success', 'Name updated successfully');
-        } catch (error) {
+        } catch {
             Alert.alert('Error', 'Failed to update name');
         } finally {
             setSaving(false);
@@ -74,6 +78,7 @@ export default function ProfileScreen() {
 
     if (loading) return <SafeAreaView style={styles.container}><Text style={styles.loading}>Loading...</Text></SafeAreaView>;
     if (!profile) return <SafeAreaView style={styles.container}><Text style={styles.error}>Error loading profile</Text></SafeAreaView>;
+    const canAccessInstructor = isInstructor || profile.role === 'instructor';
 
     return (
         <SafeAreaView style={styles.container}>
@@ -99,6 +104,12 @@ export default function ProfileScreen() {
                     coursesCompleted={profile.coursesCompleted}
                     hoursLearned={profile.hoursLearned}
                 />
+
+                {canAccessInstructor && (
+                    <InstructorAccessCard
+                        onPress={() => router.push('/(instructor)/InstructorCourses')}
+                    />
+                )}
 
                 <SettingsList />
 

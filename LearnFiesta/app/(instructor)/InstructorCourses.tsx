@@ -55,12 +55,30 @@ const InstructorCourses = () => {
 
         <Text style={styles.sectionTitle}>Active Courses</Text>
         {activeCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() =>
+              router.push({
+                pathname: "/(instructor)/create-course" as any,
+                params: { courseId: course.courseId },
+              })
+            }
+          />
         ))}
 
         <Text style={styles.sectionTitle}>Other Courses</Text>
         {inactiveCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() =>
+              router.push({
+                pathname: "/(instructor)/create-course" as any,
+                params: { courseId: course.courseId },
+              })
+            }
+          />
         ))}
 
         <PerformanceCard

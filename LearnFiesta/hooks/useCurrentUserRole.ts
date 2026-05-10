@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { subscribeToUserInstructors } from "@/api/services/ServicebyInstructor";
-import type { Instructor } from "@/components/InstructorCard";
+import {
+  subscribeToCurrentUserRole,
+  type UserRole,
+} from "@/api/services/authService/roleService";
 
-export const useInstructor = () => {
-  const [data, setData] = useState<Instructor[]>([]);
+export function useCurrentUserRole() {
+  const [role, setRole] = useState<UserRole | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
 
-    const unsubscribe = subscribeToUserInstructors(
-      (courses) => {
-        setData(courses);
+    const unsubscribe = subscribeToCurrentUserRole(
+      (nextRole) => {
+        setRole(nextRole);
         setError(null);
         setIsLoading(false);
       },
@@ -26,9 +28,10 @@ export const useInstructor = () => {
   }, []);
 
   return {
-    data,
+    role,
+    isInstructor: role === "instructor",
     isLoading,
     error,
     isError: Boolean(error),
   };
-};
+}

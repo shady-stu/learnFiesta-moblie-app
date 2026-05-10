@@ -1,143 +1,164 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
-import { collection, query, orderBy, onSnapshot, addDoc } from 'firebase/firestore';
-import { db } from '@/api/services/firebase';
+import { Alert, ScrollView, View } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import AddSectionButton from "@/components/createCourse/curriculum/AddSectionButton";
+import CurriculumEmptyState from "@/components/createCourse/curriculum/CurriculumEmptyState";
+import CurriculumFooter from "@/components/createCourse/curriculum/CurriculumFooter";
+import CurriculumHeader from "@/components/createCourse/curriculum/CurriculumHeader";
+import CurriculumSectionCard from "@/components/createCourse/curriculum/CurriculumSectionCard";
+import CurriculumStateView from "@/components/createCourse/curriculum/CurriculumStateView";
+import LessonFormModal from "@/components/createCourse/curriculum/LessonFormModal";
+import SectionFormModal from "@/components/createCourse/curriculum/SectionFormModal";
+import { curriculumStyles as styles } from "@/components/createCourse/curriculum/styles";
+import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculumService";
+import { useCourseCurriculum } from "@/hooks/useCourseCurriculum";
 
-
-
-interface Lesson {
-  title: string;
-  type: string;
-  order?: number;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  order: number;
-  lessons: Lesson[];
-}
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
 
 export default function CurriculumBuilderScreen() {
-  const { id } = useLocalSearchParams();
-  
-  
-  const courseId = id as string; 
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const courseId = Array.isArray(id) ? id[0] : id;
+  const curriculum = useCourseCurriculum(courseId);
 
- 
-  const [sections, setSections] = useState<Section[]>([]); 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!courseId) return;
-
-  
-    const sectionsRef = collection(db, 'courses', courseId, 'sections');
-    const q = query(sectionsRef, orderBy('order', 'asc'));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-     
-      const sectionsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Section[]; 
-      
-      setSections(sectionsData);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [courseId]);
-
-  const handleAddSection = async () => {
+  const handleSaveSection = async () => {
     try {
-      const sectionsRef = collection(db, 'courses', courseId, 'sections');
-      await addDoc(sectionsRef, {
-        title: `Section ${sections.length + 1}`,
-        order: sections.length,
-        lessons: [] 
-      });
+      await curriculum.saveSection();
     } catch (error) {
-      console.error("Error adding section: ", error);
+      Alert.alert("Save failed", getErrorMessage(error, "Unable to save section."));
     }
   };
 
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" color="#5624D0" />;
+  const handleDeleteSection = (section: CurriculumSection) => {
+    Alert.alert(
+      "Delete section?",
+      "This removes the section, its lessons, and the linked resources.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await curriculum.removeSection(section.id);
+            } catch (error) {
+              Alert.alert("Delete failed", getErrorMessage(error, "Unable to delete section."));
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleSaveLesson = async () => {
+    try {
+      await curriculum.saveLesson();
+    } catch (error) {
+      Alert.alert("Save failed", getErrorMessage(error, "Unable to save lesson."));
+    }
+  };
+
+  const handleDeleteLesson = (sectionId: string, lesson: CurriculumLesson) => {
+    Alert.alert("Delete lesson?", "This also removes its linked resources.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await curriculum.removeLesson(sectionId, lesson.id);
+          } catch (error) {
+            Alert.alert("Delete failed", getErrorMessage(error, "Unable to delete lesson."));
+          }
+        },
+      },
+    ]);
+  };
+
+  const handlePublish = async () => {
+    try {
+      await curriculum.publishCourse();
+      Alert.alert("Course published", "The course is now active and ready for students.", [
+        {
+          text: "View courses",
+          onPress: () => router.replace("/(instructor)/InstructorCourses"),
+        },
+        { text: "Stay here", style: "cancel" },
+      ]);
+    } catch (error) {
+      Alert.alert("Publish failed", getErrorMessage(error, "Unable to publish course."));
+    }
+  };
+
+  if (curriculum.loading || curriculum.error) {
+    return <CurriculumStateView error={curriculum.error} />;
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Stepper Header */}
-      <View style={styles.stepperContainer}>
-        <View style={styles.stepCompleted}>
-          <MaterialIcons name="check" size={16} color="#fff" />
-        </View>
-        <Text style={styles.stepTextCompleted}>1. Foundations</Text>
-        <View style={styles.line} />
-        <View style={styles.stepActive}>
-          <Text style={styles.stepTextActive}>2</Text>
-        </View>
-        <Text style={styles.stepTitleActive}>Curriculum</Text>
-      </View>
+    <View style={styles.screen}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <CurriculumHeader
+          sectionCount={curriculum.sections.length}
+          totalLessons={curriculum.totalLessons}
+          totalMinutes={curriculum.totalMinutes}
+        />
 
-      {/* Sections List */}
-      {sections.map((section, index) => (
-        <View key={section.id} style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <MaterialIcons name="drag-indicator" size={24} color="#7a7486" />
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity>
-              <MaterialIcons name="delete-outline" size={24} color="#ba1a1a" />
-            </TouchableOpacity>
-          </View>
+        {curriculum.sections.length === 0 ? (
+          <CurriculumEmptyState onAddSection={curriculum.openAddSection} />
+        ) : (
+          curriculum.sections.map((section, index) => (
+            <CurriculumSectionCard
+              key={section.id}
+              section={section}
+              index={index}
+              disabled={curriculum.saving}
+              onAddLesson={curriculum.openLessonEditor}
+              onEditLesson={curriculum.openLessonEditor}
+              onDeleteLesson={handleDeleteLesson}
+              onEditSection={curriculum.openEditSection}
+              onDeleteSection={handleDeleteSection}
+            />
+          ))
+        )}
 
-          {/* Lessons */}
-          {section.lessons?.map((lesson, i) => (
-            <View key={i} style={styles.lessonItem}>
-              <MaterialIcons name="drag-indicator" size={20} color="#7a7486" />
-              <MaterialIcons name={lesson.type === 'video' ? 'play-circle' : 'article'} size={24} color="#5624d0" />
-              <Text style={styles.lessonTitle}>{lesson.title}</Text>
-            </View>
-          ))}
+        {curriculum.sections.length > 0 && (
+          <AddSectionButton
+            disabled={curriculum.saving}
+            onPress={curriculum.openAddSection}
+          />
+        )}
+      </ScrollView>
 
-          {/* Add Lesson Button */}
-          <TouchableOpacity style={styles.addLessonBtn}>
-            <MaterialIcons name="add" size={20} color="#5624D0" />
-            <Text style={styles.addLessonText}>Add Lesson</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+      <CurriculumFooter
+        saving={curriculum.saving}
+        disabled={curriculum.saving || curriculum.totalLessons === 0}
+        onPublish={handlePublish}
+      />
 
-      {/* Add Section Button */}
-      <TouchableOpacity style={styles.addSectionBtn} onPress={handleAddSection}>
-        <View style={styles.addSectionIconBg}>
-          <MaterialIcons name="add" size={24} color="#5a5f63" />
-        </View>
-        <Text style={styles.addSectionText}>Add New Section</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      <SectionFormModal
+        visible={curriculum.sectionModalVisible}
+        saving={curriculum.saving}
+        title={curriculum.sectionTitle}
+        editingSection={curriculum.editingSection}
+        onChangeTitle={curriculum.setSectionTitle}
+        onClose={curriculum.closeSectionModal}
+        onSave={handleSaveSection}
+      />
+
+      <LessonFormModal
+        editor={curriculum.lessonEditor}
+        form={curriculum.lessonForm}
+        saving={curriculum.saving}
+        onClose={curriculum.closeLessonEditor}
+        onSave={handleSaveLesson}
+        onAddResource={curriculum.addResourceRow}
+        onRemoveResource={curriculum.removeResourceRow}
+        onChangeLessonField={curriculum.setLessonField}
+        onChangeResourceField={curriculum.setResourceField}
+      />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FDF7FF', padding: 20 },
-  stepperContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 30 },
-  stepCompleted: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#5624D0', alignItems: 'center', justifyContent: 'center' },
-  stepTextCompleted: { marginLeft: 8, fontSize: 14, color: '#494455' },
-  line: { height: 2, width: 40, backgroundColor: '#5624D0', marginHorizontal: 16 },
-  stepActive: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#5624D0', alignItems: 'center', justifyContent: 'center' },
-  stepTextActive: { color: '#fff', fontWeight: 'bold' },
-  stepTitleActive: { marginLeft: 8, fontSize: 16, color: '#5624D0', fontWeight: 'bold' },
-  sectionCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#e6e0ee', borderLeftWidth: 4, borderLeftColor: '#5624D0' },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginLeft: 8, color: '#1D1A24' },
-  lessonItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f8f1ff', padding: 12, borderRadius: 8, marginBottom: 8, borderWidth: 1, borderColor: '#e6e0ee' },
-  lessonTitle: { marginLeft: 12, fontSize: 14, color: '#1D1A24' },
-  addLessonBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 12, borderWidth: 1, borderColor: '#5624D0', borderStyle: 'dashed', borderRadius: 8, marginTop: 8 },
-  addLessonText: { color: '#5624D0', fontWeight: 'bold', marginLeft: 8 },
-  addSectionBtn: { height: 80, borderWidth: 2, borderColor: '#cac3d8', borderStyle: 'dashed', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 40 },
-  addSectionIconBg: { backgroundColor: '#e6e0ee', width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
-  addSectionText: { fontSize: 16, fontWeight: 'bold', color: '#494455' }
-});

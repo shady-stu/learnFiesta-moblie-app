@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-export default function LessonInfo({ module, duration, title, description, lessonId, prevLessonId, nextLessonId }) {
+export default function LessonInfo({ module, duration, title, description, courseId, prevLessonId, nextLessonId }) {
   return (
     <View style={styles.container}>
       <View style={styles.badgeRow}>
@@ -20,7 +20,12 @@ export default function LessonInfo({ module, duration, title, description, lesso
         {prevLessonId ? (
           <TouchableOpacity
             style={[styles.navButton, styles.prevButton]}
-            onPress={() => router.push(`/lesson/${prevLessonId}`)}
+            onPress={() =>
+              router.push({
+                pathname: "/lesson/[id]",
+                params: { id: prevLessonId, courseId },
+              })
+            }
           >
             <Ionicons name="chevron-back" size={20} color="#5523d1" />
             <Text style={styles.prevButtonText}>Previous</Text>
@@ -32,7 +37,12 @@ export default function LessonInfo({ module, duration, title, description, lesso
         {nextLessonId ? (
           <TouchableOpacity
             style={[styles.navButton, styles.nextButton]}
-            onPress={() => router.push(`/lesson/${nextLessonId}`)}
+            onPress={() =>
+              router.push({
+                pathname: "/lesson/[id]",
+                params: { id: nextLessonId, courseId },
+              })
+            }
           >
             <Text style={styles.nextButtonText}>Next Lesson</Text>
             <Ionicons name="chevron-forward" size={20} color="white" />

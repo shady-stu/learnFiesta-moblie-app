@@ -15,7 +15,8 @@ export interface CreateCourseDTO {
   title: string;
   description: string;
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
+  thumbnail?: string;
   price: number;
   categoryName?: string;
   instructorId?: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import {View, TextInput, StyleSheet, TouchableOpacity} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {Spacing} from "@/constants/spacing";
+
 type SearchInputProps = {
     value: string;
     onChange: (text: string) => void;

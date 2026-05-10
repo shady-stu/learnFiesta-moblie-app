@@ -77,7 +77,6 @@ const tabsConfig = [
       <Ionicons name={focused ? 'person-circle' : 'person-circle-outline'} size={24} color={color} />
     ),
   },
-  
 ];
 
 export default function TabsLayout() {
