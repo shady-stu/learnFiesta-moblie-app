@@ -4,8 +4,112 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="details done5">
+    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2">
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/cloudinary.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/curriculum/mutations.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/curriculum/sections.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/curriculum/shared.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/curriculum/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/curriculumService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/lessonService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/create-course/curriculum/[id].tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/create-course/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/(learning)/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courses/FirebaseCoursePreviewCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/AddSectionButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/CurriculumEmptyState.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/CurriculumFooter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/CurriculumHeader.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/CurriculumSectionCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/CurriculumStateView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/LessonBasicFieldsSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/LessonFormModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/LessonQaSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/LessonResourcesSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/SectionFormModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/options.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/createCourse/curriculum/styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/AvatarWithCamera.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/EditProfileModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/InstructorAccessCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/SettingsList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/StatsCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/profile/styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/domain/curriculum/schemas.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/domain/curriculum/validators.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/lessonEditor/formState.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/lessonEditor/mutations.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/useCurriculumPublishing.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/useCurriculumSections.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/useLessonEditor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/curriculum/useSectionActions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCourseCurriculum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCourseFoundation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCurrentUserRole.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useLesson.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useSaveCourseFoundation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/styles/auth/login.styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/styles/auth/register.styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/types/curriculum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/utils/registerValidation.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/ServicebyInstructor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/ServicebyInstructor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/StorageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/StorageService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/authService/registerService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/authService/registerService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/authService/roleService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/authService/roleService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/courseService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/courseService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/firebase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/firebaseStorage.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/home/fetchCategories.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/home/fetchCategories.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/home/fetchRecommendedCourses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/home/fetchRecommendedCourses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(auth)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(auth)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(auth)/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(auth)/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(auth)/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(auth)/register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/InstructorCourses.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/InstructorCourses.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/create-course.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(learning)/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(learning)/lesson/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(learning)/lesson/[id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/MyCourses.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/MyCourses.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/profile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/search.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/cart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/categories/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/categories/[id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/context/CartContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/context/CartContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/data/lessons.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/data/lessons.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/InstructorCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/InstructorCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/cart/CartItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/cart/CartItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/category/CategoryCoursesList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/category/CategoryCoursesList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/ EnrollBottomBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/ EnrollBottomBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/CourseTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/CourseTabs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/InstructorCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/InstructorCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courses/CourseCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courses/CourseCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/home/CourseCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/home/CourseCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/inputs/TextInputField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/inputs/TextInputField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/lesson/LessonInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/lesson/LessonInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/lesson/TabsSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/lesson/TabsSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/ui/AppHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/ui/AppHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/ui/SearchInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/ui/SearchInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/ui/SectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/ui/SectionHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/UploadImage/useImagePicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/UploadImage/useImagePicker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/UploadImage/useUploadTask.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/UploadImage/useUploadTask.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/useCart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCart.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/useCategoryCoursesScreen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCategoryCoursesScreen.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/useCoursesByCategory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useCoursesByCategory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/useInstructor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useInstructor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/hooks/useRecommendedCourses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/hooks/useRecommendedCourses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/libr/useCourses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/libr/useCourses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/types/course.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/types/course.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/utils/validators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/utils/validators.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,14 +118,6 @@
   </component>
   <component name="ComposerSettings">
     <execution />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="TypeScript JSX File" />
-        <option value="TypeScript File" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
@@ -49,9 +145,6 @@
   }
 }</component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\Users\user\.config\herd-lite\bin\php.exe" />
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -63,23 +156,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;QusaiNew&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/wamp64/www&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\user\\PhpstormProjects\\group-8\\LearnFiesta\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging QusaiNew",
+    "last_opened_file_path": "C:/wamp64/www",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\user\\PhpstormProjects\\group-8\\LearnFiesta\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\PhpstormProjects\group-8\LearnFiesta\app\(instructor)" />
@@ -128,17 +220,6 @@
       <workItem from="1778068999933" duration="7728000" />
       <workItem from="1778078585545" duration="48000" />
       <workItem from="1778078645901" duration="767000" />
-      <workItem from="1778098556353" duration="38000" />
-      <workItem from="1778157881807" duration="2259000" />
-      <workItem from="1778163439059" duration="1746000" />
-      <workItem from="1778165285265" duration="8938000" />
-      <workItem from="1778197460263" duration="461000" />
-      <workItem from="1778247319793" duration="6179000" />
-      <workItem from="1778279544932" duration="24000" />
-      <workItem from="1778281267615" duration="727000" />
-      <workItem from="1778282339118" duration="3209000" />
-      <workItem from="1778331238049" duration="12011000" />
-      <workItem from="1778530324414" duration="985000" />
     </task>
     <task id="LOCAL؜-٠٠٠٠١" summary="loaddone">
       <option name="closed" value="true" />
@@ -148,135 +229,15 @@
       <option name="project" value="LOCAL؜" />
       <updated>1776274350502</updated>
     </task>
-    <task id="LOCAL؜-٠٠٠٠٢" summary="details done">
-      <option name="closed" value="true" />
-      <created>1778257958241</created>
-      <option name="number" value="٠٠٠٠٢" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٢" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778257958241</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٣" summary="details done1">
-      <option name="closed" value="true" />
-      <created>1778282550258</created>
-      <option name="number" value="٠٠٠٠٣" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٣" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778282550259</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٤" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283477094</created>
-      <option name="number" value="٠٠٠٠٤" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٤" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283477094</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٥" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283702785</created>
-      <option name="number" value="٠٠٠٠٥" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٥" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283702785</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٦" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283934593</created>
-      <option name="number" value="٠٠٠٠٦" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٦" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283934593</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٧" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284034974</created>
-      <option name="number" value="٠٠٠٠٧" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٧" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284034974</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٨" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284103504</created>
-      <option name="number" value="٠٠٠٠٨" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٨" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284103504</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٩" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284194117</created>
-      <option name="number" value="٠٠٠٠٩" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٩" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284194117</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٠" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284448278</created>
-      <option name="number" value="٠٠٠١٠" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٠" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284448278</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١١" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284777754</created>
-      <option name="number" value="٠٠٠١١" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١١" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284777754</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٢" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778285152545</created>
-      <option name="number" value="٠٠٠١٢" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٢" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778285152545</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٣" summary="details done4">
-      <option name="closed" value="true" />
-      <created>1778530576152</created>
-      <option name="number" value="٠٠٠١٣" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٣" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778530576152</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٤" summary="details done5">
-      <option name="closed" value="true" />
-      <created>1778531034617</created>
-      <option name="number" value="٠٠٠١٤" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٤" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778531034617</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="loaddone" />
     <MESSAGE value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
-    <MESSAGE value="details done" />
-    <MESSAGE value="details done1" />
-    <MESSAGE value="details done2" />
-    <MESSAGE value="details done4" />
-    <MESSAGE value="details done5" />
-    <option name="LAST_COMMIT_MESSAGE" value="details done5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
   </component>
 </project>
