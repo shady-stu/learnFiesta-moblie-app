@@ -1,5 +1,6 @@
 
-import { View, ScrollView, Button, Text, StyleSheet } from "react-native";
+import { useEffect } from "react";
+import { View, ScrollView, Button, Text, StyleSheet, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -8,8 +9,11 @@ import TextInputField from "@/components/inputs/TextInputField";
 import SelectField from "@/components/inputs/SelectField";
 import TextAreaField from "@/components/inputs/TextAreaField";
 import ImageUploader from "@/components/upload/ImageUploader";
-import { useCreateCourse } from "@/hooks/useCreateCourse";
+import LoadingView from "@/components/ui/LoadingView";
+import { useCourseFoundation } from "@/hooks/useCourseFoundation";
+import { useSaveCourseFoundation } from "@/hooks/useSaveCourseFoundation";
 import { useCategories } from '@/hooks/useCategories';
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 // 1. Define your Zod Validation Schema
 const courseSchema = z.object({
@@ -29,13 +33,23 @@ const courseSchema = z.object({
 type FormData = z.infer<typeof courseSchema>;
 
 export default function CreateCourseScreen() {
-  const { mutateAsync, isPending } = useCreateCourse();
-const { data: categories = [], isLoading } = useCategories();
+  const router = useRouter();
+  const { courseId: courseIdParam } = useLocalSearchParams<{ courseId?: string }>();
+  const courseId = Array.isArray(courseIdParam) ? courseIdParam[0] : courseIdParam;
+  const isEditing = Boolean(courseId);
+  const { mutateAsync, isPending } = useSaveCourseFoundation();
+  const { data: categories = [], isLoading } = useCategories();
+  const {
+    data: editingCourse,
+    isLoading: isLoadingCourse,
+    isError: isCourseLoadError,
+  } = useCourseFoundation(courseId);
 
   const {
     control,
     handleSubmit,
     setValue,
+    reset,
      watch,
     formState: { errors },
   } = useForm<FormData>({
@@ -48,18 +62,61 @@ const { data: categories = [], isLoading } = useCategories();
       price: "",
     },
   });
+
+  useEffect(() => {
+    if (!editingCourse) return;
+
+    reset({
+      title: editingCourse.title,
+      category: editingCourse.categoryId,
+      description: editingCourse.description,
+      price: String(editingCourse.price),
+      thumbnail: editingCourse.imageUrl,
+    });
+  }, [editingCourse, reset]);
+
 const thumbnail = watch("thumbnail");
   const onSubmit = async (data: FormData) => {
     try {
-      await mutateAsync({
-        ...data,
-        price: Number(data.price),
+      const selectedCategory = categories.find((cat: any) => cat.id === data.category);
+  
+      const savedCourseId = await mutateAsync({
+        courseId,
+        data: {
+          ...data,
+          imageUrl: data.thumbnail,
+          price: Number(data.price),
+          categoryName: selectedCategory?.title || "",
+        },
       });
-      alert("Course created successfully");
-    } catch (e) {
-      alert("Failed to create course");
+      
+      Alert.alert(
+        isEditing ? "Course updated" : "Course created",
+        "Now review the curriculum and resources."
+      );
+
+      router.replace({
+        pathname: "/(instructor)/create-course/curriculum/[id]" as any,
+        params: { id: String(savedCourseId), mode: isEditing ? "edit" : "create" }
+      });
+
+    } catch {
+      Alert.alert(
+        isEditing ? "Update failed" : "Create failed",
+        isEditing ? "Failed to update course" : "Failed to create course"
+      );
     }
   };
+
+  if (isLoadingCourse) return <LoadingView />;
+
+  if (isCourseLoadError) {
+    return (
+      <View style={styles.centerState}>
+        <Text style={styles.errorText}>Failed to load course details.</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -70,9 +127,13 @@ const thumbnail = watch("thumbnail");
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.step}>STEP 1</Text>
-        <Text style={styles.title}>Course Foundations</Text>
+        <Text style={styles.title}>
+          {isEditing ? "Edit Course Foundations" : "Course Foundations"}
+        </Text>
         <Text style={styles.subtitle}>
-          Set up the basic details for your new course
+          {isEditing
+            ? "Update the basic details for this course"
+            : "Set up the basic details for your new course"}
         </Text>
       </View>
 
@@ -207,7 +268,7 @@ const thumbnail = watch("thumbnail");
       <View style={styles.footer}>
         <View style={styles.buttonWrapper}>
           <Button
-            title={isPending ? "Saving..." : "Save & Continue"}
+            title={isPending ? "Saving..." : isEditing ? "Update & Continue" : "Save & Continue"}
             onPress={handleSubmit(onSubmit)}
             color="#5624D0"
           />
@@ -222,6 +283,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FDF7FF",
     paddingHorizontal: 20,
+  },
+  centerState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FDF7FF",
+    padding: 20,
   },
   header: {
     marginTop: 30,

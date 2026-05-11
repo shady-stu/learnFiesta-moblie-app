@@ -1,6 +1,6 @@
 import { FlatList, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
 
 import CartItem from '@/components/cart/CartItem';
@@ -13,9 +13,10 @@ import { useCartContext } from './context/CartContext';
 
 export default function CartScreen() {
   const { cart, isLoading, isError, removeItem } = useCartContext();
+  const sortedItems = [...cart.items].sort((a, b) => b.addedAt - a.addedAt);
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <Stack.Screen options={{ title: 'My Cart' }} />
 
       {isLoading && (
@@ -36,12 +37,18 @@ export default function CartScreen() {
       {!isLoading && !isError && cart.items.length > 0 && (
         <>
           <FlatList
-            data={cart.items}
+            data={sortedItems}
             keyExtractor={(item) => item.courseId}
             contentContainerStyle={styles.list}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item }) => (
-              <CartItem item={item} onRemove={removeItem} />
+              <CartItem
+                item={item}
+                onRemove={removeItem}
+                onOpenCourse={(courseId) =>
+                  router.push({ pathname: "/course/[id]", params: { id: courseId } })
+                }
+              />
             )}
           />
           <CartSummary

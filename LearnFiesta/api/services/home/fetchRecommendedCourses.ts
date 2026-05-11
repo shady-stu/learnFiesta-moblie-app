@@ -1,38 +1,44 @@
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+
+import { collection, getDocs, onSnapshot, query, limit } from 'firebase/firestore';
 import type { Course } from '@/types/course';
-import { auth } from '@/api/services/firebase';
+import { auth,db} from '@/api/services/firebase';
 
-export async function fetchRecommendedCourses(): Promise<Course[]> {
- 
 
+export async function fetchRecommendedCourses(limitCount = 10): Promise<Course[]> {
   const user = auth.currentUser;
 
   if (!user) {
     throw new Error('User not authenticated');
   }
 
+  const q = query(collection(db, 'courses'), limit(limitCount));
+  const snapshot = await getDocs(q);
 
-  
-  const token = await user.getIdToken();
-  console.log(' token ', token.slice(0, 20));
+  if (snapshot.empty) return [];
 
-  const snap = await getDocs(collection(db, 'courses'));
-  console.log(' courses snap.size :', snap.size);
-
-  if (snap.empty) return [];
-
-  const first = snap.docs[0];
-  console.log(' first doc keys:', Object.keys(first.data()));
-  console.log(' first doc data:', first.data());
-
-  const docs = snap.docs.slice(0, 10);
-
-  return docs.map((d) => {
-    const data = d.data() as any;
+  const courses: Course[] = snapshot.docs.map((d) => {
+    const data = d.data();
     return {
       id: d.id,
       ...(data as Omit<Course, 'id'>),
-    };
+    } as Course;
   });
+
+  return courses;
+}
+
+
+export function subscribeToCourses(callback: (courses: Course[]) => void) {
+  const q = collection(db, 'courses'); // يمكن إضافة orderBy, limit إلخ
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const courses: Course[] = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...(d.data() as Omit<Course, 'id'>),
+    })) as Course[];
+
+    callback(courses);
+  });
+
+  return unsubscribe;
 }

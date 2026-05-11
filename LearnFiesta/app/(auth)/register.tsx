@@ -5,7 +5,7 @@ import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Checkbox from "expo-checkbox";
+import ExpoCheckbox from "expo-checkbox";
 import { registerUser, getFirebaseErrorMessage } from "@/api/services/authService/registerService";
 import {
     RegisterFormData,
@@ -14,7 +14,7 @@ import {
     validatePasswordField,
     validateConfirmPassword,
 } from "@/utils/registerValidation";
-import { registerStyles as styles } from "./register.styles";
+import { registerStyles as styles } from "@/styles/auth/register.styles";
 
 export default function Register() {
     const { control, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>({
@@ -111,7 +111,7 @@ export default function Register() {
                             name="agreeTerms"
                             rules={{ required: "You must agree to the terms" }}
                             render={({ field }) => (
-                                <Checkbox value={field.value} onValueChange={field.onChange} color={field.value ? "#6C3EF4" : undefined} />
+                                <ExpoCheckbox value={field.value} onValueChange={field.onChange} color={field.value ? "#6C3EF4" : undefined} />
                             )}
                         />
                         <Text style={styles.checkboxLabel}>I agree to the Terms & Conditions and Privacy Policy</Text>
@@ -122,7 +122,7 @@ export default function Register() {
                     <Button title={loading ? "Creating Account..." : "Sign Up →"} onPress={handleSubmit(onSubmit)} style={styles.signUpButton} />
 
                     <Text style={styles.footer}>
-                        Already have an account? <Text style={styles.link} onPress={() => router.push("/login")}>Login</Text>
+                        Already have an account? <Text style={styles.link} onPress={() => router.push("/(auth)/login")}>Login</Text>
                     </Text>
 
                     <View style={styles.dividerContainer}>
