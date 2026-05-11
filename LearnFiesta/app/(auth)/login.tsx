@@ -34,7 +34,6 @@ export default function Login() {
         try {
             const user: AuthUser = await loginUser(data.email, data.password);
             console.log("✅ Login success, token stored:", user.token ? "present" : "missing");
-            router.replace("/(tabs)");
         } catch (e: any) {
             setError(e.message);
             Alert.alert("Login Failed", e.message);
