@@ -12,16 +12,21 @@ import {
   writeBatch,
   type Unsubscribe,
 } from "firebase/firestore";
+
 import { auth, db } from "@/api/services/firebase";
 import { Course, CreateCourseDTO } from "@/types/course";
-
 
 const normalizeCourse = (id: string, data: Record<string, any>): Course => ({
   id,
   title: data.title ?? "",
+  description: data.description ?? "",
+  whatYouWillLearn: data.whatYouWillLearn ?? [],
   instructorId: data.instructorId ?? "",
   instructorName: data.instructorName ?? "Instructor",
+  categoryId: data.categoryId ?? "",
+  categoryName: data.categoryName ?? "",
   duration: data.duration ?? "0m",
+  totalLessons: data.totalLessons ?? 0,
   rating: data.rating ?? 0,
   reviewsCount: data.reviewsCount ?? 0,
   price: Number(data.price ?? 0),
@@ -96,6 +101,7 @@ export const subscribeToCoursesByCategory = (
     (error) => onError?.(error)
   );
 };
+
 type CreateCourseInput = CreateCourseDTO & {
   category?: string;
   thumbnail?: string;
@@ -140,65 +146,39 @@ export const createCourse = async (data: CreateCourseInput) => {
     throw new Error("User not authenticated");
   }
 
-  const userDoc = await getDoc(
-    doc(db, "users", user.uid)
-  );
-
+  const userDoc = await getDoc(doc(db, "users", user.uid));
   const userData = userDoc.data();
 
   const courseData = {
     title: data.title,
-
     description: data.description,
-
     categoryId: data.category,
-
-    categoryName:
-      data.categoryName || "",
-
+    categoryName: data.categoryName || "",
     imageUrl: data.thumbnail || data.imageUrl || "",
-
     instructorId: user.uid,
-
-    instructorName:
-      userData?.name || "Instructor",
-
+    instructorName: userData?.name || "Instructor",
     price: Number(data.price),
-
-    badge:
-      Number(data.price) === 0
-        ? "Free"
-        : "Best Seller",
-
+    badge: Number(data.price) === 0 ? "Free" : "Best Seller",
     rating: 0,
-
     reviewsCount: 0,
-
     totalLessons: 0,
-
     duration: "0h 0m",
-
     durationMinutes: 0,
-
     sectionCount: 0,
-
-    whatYouWillLearn:
-      data.whatYouWillLearn || [],
-
+    whatYouWillLearn: data.whatYouWillLearn || [],
     status: "draft",
-
     isPublished: false,
-
     createdAt: serverTimestamp(),
-
     updatedAt: serverTimestamp(),
   };
 
   const courseDocRef = doc(collection(db, "courses"));
   const instructorDocRef = doc(collection(db, "Instructor"));
+
   const batch = writeBatch(db);
 
   batch.set(courseDocRef, courseData);
+
   batch.set(instructorDocRef, {
     usersId: user.uid,
     courseId: courseDocRef.id,
