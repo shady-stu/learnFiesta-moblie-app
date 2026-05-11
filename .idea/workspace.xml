@@ -4,25 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2">
-      <changelist_data name="salehowes12" email="s12326654@stu.najah.edu" automatic="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/fetchCourseById.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/lessonsService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/api/services/resourceService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/libr/useCourseById.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/libr/useLessons.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/libr/useResources.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/types/lesson.ts" afterDir="false" />
+    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="details done2">
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/checkout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CheckoutHeader.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CourseSummaryCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CreditCardForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/InputField.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/OrderSummaryCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PaymentTabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PrimaryButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/SectionTitle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/TrustBadges.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/constants/mockcourses.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/types/CheckoutFormData.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/api/services/courseService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/api/services/courseService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/ SectionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/SectionCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/CurriculumTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/CurriculumTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/DescriptionTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/DescriptionTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/LearnTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/LearnTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/ResourcesTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/ResourcesTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/types/course.ts" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/types/course.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +31,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -149,7 +146,12 @@
       <workItem from="1778163439059" duration="1746000" />
       <workItem from="1778165285265" duration="8938000" />
       <workItem from="1778197460263" duration="461000" />
-      <workItem from="1778247319793" duration="5739000" />
+      <workItem from="1778247319793" duration="6179000" />
+      <workItem from="1778279544932" duration="24000" />
+      <workItem from="1778281267615" duration="727000" />
+      <workItem from="1778282339118" duration="3209000" />
+      <workItem from="1778331238049" duration="12011000" />
+      <workItem from="1778530324414" duration="107000" />
     </task>
     <task id="LOCAL؜-٠٠٠٠١" summary="loaddone">
       <option name="closed" value="true" />
@@ -159,15 +161,117 @@
       <option name="project" value="LOCAL؜" />
       <updated>1776274350502</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL؜-٠٠٠٠٢" summary="details done">
+      <option name="closed" value="true" />
+      <created>1778257958241</created>
+      <option name="number" value="٠٠٠٠٢" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٢" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778257958241</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٣" summary="details done1">
+      <option name="closed" value="true" />
+      <created>1778282550258</created>
+      <option name="number" value="٠٠٠٠٣" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٣" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778282550259</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٤" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778283477094</created>
+      <option name="number" value="٠٠٠٠٤" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٤" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778283477094</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٥" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778283702785</created>
+      <option name="number" value="٠٠٠٠٥" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٥" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778283702785</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٦" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778283934593</created>
+      <option name="number" value="٠٠٠٠٦" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٦" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778283934593</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٧" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778284034974</created>
+      <option name="number" value="٠٠٠٠٧" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٧" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778284034974</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٨" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778284103504</created>
+      <option name="number" value="٠٠٠٠٨" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٨" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778284103504</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠٠٩" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778284194117</created>
+      <option name="number" value="٠٠٠٠٩" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠٠٩" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778284194117</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠١٠" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778284448278</created>
+      <option name="number" value="٠٠٠١٠" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠١٠" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778284448278</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠١١" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778284777754</created>
+      <option name="number" value="٠٠٠١١" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠١١" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778284777754</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠١٢" summary="details done2">
+      <option name="closed" value="true" />
+      <created>1778285152545</created>
+      <option name="number" value="٠٠٠١٢" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠١٢" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778285152545</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="loaddone" />
     <MESSAGE value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
+    <MESSAGE value="details done" />
+    <MESSAGE value="details done1" />
+    <MESSAGE value="details done2" />
+    <option name="LAST_COMMIT_MESSAGE" value="details done2" />
   </component>
 </project>

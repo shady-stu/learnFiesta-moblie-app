@@ -12,7 +12,7 @@ import CurriculumTab from "@/components/courseDetails/Coursetabs/CurriculumTab";
 import ResourcesTab from "@/components/courseDetails/Coursetabs/ResourcesTab";
 import LearnTab from "@/components/courseDetails/Coursetabs/LearnTab";
 import DescriptionTab from "@/components/courseDetails/Coursetabs/DescriptionTab";
-import {router, useLocalSearchParams} from "expo-router";
+import {router, useLocalSearchParams, useRouter} from "expo-router";
 import {useCourseById} from "@/libr/useCourseById";
 const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 
@@ -20,7 +20,7 @@ export default function CourseDetailsScreen() {
     const [activeTab, setActiveTab] = useState("Curriculum");
     const { id } = useLocalSearchParams();
     const { data: course, isLoading } = useCourseById(id as string);
-
+    const router = useRouter();
     const renderTabContent = () => {
         if (!course) return null;
 
@@ -92,7 +92,9 @@ export default function CourseDetailsScreen() {
                 </View>
             </ScrollView>
 
-            <EnrollBottomBar onEnroll={() => {}} />
+            <EnrollBottomBar
+                onEnroll={() => router.push("/checkout")}
+            />
         </SafeAreaView>
     );
 }
