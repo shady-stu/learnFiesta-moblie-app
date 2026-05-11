@@ -7,6 +7,7 @@ type Props = {
   visible: boolean;
   saving: boolean;
   title: string;
+  titleError?: string | null;
   editingSection: CurriculumSection | null;
   onChangeTitle: (title: string) => void;
   onClose: () => void;
@@ -17,6 +18,7 @@ export default function SectionFormModal({
   visible,
   saving,
   title,
+  titleError,
   editingSection,
   onChangeTitle,
   onClose,
@@ -36,6 +38,7 @@ export default function SectionFormModal({
             placeholderTextColor={Colors.textSecondary}
             style={styles.input}
           />
+          {titleError ? <Text style={styles.formErrorText}>{titleError}</Text> : null}
           <View style={styles.modalActions}>
             <Pressable style={styles.secondaryButton} onPress={onClose} disabled={saving}>
               <Text style={styles.secondaryButtonText}>Cancel</Text>

@@ -17,7 +17,7 @@ import PerformanceCard from "@/components/PerformanceCard";
 import { useInstructor } from "@/hooks/useInstructor";
 import { router } from "expo-router";
 
-const InstructorCourses = () => {
+export default function InstructorCourses() {
   const { data: instructors = [], isLoading, isError } = useInstructor();
 
   if (isLoading) return <LoadingView />;
@@ -160,5 +160,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default InstructorCourses;

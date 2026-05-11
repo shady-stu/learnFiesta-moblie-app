@@ -31,7 +31,7 @@ export default function ProfileScreen() {
 
     const fetchProfile = async () => {
         const user = auth.currentUser;
-        if (!user) return router.replace('/login');
+        if (!user) return router.replace('/(auth)/login');
         try {
             const docSnap = await getDoc(doc(db, 'users', user.uid));
             if (docSnap.exists()) setProfile(docSnap.data() as UserProfile);
@@ -70,7 +70,7 @@ export default function ProfileScreen() {
                 style: 'destructive',
                 onPress: async () => {
                     await logoutUser();
-                    router.replace('/login');
+                    router.replace('/(auth)/login');
                 }
             }
         ]);

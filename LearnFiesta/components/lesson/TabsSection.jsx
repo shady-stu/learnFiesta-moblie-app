@@ -34,12 +34,16 @@ export default function TabsSection({ notes, keyConcepts, resources, qa }) {
               </View>
             ))}
             <Text style={styles.conceptsTitle}>Key Concepts</Text>
-            {safeKeyConcepts.map((item, idx) => (
-              <View key={idx} style={styles.conceptItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#5523d1" />
-                <Text style={styles.conceptText}>{item}</Text>
-              </View>
-            ))}
+            {safeKeyConcepts.length === 0 ? (
+              <Text style={styles.emptyText}>No key concepts added yet.</Text>
+            ) : (
+              safeKeyConcepts.map((item, idx) => (
+                <View key={idx} style={styles.conceptItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#5523d1" />
+                  <Text style={styles.conceptText}>{item}</Text>
+                </View>
+              ))
+            )}
           </View>
         )}
 
@@ -68,12 +72,16 @@ export default function TabsSection({ notes, keyConcepts, resources, qa }) {
 
         {activeTab === "qa" && (
           <View>
-            {safeQa.map((item) => (
-              <View key={item.id} style={styles.qaCard}>
-                <Text style={styles.question}>Q: {item.question}</Text>
-                <Text style={styles.answer}>A: {item.answer}</Text>
-              </View>
-            ))}
+            {safeQa.length === 0 ? (
+              <Text style={styles.emptyText}>No Q&A added yet.</Text>
+            ) : (
+              safeQa.map((item) => (
+                <View key={item.id} style={styles.qaCard}>
+                  <Text style={styles.question}>Q: {item.question}</Text>
+                  <Text style={styles.answer}>A: {item.answer}</Text>
+                </View>
+              ))
+            )}
           </View>
         )}
       </ScrollView>

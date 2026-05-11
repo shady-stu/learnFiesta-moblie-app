@@ -28,7 +28,7 @@ import { useCategories } from "@/hooks/useCategories";
 export default function HomeScreen() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) router.replace("/login");
+      if (!user) router.replace("/(auth)/login");
     });
 
     return unsubscribe;
@@ -49,7 +49,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={["top"]}>
-      <AppHeader />
+      <AppHeader onCartPress={() => router.push("/cart")} />
 
       <ScrollView
         contentContainerStyle={styles.content}
@@ -93,6 +93,7 @@ export default function HomeScreen() {
               renderItem={({ item }) => (
                 <View style={styles.courseWrapper}>
                   <CourseCard
+                    courseId={item.id}
                     title={item.title}
                     instructor={item.instructorName}
                     rating={item.rating}

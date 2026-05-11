@@ -5,12 +5,14 @@ import { formatDuration } from "@/api/services/curriculumService";
 import { curriculumStyles as styles } from "./styles";
 
 type Props = {
+  mode?: "create" | "edit";
   sectionCount: number;
   totalLessons: number;
   totalMinutes: number;
 };
 
 export default function CurriculumHeader({
+  mode = "create",
   sectionCount,
   totalLessons,
   totalMinutes,
@@ -33,7 +35,9 @@ export default function CurriculumHeader({
         <Text style={styles.kicker}>STEP 2</Text>
         <Text style={styles.title}>Build the course curriculum</Text>
         <Text style={styles.subtitle}>
-          Add sections, lessons, and lesson resources before publishing.
+          {mode === "edit"
+            ? "You are editing this course. Update lessons and publish when ready."
+            : "Add sections, lessons, and lesson resources before publishing."}
         </Text>
       </View>
 

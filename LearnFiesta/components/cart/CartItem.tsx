@@ -7,11 +7,12 @@ import type { CartItem as CartItemType } from '@/types/cart';
 type Props = {
   item: CartItemType;
   onRemove: (courseId: string) => void;
+  onOpenCourse?: (courseId: string) => void;
 };
 
-export default function CartItem({ item, onRemove }: Props) {
+export default function CartItem({ item, onRemove, onOpenCourse }: Props) {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={() => onOpenCourse?.(item.courseId)}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
 
       <View style={styles.info}>
@@ -21,12 +22,15 @@ export default function CartItem({ item, onRemove }: Props) {
       </View>
 
       <Pressable
-        onPress={() => onRemove(item.courseId)}
+        onPress={(event) => {
+          event.stopPropagation();
+          onRemove(item.courseId);
+        }}
         hitSlop={8}
       >
         <Ionicons name="trash-outline" size={20} color={Colors.warning} />
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 

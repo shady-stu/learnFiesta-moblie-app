@@ -1,5 +1,5 @@
 import { Alert, ScrollView, View } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import AddSectionButton from "@/components/createCourse/curriculum/AddSectionButton";
 import CurriculumEmptyState from "@/components/createCourse/curriculum/CurriculumEmptyState";
 import CurriculumFooter from "@/components/createCourse/curriculum/CurriculumFooter";
@@ -16,13 +16,17 @@ const getErrorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
 
 export default function CurriculumBuilderScreen() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  const router = useRouter();
+  const { id, mode } = useLocalSearchParams<{ id?: string; mode?: string }>();
   const courseId = Array.isArray(id) ? id[0] : id;
+  const curriculumMode = Array.isArray(mode) ? mode[0] : mode;
+  const isEditing = curriculumMode === "edit";
   const curriculum = useCourseCurriculum(courseId);
+  const { sectionsState, sectionActions, lessonEditorState, publishing, saving } = curriculum;
 
   const handleSaveSection = async () => {
     try {
-      await curriculum.saveSection();
+      await sectionActions.saveSection();
     } catch (error) {
       Alert.alert("Save failed", getErrorMessage(error, "Unable to save section."));
     }
@@ -39,7 +43,7 @@ export default function CurriculumBuilderScreen() {
           style: "destructive",
           onPress: async () => {
             try {
-              await curriculum.removeSection(section.id);
+              await sectionActions.removeSection(section.id);
             } catch (error) {
               Alert.alert("Delete failed", getErrorMessage(error, "Unable to delete section."));
             }
@@ -51,7 +55,7 @@ export default function CurriculumBuilderScreen() {
 
   const handleSaveLesson = async () => {
     try {
-      await curriculum.saveLesson();
+      await lessonEditorState.saveLesson();
     } catch (error) {
       Alert.alert("Save failed", getErrorMessage(error, "Unable to save lesson."));
     }
@@ -65,7 +69,7 @@ export default function CurriculumBuilderScreen() {
         style: "destructive",
         onPress: async () => {
           try {
-            await curriculum.removeLesson(sectionId, lesson.id);
+            await lessonEditorState.removeLesson(sectionId, lesson.id);
           } catch (error) {
             Alert.alert("Delete failed", getErrorMessage(error, "Unable to delete lesson."));
           }
@@ -76,21 +80,20 @@ export default function CurriculumBuilderScreen() {
 
   const handlePublish = async () => {
     try {
-      await curriculum.publishCourse();
+      await publishing.publishCourse();
       Alert.alert("Course published", "The course is now active and ready for students.", [
         {
-          text: "View courses",
+          text: "Go to courses",
           onPress: () => router.replace("/(instructor)/InstructorCourses"),
         },
-        { text: "Stay here", style: "cancel" },
       ]);
     } catch (error) {
       Alert.alert("Publish failed", getErrorMessage(error, "Unable to publish course."));
     }
   };
 
-  if (curriculum.loading || curriculum.error) {
-    return <CurriculumStateView error={curriculum.error} />;
+  if (sectionsState.loading || sectionsState.error) {
+    return <CurriculumStateView error={sectionsState.error} />;
   }
 
   return (
@@ -101,63 +104,69 @@ export default function CurriculumBuilderScreen() {
         showsVerticalScrollIndicator={false}
       >
         <CurriculumHeader
-          sectionCount={curriculum.sections.length}
-          totalLessons={curriculum.totalLessons}
-          totalMinutes={curriculum.totalMinutes}
+          mode={isEditing ? "edit" : "create"}
+          sectionCount={sectionsState.sections.length}
+          totalLessons={sectionsState.totalLessons}
+          totalMinutes={sectionsState.totalMinutes}
         />
 
-        {curriculum.sections.length === 0 ? (
-          <CurriculumEmptyState onAddSection={curriculum.openAddSection} />
+        {sectionsState.sections.length === 0 ? (
+          <CurriculumEmptyState onAddSection={sectionActions.openAddSection} />
         ) : (
-          curriculum.sections.map((section, index) => (
+          sectionsState.sections.map((section, index) => (
             <CurriculumSectionCard
               key={section.id}
               section={section}
               index={index}
-              disabled={curriculum.saving}
-              onAddLesson={curriculum.openLessonEditor}
-              onEditLesson={curriculum.openLessonEditor}
+              disabled={saving}
+              onAddLesson={lessonEditorState.openLessonEditor}
+              onEditLesson={lessonEditorState.openLessonEditor}
               onDeleteLesson={handleDeleteLesson}
-              onEditSection={curriculum.openEditSection}
+              onEditSection={sectionActions.openEditSection}
               onDeleteSection={handleDeleteSection}
             />
           ))
         )}
 
-        {curriculum.sections.length > 0 && (
+        {sectionsState.sections.length > 0 && (
           <AddSectionButton
-            disabled={curriculum.saving}
-            onPress={curriculum.openAddSection}
+            disabled={saving}
+            onPress={sectionActions.openAddSection}
           />
         )}
       </ScrollView>
 
       <CurriculumFooter
-        saving={curriculum.saving}
-        disabled={curriculum.saving || curriculum.totalLessons === 0}
+        saving={saving}
+        disabled={saving || sectionsState.totalLessons === 0}
         onPublish={handlePublish}
       />
 
       <SectionFormModal
-        visible={curriculum.sectionModalVisible}
-        saving={curriculum.saving}
-        title={curriculum.sectionTitle}
-        editingSection={curriculum.editingSection}
-        onChangeTitle={curriculum.setSectionTitle}
-        onClose={curriculum.closeSectionModal}
+        visible={sectionActions.sectionModalVisible}
+        saving={saving}
+        title={sectionActions.sectionTitle}
+        titleError={sectionActions.sectionTitleError}
+        editingSection={sectionActions.editingSection}
+        onChangeTitle={sectionActions.setSectionTitle}
+        onClose={sectionActions.closeSectionModal}
         onSave={handleSaveSection}
       />
 
       <LessonFormModal
-        editor={curriculum.lessonEditor}
-        form={curriculum.lessonForm}
-        saving={curriculum.saving}
-        onClose={curriculum.closeLessonEditor}
+        editor={lessonEditorState.lessonEditor}
+        form={lessonEditorState.lessonForm}
+        errors={lessonEditorState.errors}
+        saving={saving}
+        onClose={lessonEditorState.closeLessonEditor}
         onSave={handleSaveLesson}
-        onAddResource={curriculum.addResourceRow}
-        onRemoveResource={curriculum.removeResourceRow}
-        onChangeLessonField={curriculum.setLessonField}
-        onChangeResourceField={curriculum.setResourceField}
+        onAddQa={lessonEditorState.addQaRow}
+        onRemoveQa={lessonEditorState.removeQaRow}
+        onChangeQaField={lessonEditorState.setQaField}
+        onAddResource={lessonEditorState.addResourceRow}
+        onRemoveResource={lessonEditorState.removeResourceRow}
+        onChangeLessonField={lessonEditorState.setLessonField}
+        onChangeResourceField={lessonEditorState.setResourceField}
       />
     </View>
   );

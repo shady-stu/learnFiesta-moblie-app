@@ -420,6 +420,12 @@ export const curriculumStyles = StyleSheet.create({
     color: Colors.textSecondary,
     marginBottom: 12,
   },
+  formErrorText: {
+    color: "#ba1a1a",
+    fontSize: 12,
+    marginTop: -6,
+    marginBottom: 10,
+  },
   resourceFormCard: {
     borderWidth: 1,
     borderColor: "#E6E0EE",

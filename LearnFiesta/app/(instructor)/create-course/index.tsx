@@ -95,10 +95,9 @@ const thumbnail = watch("thumbnail");
         "Now review the curriculum and resources."
       );
 
-     
-      router.push({
+      router.replace({
         pathname: "/(instructor)/create-course/curriculum/[id]" as any,
-        params: { id: String(savedCourseId) }
+        params: { id: String(savedCourseId), mode: isEditing ? "edit" : "create" }
       });
 
     } catch {
