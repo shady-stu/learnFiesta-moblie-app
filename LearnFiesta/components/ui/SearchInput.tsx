@@ -1,15 +1,22 @@
 import React from "react";
 import {View, TextInput, StyleSheet, TouchableOpacity} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {Spacing} from "@/constants/spacing";
+
 type SearchInputProps = {
     value: string;
     onChange: (text: string) => void;
+    onBackPress?: () => void;
+    onCartPress?: () => void;
 };
-export default function SearchInput({ value, onChange }:SearchInputProps) {
+export default function SearchInput({
+    value,
+    onChange,
+    onBackPress,
+    onCartPress,
+}:SearchInputProps) {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={onBackPress}>
                 <MaterialIcons name="arrow-back" size={24} color="#5523d1" />
             </TouchableOpacity>
             <TextInput
@@ -19,7 +26,7 @@ export default function SearchInput({ value, onChange }:SearchInputProps) {
                 value={value}
                 onChangeText={onChange}
             />
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={onCartPress}>
                 <MaterialIcons name="shopping-cart" size={24} color="#5523d1" />
             </TouchableOpacity>
         </View>
