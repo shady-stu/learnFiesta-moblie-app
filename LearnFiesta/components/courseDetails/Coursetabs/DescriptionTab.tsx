@@ -1,15 +1,12 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-export default function DescriptionTab() {
-    return (
+type Props = {
+    description: string;
+};
 
-        <Text style={styles.text}>
-            This course will teach you everything you need to know about UI/UX design,
-            from basics to advanced concepts. You will work on real projects and
-            build a strong portfolio.
-        </Text>
-    );
+export default function DescriptionTab({ description }: Props) {
+    return <Text style={styles.text}>{description}</Text>;
 }
 
 const styles = StyleSheet.create({
