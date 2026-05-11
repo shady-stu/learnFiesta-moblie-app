@@ -1,7 +1,6 @@
 import { useState } from "react";
 import * as ImageManipulator from "expo-image-manipulator";
-import { uploadImageToStorage } from "@/api/services/firebaseStorage";
-
+import { uploadToCloudinary } from "@/api/services/cloudinary";
 
 export const useUploadTask = () => {
   const [progress, setProgress] = useState(0);
@@ -22,23 +21,21 @@ export const useUploadTask = () => {
     try {
       setLoading(true);
 
-      // 1. compress first
+      // 1️⃣ compress image
       const compressed = await compressImage(uri);
 
-      // 2. convert to blob
-      const response = await fetch(compressed.uri);
-      const blob = await response.blob();
+      // fake progress
+      setProgress(30);
 
-      // 3. upload
-      const path = `courses/${Date.now()}.jpg`;
+      // 2️⃣ upload to cloudinary
+      const url = await uploadToCloudinary(compressed.uri);
 
-      const url = await uploadImageToStorage(
-        blob,
-        path,
-        setProgress
-      );
+      setProgress(100);
 
       return url;
+    } catch (error) {
+      console.log("UPLOAD ERROR:", error);
+      return null;
     } finally {
       setLoading(false);
     }

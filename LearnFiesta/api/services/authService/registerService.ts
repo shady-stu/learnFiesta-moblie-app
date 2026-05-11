@@ -18,6 +18,7 @@ export const registerUser = async (
         role: "student",
         coursesCompleted: 0,
         hoursLearned: 0,
+        photoURL: "",
         createdAt: serverTimestamp(),
     });
 

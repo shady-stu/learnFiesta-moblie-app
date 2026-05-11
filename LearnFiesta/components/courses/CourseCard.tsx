@@ -7,7 +7,7 @@ import {Radius} from "@/constants/radius";
 import {Colors} from "@/constants/colors";
 import { Ionicons } from '@expo/vector-icons';
 import Badge from "@/components/ui/Badge";
-import {router, useRouter} from "expo-router";
+import { useRouter } from "expo-router";
 type Props = {
     course: Course;
     isBookmarked: boolean;

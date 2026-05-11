@@ -37,6 +37,7 @@ export default function CategoryCoursesList({
       }
       renderItem={({ item }) => (
         <CourseCard
+          courseId={item.id}
           key={item.id}
           title={item.title}
           instructor={item.instructorName}

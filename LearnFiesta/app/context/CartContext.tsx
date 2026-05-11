@@ -28,7 +28,7 @@ type Props = {
   children: ReactNode;
 };
 
-export function CartProvider({ userId, children }: Props) {
+export  default function CartProvider({ userId, children }: Props) {
   const {
     data: items = [],
     isLoading,

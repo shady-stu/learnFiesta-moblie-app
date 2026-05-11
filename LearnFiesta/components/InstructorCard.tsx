@@ -18,7 +18,20 @@ export type Instructor = {
   rating: number;
   isActive: boolean;
 };
-const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }: Instructor) => {
+
+type InstructorCardProps = Instructor & {
+  onEdit?: () => void;
+};
+
+const InstructorCard = ({
+  title,
+  students,
+  revenue,
+  rating,
+  isActive,
+  imageUrl,
+  onEdit,
+}: InstructorCardProps) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardImagePlaceholder}>
@@ -64,7 +77,12 @@ const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }
         </View>
 
         <View style={styles.cardActions}>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={onEdit}
+            disabled={!onEdit}
+            accessibilityRole="button"
+          >
             <Text style={styles.editButtonText}>Edit</Text>
           </TouchableOpacity>
         </View>

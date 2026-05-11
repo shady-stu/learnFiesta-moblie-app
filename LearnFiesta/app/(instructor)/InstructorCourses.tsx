@@ -17,7 +17,7 @@ import PerformanceCard from "@/components/PerformanceCard";
 import { useInstructor } from "@/hooks/useInstructor";
 import { router } from "expo-router";
 
-const InstructorCourses = () => {
+export default function InstructorCourses() {
   const { data: instructors = [], isLoading, isError } = useInstructor();
 
   if (isLoading) return <LoadingView />;
@@ -55,12 +55,30 @@ const InstructorCourses = () => {
 
         <Text style={styles.sectionTitle}>Active Courses</Text>
         {activeCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() =>
+              router.push({
+                pathname: "/(instructor)/create-course" as any,
+                params: { courseId: course.courseId },
+              })
+            }
+          />
         ))}
 
         <Text style={styles.sectionTitle}>Other Courses</Text>
         {inactiveCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() =>
+              router.push({
+                pathname: "/(instructor)/create-course" as any,
+                params: { courseId: course.courseId },
+              })
+            }
+          />
         ))}
 
         <PerformanceCard
@@ -142,5 +160,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default InstructorCourses;
