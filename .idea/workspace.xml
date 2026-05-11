@@ -4,21 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="details done2">
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/checkout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CheckoutHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CourseSummaryCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CreditCardForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/InputField.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/OrderSummaryCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PaymentTabs.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PrimaryButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/SectionTitle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/TrustBadges.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/constants/mockcourses.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/types/CheckoutFormData.ts" afterDir="false" />
+    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="details done5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +138,7 @@
       <workItem from="1778281267615" duration="727000" />
       <workItem from="1778282339118" duration="3209000" />
       <workItem from="1778331238049" duration="12011000" />
-      <workItem from="1778530324414" duration="107000" />
+      <workItem from="1778530324414" duration="985000" />
     </task>
     <task id="LOCAL؜-٠٠٠٠١" summary="loaddone">
       <option name="closed" value="true" />
@@ -249,7 +236,23 @@
       <option name="project" value="LOCAL؜" />
       <updated>1778285152545</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL؜-٠٠٠١٣" summary="details done4">
+      <option name="closed" value="true" />
+      <created>1778530576152</created>
+      <option name="number" value="٠٠٠١٣" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠١٣" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778530576152</updated>
+    </task>
+    <task id="LOCAL؜-٠٠٠١٤" summary="details done5">
+      <option name="closed" value="true" />
+      <created>1778531034617</created>
+      <option name="number" value="٠٠٠١٤" />
+      <option name="presentableId" value="LOCAL؜-٠٠٠١٤" />
+      <option name="project" value="LOCAL؜" />
+      <updated>1778531034617</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,6 +275,8 @@
     <MESSAGE value="details done" />
     <MESSAGE value="details done1" />
     <MESSAGE value="details done2" />
-    <option name="LAST_COMMIT_MESSAGE" value="details done2" />
+    <MESSAGE value="details done4" />
+    <MESSAGE value="details done5" />
+    <option name="LAST_COMMIT_MESSAGE" value="details done5" />
   </component>
 </project>
