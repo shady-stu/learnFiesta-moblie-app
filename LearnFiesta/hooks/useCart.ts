@@ -26,28 +26,8 @@ export function useAddToCart(userId: string) {
   return useMutation({
     mutationFn: (item: Omit<CartItem, 'addedAt'>) =>
       addToCart(userId, item),
-
-
-    onMutate: async (newItem) => {
-      await queryClient.cancelQueries({ queryKey: cartKey(userId) });
-
-      const previous = queryClient.getQueryData<CartItem[]>(cartKey(userId));
-
-      queryClient.setQueryData<CartItem[]>(cartKey(userId), (old = []) => [
-        ...old,
-        { ...newItem, addedAt: Date.now() },
-      ]);
-
-      return { previous };
-    },
-
-    onError: (_err, _item, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(cartKey(userId), context.previous);
-      }
-    },
-
-    onSettled: () => {
+    // After add, refresh cart from Firestore
+    onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: cartKey(userId) });
     },
   });
@@ -59,27 +39,8 @@ export function useRemoveFromCart(userId: string) {
 
   return useMutation({
     mutationFn: (courseId: string) => removeFromCart(userId, courseId),
-
-   
-    onMutate: async (courseId) => {
-      await queryClient.cancelQueries({ queryKey: cartKey(userId) });
-
-      const previous = queryClient.getQueryData<CartItem[]>(cartKey(userId));
-
-      queryClient.setQueryData<CartItem[]>(cartKey(userId), (old = []) =>
-        old.filter((item) => item.courseId !== courseId)
-      );
-
-      return { previous };
-    },
-
-    onError: (_err, _courseId, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(cartKey(userId), context.previous);
-      }
-    },
-
-    onSettled: () => {
+    // After remove, refresh cart from Firestore
+    onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: cartKey(userId) });
     },
   });

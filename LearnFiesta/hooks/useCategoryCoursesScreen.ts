@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useCoursesByCategory } from '@/hooks/useCoursesByCategory';
+import { useCategories } from './useCategories';
 
 export function useCategoryCoursesScreen() {
   const { id, title } = useLocalSearchParams<{ id?: string; title?: string }>();
@@ -16,7 +17,7 @@ export function useCategoryCoursesScreen() {
   } = useCoursesByCategory(categoryId);
 
   const handleRefetch = () => void refetch();
-
+const { data: options = [] } = useCategories();
   return {
     categoryId,
     screenTitle,
