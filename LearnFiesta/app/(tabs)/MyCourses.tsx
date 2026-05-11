@@ -10,12 +10,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
 import CourseCard from "@/components/CourseCard";
+import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius";
 import LoadingView from "@/components/ui/LoadingView";
 import { useCourse } from "@/hooks/use-course";
+
+const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
 
 export default function MyCourses() {
   const router = useRouter();
@@ -40,7 +43,10 @@ export default function MyCourses() {
   });
 
   const handleLessonPress = (courseId: string) => {
-    router.push(`/lesson/${courseId}`);
+    router.push({
+      pathname: "/lesson/[id]",
+      params: { id: courseId },
+    });
   };
 
   return (
@@ -70,6 +76,13 @@ export default function MyCourses() {
             </Text>
           </TouchableOpacity>
         ))}
+      </View>
+
+      <View style={styles.previewWrap}>
+        <FirebaseCoursePreviewCard
+          courseId={FIREBASE_PREVIEW_COURSE_ID}
+          onPress={() => handleLessonPress(FIREBASE_PREVIEW_COURSE_ID)}
+        />
       </View>
 
       {/* Empty state */}
@@ -103,6 +116,7 @@ const styles = StyleSheet.create({
   centerContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
   header: { fontSize: Typography.title, fontWeight: "bold", marginBottom: Spacing.md, color: Colors.textPrimary },
   tabs: { flexDirection: "row", gap: Spacing.sm, marginBottom: Spacing.lg },
+  previewWrap: { marginBottom: Spacing.lg },
   tab: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, backgroundColor: Colors.muted, borderRadius: Radius.full },
   tabActive: { backgroundColor: Colors.primary },
   tabText: { color: Colors.textSecondary, fontSize: Typography.caption },

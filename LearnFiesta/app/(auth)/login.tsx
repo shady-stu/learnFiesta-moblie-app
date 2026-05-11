@@ -7,7 +7,7 @@ import { router } from "expo-router";
 import { validateEmail, validatePassword } from "@/utils/validators";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { loginUser, AuthUser } from "@/api/services/authService/authService";
-import { loginStyles as styles } from "./login.styles";
+import { loginStyles as styles } from "@/styles/auth/login.styles";
 
 type LoginFormData = { email: string; password: string };
 type FormErrors = { email?: string; password?: string };
@@ -70,7 +70,7 @@ export default function Login() {
                 </View>
 
                 <Text style={styles.footer}>
-                    Don’t have an account? <Text style={styles.link} onPress={() => router.push("/register")}>Register</Text>
+                    Don’t have an account? <Text style={styles.link} onPress={() => router.push("/(auth)/register")}>Register</Text>
                 </Text>
             </View>
         </SafeAreaView>

@@ -18,7 +18,7 @@ export default function CategoryCoursesScreen() {
   } = useCategoryCoursesScreen();
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <Stack.Screen options={{ title: screenTitle }} />
 
       {!categoryId && (

@@ -1,9 +1,14 @@
 export type Course = {
   id: string;
   title: string;
+  categoryId:string;
+  categoryName:string;
   instructorId: string;
   instructorName: string;
   duration: string;
+  totalLessons: number;
+  description: string;
+  whatYouWillLearn: string[];
   rating: number;
   reviewsCount: number;
   price: number;         
@@ -13,8 +18,13 @@ export type Course = {
 };
 export interface CreateCourseDTO {
   title: string;
-  category: string;
   description: string;
-  price: number;
+  category: string;
+  imageUrl?: string;
   thumbnail?: string;
+  price: number;
+  categoryName?: string;
+  instructorId?: string;
+  instructorName?: string;
+  whatYouWillLearn?: string[];
 }

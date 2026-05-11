@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 
 type Props =  {
     name: string;

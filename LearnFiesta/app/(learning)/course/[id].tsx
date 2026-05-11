@@ -1,43 +1,52 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import {View, ScrollView, StyleSheet, Text, ActivityIndicator} from "react-native";
 import CourseHeader from "@/components/courseDetails/CourseHeader";
 import VideoPreview from "@/components/courseDetails/VideoPreview";
 import CourseHeaderInfo from "@/components/courseDetails/CourseHeaderInfo";
 import InstructorCard from "@/components/courseDetails/InstructorCard";
 import CourseTabs from "@/components/courseDetails/CourseTabs";
 import EnrollBottomBar from "@/components/courseDetails/ EnrollBottomBar";
-import { Course } from "@/types/course";
 import Price from "@/components/ui/Price";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CurriculumTab from "@/components/courseDetails/Coursetabs/CurriculumTab";
 import ResourcesTab from "@/components/courseDetails/Coursetabs/ResourcesTab";
 import LearnTab from "@/components/courseDetails/Coursetabs/LearnTab";
 import DescriptionTab from "@/components/courseDetails/Coursetabs/DescriptionTab";
-import {router} from "expo-router";
+import {router, useLocalSearchParams, useRouter} from "expo-router";
+import {useCourseById} from "@/libr/useCourseById";
+const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 
-const TABS = ["Curriculum", "Resources","What you'll learn","description"];
-export const mockCourse: Course = {
-    id: "course_001",
-    title: "LearnFiesta: Complete UI/UX Design Masterclass",
-    instructorId: "inst_001",
-    instructorName: "Jane Doe",
-    duration: "15h 30m",
-    rating: 4.8,
-    reviewsCount: 1240,
-    price: 49.99,
-    oldPrice: 84.99,
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdDfXAEDJ6wMxM3-AyjOCrSdF6g_XFqtLPnFdj6aE83IIumWvgFc3GskhyLs45i0WXCsZqwWFS3C3BlRMBRzcAT44GAK2dvfE3qth9Pj7bN72L7VWnD-Cf3_MYbAP3Ar4ipJPGHkF3tAhbFQw6LIo37PwI4VGbCneM5PACjj4VsyBAZEZndskEDt0ZRZtNx3ywoJnRXjBNtuELaAW-Z_3IDv3wY6_fNbU3OWDygkjfWNyugLE4PfDZPAjaPjpEdlA3BwQNTgwzaNg",
-    badge: "Bestseller",
-};
 export default function CourseDetailsScreen() {
     const [activeTab, setActiveTab] = useState("Curriculum");
+    const { id } = useLocalSearchParams();
+    const { data: course, isLoading } = useCourseById(id as string);
+    const router = useRouter();
     const renderTabContent = () => {
-        if (activeTab === "Curriculum") return <CurriculumTab />;
-        if (activeTab === "Resources") return <ResourcesTab />;
-        if (activeTab === "What you'll learn") return <LearnTab />;
-        if (activeTab === "description") return <DescriptionTab />;
-        return null;
+        if (!course) return null;
+
+        if (activeTab === "Curriculum") { return <CurriculumTab courseId={course.id} />; }
+        if (activeTab === "Resources") { return <ResourcesTab courseId={course.id}/>; }
+        if (activeTab === "What you'll learn") { return ( <LearnTab items={course.whatYouWillLearn || []} /> ); }
+        if (activeTab === "Description") { return ( <DescriptionTab description={course.description || ""}/> ); }
+
+
     };
+
+    if (isLoading) {
+     return (
+          <SafeAreaView style={styles.loadingContainer}>
+             <ActivityIndicator size="large" color="#5523d1" />
+        </SafeAreaView>
+        );
+     }
+
+    if (!course) {
+        return (
+            <SafeAreaView style={styles.loadingContainer}>
+                <Text>Course not found</Text>
+            </SafeAreaView>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -48,28 +57,28 @@ export default function CourseDetailsScreen() {
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <VideoPreview imageUrl={mockCourse.imageUrl} onPlay={() => {}} />
+                <VideoPreview
+                    imageUrl={course.imageUrl}
+                    onPlay={() => {}}
+                />
 
                 <CourseHeaderInfo
-                    title={mockCourse.title}
-                    badge={mockCourse.badge}
-                    category="UI/UX Design"
-                    rating={mockCourse.rating}
-                    reviewsCount={mockCourse.reviewsCount}
+                    title={course.title}
+                    badge={course.badge}
+                    category={course.categoryName}
+                    rating={course.rating}
+                    reviewsCount={course.reviewsCount}
                 />
 
                 <InstructorCard
-                    name={mockCourse.instructorName}
-                    role="Lead Product Designer"
-                    avatarUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuCtr-1ggOUroeTACOvrWUNi_YHGgDUjbBqOJ1cnl9JR8LZZjBhc9ikuAczKFev_Uef40VOhGq-N0nvaKZvWlcCzR76lqaOCC8ICRllE3wby7TO-0-ztI43rtPthhTUikAzjU-OblYeF1k_LoKDYdXH6X1o8UUasS1ZdQabHSD7AwGe8B7ASN-iosYF5VXq29Cjz4cD9_qCEp3_CxwL1LvBfG3SzJiMEov4wSfUIG7itzZYAxdmxS7gZ77DW2Cy8OiLKmC6IqWNyPKc"
+                    name={course.instructorName}
+                    role="Instructor"
+                    avatarUrl="https://i.pravatar.cc/150?img=12"
                     onFollow={() => {}}
                 />
 
                 <View style={styles.priceSection}>
-                    <Price
-                        price={mockCourse.price}
-                        oldPrice={mockCourse.oldPrice}
-                    />
+                    <Price price={course.price} />
                 </View>
 
                 <CourseTabs
@@ -83,7 +92,9 @@ export default function CourseDetailsScreen() {
                 </View>
             </ScrollView>
 
-            <EnrollBottomBar onEnroll={() => {}} />
+            <EnrollBottomBar
+                onEnroll={() => router.push("/checkout")}
+            />
         </SafeAreaView>
     );
 }
@@ -116,5 +127,10 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 10,
         fontWeight: "700",
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
     },
 });

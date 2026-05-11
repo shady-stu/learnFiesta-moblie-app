@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { Linking, View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TabsSection({ notes, keyConcepts, resources, qa }) {
   const [activeTab, setActiveTab] = useState("notes");
 
-  // تحويل القيم إلى مصفوفات فارغة إذا لم تكن مصفوفات حقيقية
   const safeNotes = Array.isArray(notes) ? notes : [];
   const safeKeyConcepts = Array.isArray(keyConcepts) ? keyConcepts : [];
   const safeResources = Array.isArray(resources) ? resources : [];
@@ -31,38 +30,58 @@ export default function TabsSection({ notes, keyConcepts, resources, qa }) {
             {safeNotes.map((note) => (
               <View key={note.id} style={styles.noteCard}>
                 <Text style={styles.timestamp}>Timestamp: {note.timestamp}</Text>
-                <Text style={styles.noteText}>"{note.text}"</Text>
+                <Text style={styles.noteText}>{note.text}</Text>
               </View>
             ))}
             <Text style={styles.conceptsTitle}>Key Concepts</Text>
-            {safeKeyConcepts.map((item, idx) => (
-              <View key={idx} style={styles.conceptItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#5523d1" />
-                <Text style={styles.conceptText}>{item}</Text>
-              </View>
-            ))}
+            {safeKeyConcepts.length === 0 ? (
+              <Text style={styles.emptyText}>No key concepts added yet.</Text>
+            ) : (
+              safeKeyConcepts.map((item, idx) => (
+                <View key={idx} style={styles.conceptItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#5523d1" />
+                  <Text style={styles.conceptText}>{item}</Text>
+                </View>
+              ))
+            )}
           </View>
         )}
 
         {activeTab === "resources" && (
           <View>
+            {safeResources.length === 0 && (
+              <Text style={styles.emptyText}>No resources for this lesson yet.</Text>
+            )}
             {safeResources.map((res) => (
-              <View key={res.id} style={styles.resourceCard}>
+              <TouchableOpacity
+                key={res.id}
+                style={styles.resourceCard}
+                onPress={() => res.url && Linking.openURL(res.url)}
+                disabled={!res.url}
+              >
                 <Ionicons name="document-text-outline" size={24} color="#5523d1" />
-                <Text style={styles.resourceTitle}>{res.title}</Text>
-              </View>
+                <View style={styles.resourceInfo}>
+                  <Text style={styles.resourceTitle}>{res.title}</Text>
+                  {res.url ? <Text style={styles.resourceUrl}>{res.type}</Text> : null}
+                </View>
+                {res.url ? <Ionicons name="open-outline" size={18} color="#94a3b8" /> : null}
+              </TouchableOpacity>
             ))}
           </View>
         )}
 
         {activeTab === "qa" && (
           <View>
-            {safeQa.map((item) => (
-              <View key={item.id} style={styles.qaCard}>
-                <Text style={styles.question}>Q: {item.question}</Text>
-                <Text style={styles.answer}>A: {item.answer}</Text>
-              </View>
-            ))}
+            {safeQa.length === 0 ? (
+              <Text style={styles.emptyText}>No Q&A added yet.</Text>
+            ) : (
+              safeQa.map((item) => (
+                <View key={item.id} style={styles.qaCard}>
+                  <Text style={styles.question}>Q: {item.question}</Text>
+                  <Text style={styles.answer}>A: {item.answer}</Text>
+                </View>
+              ))
+            )}
           </View>
         )}
       </ScrollView>
@@ -85,8 +104,11 @@ const styles = StyleSheet.create({
   conceptItem: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
   conceptText: { fontSize: 13, color: "#475569" },
   resourceCard: { flexDirection: "row", alignItems: "center", gap: 12, padding: 12, backgroundColor: "#f8fafc", borderRadius: 12, marginBottom: 12 },
+  resourceInfo: { flex: 1 },
   resourceTitle: { fontSize: 14, fontWeight: "500", color: "#0f172a" },
+  resourceUrl: { fontSize: 11, color: "#64748b", marginTop: 2, textTransform: "uppercase" },
   qaCard: { backgroundColor: "#f8fafc", padding: 12, borderRadius: 12, marginBottom: 12 },
   question: { fontWeight: "bold", color: "#5523d1", marginBottom: 4 },
   answer: { color: "#334155" },
+  emptyText: { color: "#64748b", fontSize: 13, paddingVertical: 8 },
 });

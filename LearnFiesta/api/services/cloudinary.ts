@@ -1,30 +1,34 @@
+import { Platform } from "react-native";
+
 export const uploadToCloudinary = async (imageUri: string) => {
-  const data = new FormData();
+    const formData = new FormData();
 
-  data.append("file", {
-    uri: imageUri,
-    type: "image/jpeg",
-    name: "photo.jpg",
-  } as any);
+    formData.append("file", {
+        uri:
+            Platform.OS === "ios"
+                ? imageUri.replace("file://", "")
+                : imageUri,
+        type: "image/jpeg",
+        name: "profile.jpg",
+    } as any);
 
-  data.append("upload_preset", "learnfiesta_upload");
-  data.append("cloud_name", "dbnklkk18");
+    formData.append("upload_preset", "learnfiesta_upload");
 
-  const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dbnklkk18/image/upload",
-    {
-      method: "POST",
-      body: data,
+    const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dbnklkkl8/image/upload",
+        {
+            method: "POST",
+            body: formData,
+        }
+    );
+
+    const data = await response.json();
+
+    console.log("CLOUDINARY RESPONSE:", data);
+
+    if (!data.secure_url) {
+        throw new Error(data.error?.message || "Upload failed");
     }
-  );
 
-  const result = await res.json();
-
-  console.log("CLOUDINARY RESPONSE:", result);
-
-  if (!result.secure_url) {
-    throw new Error("Upload failed");
-  }
-
-  return result.secure_url;
+    return data.secure_url;
 };
