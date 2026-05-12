@@ -2,6 +2,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/api/services/firebase";
 import { Course } from "@/types/course";
 
+const normalizeLearningOutcomes = (value: unknown): string[] => {
+    if (!Array.isArray(value)) return [];
+
+    return value
+        .filter((item): item is string => typeof item === "string")
+        .map((item) => item.trim())
+        .filter(Boolean);
+};
+
 export const fetchCourseById = async (id: string): Promise<Course | null> => {
     const docRef = doc(db, "courses", id);
     const snapshot = await getDoc(docRef);
@@ -11,7 +20,7 @@ export const fetchCourseById = async (id: string): Promise<Course | null> => {
         id: snapshot.id,
         title: data.title,
         description: data.description || "",
-        whatYouWillLearn: data.whatYouWillLearn || [],
+        whatYouWillLearn: normalizeLearningOutcomes(data.whatYouWillLearn),
         instructorId: data.instructorId,
         instructorName: data.instructorName,
         categoryId: data.categoryId,

@@ -45,6 +45,12 @@ export default function LessonQaSection({
               placeholderTextColor={Colors.textSecondary}
               style={styles.input}
             />
+            {errors?.qa?.[index]?.question?.message ? (
+              <Text style={styles.formErrorText}>
+                {errors.qa[index]?.question?.message}
+              </Text>
+            ) : null}
+
             <TextInput
               value={item.answer}
               onChangeText={(value) => onChangeQaField(index, "answer", value)}
@@ -53,8 +59,10 @@ export default function LessonQaSection({
               multiline
               style={[styles.input, styles.textArea]}
             />
-            {errors?.qa?.[index]?.message ? (
-              <Text style={styles.formErrorText}>{errors.qa[index]?.message as string}</Text>
+            {errors?.qa?.[index]?.answer?.message ? (
+              <Text style={styles.formErrorText}>
+                {errors.qa[index]?.answer?.message}
+              </Text>
             ) : null}
           </View>
         ))

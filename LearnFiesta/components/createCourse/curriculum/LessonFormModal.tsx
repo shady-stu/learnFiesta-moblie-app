@@ -51,6 +51,7 @@ export default function LessonFormModal({
             />
             <LessonResourcesSection
               form={form}
+              errors={errors}
               saving={saving}
               onAddResource={onAddResource}
               onRemoveResource={onRemoveResource}

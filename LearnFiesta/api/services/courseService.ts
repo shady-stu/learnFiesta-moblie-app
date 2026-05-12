@@ -111,6 +111,7 @@ export type CourseFoundation = {
   id: string;
   title: string;
   description: string;
+  whatYouWillLearn: string[];
   categoryId: string;
   categoryName: string;
   imageUrl: string;
@@ -132,6 +133,9 @@ export const fetchCourseFoundation = async (
     id: snapshot.id,
     title: data.title ?? "",
     description: data.description ?? "",
+    whatYouWillLearn: Array.isArray(data.whatYouWillLearn)
+      ? data.whatYouWillLearn
+      : [],
     categoryId: data.categoryId ?? "",
     categoryName: data.categoryName ?? "",
     imageUrl: data.imageUrl ?? "",
@@ -225,6 +229,7 @@ export const updateCourseFoundation = async (
     categoryName: data.categoryName || "",
     imageUrl: data.thumbnail || data.imageUrl || "",
     price: Number(data.price),
+    whatYouWillLearn: data.whatYouWillLearn || [],
     badge: Number(data.price) === 0 ? "Free" : "Best Seller",
     updatedAt: serverTimestamp(),
   });
