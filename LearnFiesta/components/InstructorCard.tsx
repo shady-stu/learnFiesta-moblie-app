@@ -47,7 +47,6 @@ const InstructorCard = ({
           </View>
         ) : null}
       </View>
-
       <View style={styles.cardBody}>
         <Text style={styles.cardTitle}>{title}</Text>
 
