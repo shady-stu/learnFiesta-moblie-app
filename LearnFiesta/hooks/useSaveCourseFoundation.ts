@@ -16,10 +16,13 @@ export const useSaveCourseFoundation = () => {
   return useMutation({
     mutationFn: ({ courseId, data }: SaveCourseFoundationInput) =>
       courseId ? updateCourseFoundation(courseId, data) : createCourse(data),
-    onSuccess: (_, variables) => {
+    onSuccess: (savedCourseId, variables) => {
       void queryClient.invalidateQueries({ queryKey: ["courses"] });
       void queryClient.invalidateQueries({ queryKey: ["recommendedCourses"] });
       void queryClient.invalidateQueries({ queryKey: ["instructors"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["course", variables.courseId || savedCourseId],
+      });
 
       if (variables.courseId) {
         void queryClient.invalidateQueries({

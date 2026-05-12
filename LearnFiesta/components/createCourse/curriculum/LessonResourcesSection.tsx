@@ -8,6 +8,7 @@ import type { LessonFormModalProps } from "@/types/curriculum";
 type Props = Pick<
   LessonFormModalProps,
   | "form"
+  | "errors"
   | "saving"
   | "onAddResource"
   | "onRemoveResource"
@@ -16,6 +17,7 @@ type Props = Pick<
 
 export default function LessonResourcesSection({
   form,
+  errors,
   saving,
   onAddResource,
   onRemoveResource,
@@ -50,6 +52,11 @@ export default function LessonResourcesSection({
               placeholderTextColor={Colors.textSecondary}
               style={styles.input}
             />
+            {errors?.resources?.[index]?.title?.message ? (
+              <Text style={styles.formErrorText}>
+                {errors.resources[index]?.title?.message}
+              </Text>
+            ) : null}
 
             <View style={styles.choiceRow}>
               {RESOURCE_TYPES.map((type) => (
@@ -86,6 +93,11 @@ export default function LessonResourcesSection({
               autoCapitalize="none"
               style={styles.input}
             />
+            {errors?.resources?.[index]?.url?.message ? (
+              <Text style={styles.formErrorText}>
+                {errors.resources[index]?.url?.message}
+              </Text>
+            ) : null}
           </View>
         ))
       )}

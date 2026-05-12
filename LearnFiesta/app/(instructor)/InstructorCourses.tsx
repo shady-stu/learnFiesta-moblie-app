@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -7,15 +6,15 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
+import { router } from "expo-router";
 import InstructorCard from "@/components/InstructorCard";
-import { Colors } from "@/constants/colors";
-import { Spacing } from "@/constants/spacing";
-import { Typography } from "@/constants/typography";
-import { Radius } from "@/constants/radius";
 import LoadingView from "@/components/ui/LoadingView";
 import PerformanceCard from "@/components/PerformanceCard";
+import { Colors } from "@/constants/colors";
+import { Radius } from "@/constants/radius";
+import { Spacing } from "@/constants/spacing";
+import { Typography } from "@/constants/typography";
 import { useInstructor } from "@/hooks/useInstructor";
-import { router } from "expo-router";
 
 export default function InstructorCourses() {
   const { data: instructors = [], isLoading, isError } = useInstructor();
@@ -25,23 +24,32 @@ export default function InstructorCourses() {
   if (isError) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={{ color: "red" }}>Failed to load courses.</Text>
+        <Text style={styles.errorText}>Failed to load courses.</Text>
       </View>
     );
   }
 
-  const activeCourses = instructors.filter((c) => c.isActive);
-  const inactiveCourses = instructors.filter((c) => !c.isActive);
-
+  const activeCourses = instructors.filter((course) => course.isActive);
+  const inactiveCourses = instructors.filter((course) => !course.isActive);
   const totalStudents = instructors.reduce(
-    (sum, c) => sum + (c.students || 0),
+    (sum, course) => sum + (course.students || 0),
+    0
+  );
+  const totalRevenue = instructors.reduce(
+    (sum, course) => sum + (course.revenue || 0),
     0
   );
 
-  const totalRevenue = instructors.reduce(
-    (sum, c) => sum + (c.revenue || 0),
-    0
-  );
+  const openCreateCourse = () => {
+    router.push({ pathname: "/(instructor)/create-course" });
+  };
+
+  const openEditCourse = (courseId: string) => {
+    router.push({
+      pathname: "/(instructor)/create-course",
+      params: { courseId },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -58,12 +66,7 @@ export default function InstructorCourses() {
           <InstructorCard
             key={course.id}
             {...course}
-            onEdit={() =>
-              router.push({
-                pathname: "/(instructor)/create-course" as any,
-                params: { courseId: course.courseId },
-              })
-            }
+            onEdit={() => openEditCourse(course.courseId)}
           />
         ))}
 
@@ -72,12 +75,7 @@ export default function InstructorCourses() {
           <InstructorCard
             key={course.id}
             {...course}
-            onEdit={() =>
-              router.push({
-                pathname: "/(instructor)/create-course" as any,
-                params: { courseId: course.courseId },
-              })
-            }
+            onEdit={() => openEditCourse(course.courseId)}
           />
         ))}
 
@@ -90,19 +88,18 @@ export default function InstructorCourses() {
       </ScrollView>
 
       <Pressable
-        onPress={() =>
-          router.push({ pathname: "/(instructor)/create-course" })
-        }
+        onPress={openCreateCourse}
         style={({ pressed }) => [
-          styles.testButton,
-          pressed && { opacity: 0.85 },
+          styles.createButton,
+          pressed && styles.buttonPressed,
         ]}
       >
-        <Text style={styles.testButtonText}>➕ Create Course</Text>
+        <Text style={styles.createButtonText}>Create Course</Text>
       </Pressable>
     </SafeAreaView>
   );
-};
+}
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -133,14 +130,15 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     marginBottom: Spacing.sm,
   },
-
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-
-  testButton: {
+  errorText: {
+    color: "red",
+  },
+  createButton: {
     position: "absolute",
     bottom: 70,
     right: Spacing.xl,
@@ -154,7 +152,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     elevation: 3,
   },
-  testButtonText: {
+  buttonPressed: {
+    opacity: 0.85,
+  },
+  createButtonText: {
     color: Colors.white,
     fontWeight: "700",
     fontSize: 16,

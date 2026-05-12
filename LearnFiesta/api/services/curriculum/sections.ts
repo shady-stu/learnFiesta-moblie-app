@@ -2,8 +2,6 @@ import {
   collection,
   getDocs,
   onSnapshot,
-  orderBy,
-  query,
   type Unsubscribe,
 } from "firebase/firestore";
 import { db } from "@/api/services/firebase";
@@ -15,17 +13,14 @@ export const listenToCourseSections = (
   onNext: (sections: CurriculumSection[]) => void,
   onError?: (error: Error) => void
 ): Unsubscribe => {
-  const sectionsQuery = query(
-    collection(db, "courses", courseId, "sections"),
-    orderBy("order", "asc")
-  );
+  const sectionsRef = collection(db, "courses", courseId, "sections");
 
   return onSnapshot(
-    sectionsQuery,
+    sectionsRef,
     (snapshot) => {
-      const sections = snapshot.docs.map((sectionDoc) =>
-        normalizeSection(sectionDoc.id, sectionDoc.data())
-      );
+      const sections = snapshot.docs
+        .map((sectionDoc) => normalizeSection(sectionDoc.id, sectionDoc.data()))
+        .sort((a, b) => a.order - b.order);
       onNext(sections);
     },
     (error) => onError?.(error)
@@ -35,13 +30,9 @@ export const listenToCourseSections = (
 export const fetchCourseSections = async (
   courseId: string
 ): Promise<CurriculumSection[]> => {
-  const sectionsQuery = query(
-    collection(db, "courses", courseId, "sections"),
-    orderBy("order", "asc")
-  );
-  const snapshot = await getDocs(sectionsQuery);
+  const snapshot = await getDocs(collection(db, "courses", courseId, "sections"));
 
-  return snapshot.docs.map((sectionDoc) =>
-    normalizeSection(sectionDoc.id, sectionDoc.data())
-  );
+  return snapshot.docs
+    .map((sectionDoc) => normalizeSection(sectionDoc.id, sectionDoc.data()))
+    .sort((a, b) => a.order - b.order);
 };
