@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import SearchInput from "@/components/ui/SearchInput"
 import {FilterChip} from "@/components/ui/FilterChip";
 import CourseCard  from "@/components/courses/CourseCard";
@@ -19,7 +21,11 @@ export default function Search() {
     }
 
     if (error) {
-        return <Text>Error loading courses</Text>;
+        return (
+            <SafeAreaView style={styles.container} edges={["top"]}>
+                <Text>Error loading courses</Text>
+            </SafeAreaView>
+        );
     }
 
 
@@ -31,15 +37,20 @@ export default function Search() {
 
         if (!matchesSearch) return false;
         if (activeFilter === "All") return true;
-        if (activeFilter === "Free") return course.price === "Free";
+        if (activeFilter === "Free") return course.price === 0;
         if (activeFilter === "Top Rated") return course.rating >= 4.5;
         if (activeFilter === "Best seller") return course.badge === "Best seller";
         if (activeFilter === "Bookmarked") return bookmarked.includes(course.id);
         return true;
     });
     return (
-        <View style={styles.container}>
-            <SearchInput value={searchText} onChange={setSearchText} />
+        <SafeAreaView style={styles.container} edges={["top"]}>
+            <SearchInput
+                value={searchText}
+                onChange={setSearchText}
+                onBackPress={() => router.back()}
+                onCartPress={() => router.push("/cart")}
+            />
             <View style={{ marginBottom: 10 }}>
                 <FilterChip
                     activeFilter={activeFilter}
@@ -58,7 +69,7 @@ export default function Search() {
             }
                 contentContainerStyle={{ paddingBottom: 100 }}
             />
-        </View>
+        </SafeAreaView>
 
 
     );
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.background,
-        paddingTop: 50,
+        paddingHorizontal: 12,
     },
     resultText: {
         marginHorizontal: 10,

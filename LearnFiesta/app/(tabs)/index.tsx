@@ -6,29 +6,30 @@ import {
   StyleSheet,
   Text,
   View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect } from 'react';
-import { router } from 'expo-router';
-import { onAuthStateChanged } from 'firebase/auth';
-import AppHeader from '@/components/ui/AppHeader';
-import SectionHeader from '@/components/ui/SectionHeader';
-import HeroBanner from '@/components/home/HeroBanner';
-import ContinueLearningCard from '@/components/home/ContinueLearningCard';
-import CourseCard from '@/components/home/CourseCard';
-import CategoryCard from '@/components/home/CategoryCard';
-import { Colors } from '@/constants/colors';
-import { Spacing } from '@/constants/spacing';
-import { auth } from '@/api/services/firebase';
-import { useRecommendedCourses } from '@/hooks/useRecommendedCourses';
-import { useCategories } from '@/hooks/useCategories';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect } from "react";
+import { router } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
+
+import AppHeader from "@/components/ui/AppHeader";
+import SectionHeader from "@/components/ui/SectionHeader";
+import HeroBanner from "@/components/home/HeroBanner";
+import ContinueLearningCard from "@/components/home/ContinueLearningCard";
+import CourseCard from "@/components/home/CourseCard";
+import CategoryCard from "@/components/home/CategoryCard";
+import LoadingView from "@/components/ui/LoadingView";
+
+import { Colors } from "@/constants/colors";
+import { Spacing } from "@/constants/spacing";
+import { auth } from "@/api/services/firebase";
+import { useRecommendedCourses } from "@/hooks/useRecommendedCourses";
+import { useCategories } from "@/hooks/useCategories";
 
 export default function HomeScreen() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.replace('/login');
-      }
+      if (!user) router.replace("/login");
     });
 
     return unsubscribe;
@@ -40,29 +41,41 @@ export default function HomeScreen() {
     isError: categoriesError,
     error: categoriesErrObj,
   } = useCategories();
+
   const {
     data: recommendedCourses,
     isLoading: loadingCourses,
     isError: coursesError,
   } = useRecommendedCourses();
+
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <SafeAreaView style={styles.screen} edges={["top"]}>
       <AppHeader />
+
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <HeroBanner /> 
+        <HeroBanner />
+
+        {/* Continue Learning */}
         <View style={styles.section}>
           <SectionHeader
-  title="Continue Learning"
-  actionLabel="View All"
-  onPress={() => router.push('/MyCourses')}
-/>
+            title="Continue Learning"
+            actionLabel="View All"
+            onPress={() => router.push("/MyCourses")}
+          />
           <ContinueLearningCard />
         </View>
+
+        {/* Recommended */}
         <View style={styles.section}>
-          <SectionHeader title="Recommended for You" actionLabel="See More" onPress={()=> router.push('/search')} />
+          <SectionHeader
+            title="Recommended for You"
+            actionLabel="See More"
+            onPress={() => router.push("/search")}
+          />
+
           {loadingCourses ? (
             <View style={styles.loadingWrap}>
               <ActivityIndicator size="large" color={Colors.primary} />
@@ -74,7 +87,7 @@ export default function HomeScreen() {
           ) : (
             <FlatList
               data={recommendedCourses ?? []}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => String(item.id)}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ gap: Spacing.md }}
@@ -86,6 +99,7 @@ export default function HomeScreen() {
                     rating={item.rating}
                     reviews={String(item.reviewsCount)}
                     price={item.price}
+                    oldPrice={item.oldPrice}
                     image={item.imageUrl}
                   />
                 </View>
@@ -94,6 +108,7 @@ export default function HomeScreen() {
           )}
         </View>
 
+        {/* Categories */}
         <View style={styles.categoriesSection}>
           <SectionHeader title="Top Categories" />
 
@@ -105,39 +120,52 @@ export default function HomeScreen() {
             <Text style={styles.errorText}>
               Failed to load categories
               {categoriesErrObj
-                ? `: ${(categoriesErrObj as any)?.message ?? ''}`
-                : ''}
+                ? `: ${(categoriesErrObj as any)?.message ?? ""}`
+                : ""}
             </Text>
           ) : (
-          <View style={styles.categoriesGrid}>
-  {(categories ?? []).map((category) => (
-   <Pressable
-  style={styles.categoryItem}
-  onPress={() =>
-    router.push({
-      pathname: '/categories/[id]',
-      params: { id: category.id },
-    })
-  }
->
-      <CategoryCard
-  title={category.title}
-  icon={category.icon}
-  backgroundColor={category.backgroundColor}
-  iconColor={category.iconColor}
-  onPress={() =>
-    router.push({
-      pathname: '/categories/[id]',
-      params: { id: category.id },
-    })
-  }
-/>
-    </Pressable>
+            <View style={styles.categoriesGrid}>
+              {(categories ?? []).map((category) => (
+                <Pressable
+                  key={category.id}
+                  style={styles.categoryItem}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/categories/[id]",
+                      params: { id: category.id },
+                    })
+                  }
+                >
+                  <CategoryCard
+                    title={category.title}
+                    icon={category.icon}
+                    backgroundColor={category.backgroundColor}
+                    iconColor={category.iconColor}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/categories/[id]",
+                        params: { id: category.id },
+                      })
+                    }
+                  />
+                </Pressable>
               ))}
             </View>
           )}
         </View>
       </ScrollView>
+
+    <Pressable
+          onPress={() =>
+            router.push({
+              pathname: '/create-course',
+            })
+          }
+          style={styles.testButton}
+        >
+          <Text style={styles.testButtonText}>Create Course</Text>
+        </Pressable>
+
     </SafeAreaView>
   );
 }
@@ -147,43 +175,53 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-
   content: {
     padding: Spacing.lg,
     gap: Spacing.xl,
     paddingBottom: 120,
   },
-
   section: {
     gap: Spacing.md,
   },
-
   categoriesSection: {
     gap: Spacing.md,
   },
-
   courseWrapper: {
     marginRight: 12,
   },
-
   categoriesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
-
   categoryItem: {
-    width: '48%',
+    width: "48%",
     marginBottom: 12,
   },
-
   loadingWrap: {
     paddingVertical: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  errorText: {
+    color: "red",
   },
 
-  errorText: {
-    color: 'red',
+  testButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: 999,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+  },
+  testButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

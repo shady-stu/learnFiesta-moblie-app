@@ -1,22 +1,22 @@
-import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
-} from 'react-native';
-import InstructorCard from '@/components/InstructorCard';
-import { Colors } from '@/constants/colors';
-import { Spacing } from '@/constants/spacing';
-import { Typography } from '@/constants/typography';
-import { Radius } from '@/constants/radius';
-import LoadingView from '@/components/ui/LoadingView';
-import PerformanceCard from '@/components/PerformanceCard';
-import { useInstructor } from '@/hooks/useInstructor';
+} from "react-native";
+import { router } from "expo-router";
+import InstructorCard from "@/components/InstructorCard";
+import LoadingView from "@/components/ui/LoadingView";
+import PerformanceCard from "@/components/PerformanceCard";
+import { Colors } from "@/constants/colors";
+import { Radius } from "@/constants/radius";
+import { Spacing } from "@/constants/spacing";
+import { Typography } from "@/constants/typography";
+import { useInstructor } from "@/hooks/useInstructor";
 
-const InstructorCourses = () => {
+export default function InstructorCourses() {
   const { data: instructors = [], isLoading, isError } = useInstructor();
 
   if (isLoading) return <LoadingView />;
@@ -24,21 +24,36 @@ const InstructorCourses = () => {
   if (isError) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={{ color: 'red' }}>Failed to load courses.</Text>
+        <Text style={styles.errorText}>Failed to load courses.</Text>
       </View>
     );
   }
 
-  const activeCourses = instructors.filter((c) => c.isActive);
-  const inactiveCourses = instructors.filter((c) => !c.isActive);
+  const activeCourses = instructors.filter((course) => course.isActive);
+  const inactiveCourses = instructors.filter((course) => !course.isActive);
+  const totalStudents = instructors.reduce(
+    (sum, course) => sum + (course.students || 0),
+    0
+  );
+  const totalRevenue = instructors.reduce(
+    (sum, course) => sum + (course.revenue || 0),
+    0
+  );
 
-  const totalStudents = instructors.reduce((sum, c) => sum + (c.students || 0), 0);
-  const totalRevenue = instructors.reduce((sum, c) => sum + (c.revenue || 0), 0);
+  const openCreateCourse = () => {
+    router.push({ pathname: "/(instructor)/create-course" });
+  };
+
+  const openEditCourse = (courseId: string) => {
+    router.push({
+      pathname: "/(instructor)/create-course",
+      params: { courseId },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Instructor Courses</Text>
           <Text style={styles.headerSubtitle}>
@@ -48,12 +63,20 @@ const InstructorCourses = () => {
 
         <Text style={styles.sectionTitle}>Active Courses</Text>
         {activeCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() => openEditCourse(course.courseId)}
+          />
         ))}
 
         <Text style={styles.sectionTitle}>Other Courses</Text>
         {inactiveCourses.map((course) => (
-          <InstructorCard key={course.id} {...course} />
+          <InstructorCard
+            key={course.id}
+            {...course}
+            onEdit={() => openEditCourse(course.courseId)}
+          />
         ))}
 
         <PerformanceCard
@@ -64,12 +87,18 @@ const InstructorCourses = () => {
         />
       </ScrollView>
 
-      <TouchableOpacity style={styles.fab} activeOpacity={0.85}>
-        <Text style={styles.fabIcon}>+</Text>
-      </TouchableOpacity>
+      <Pressable
+        onPress={openCreateCourse}
+        style={({ pressed }) => [
+          styles.createButton,
+          pressed && styles.buttonPressed,
+        ]}
+      >
+        <Text style={styles.createButtonText}>Create Course</Text>
+      </Pressable>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -86,7 +115,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: Typography.title,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.textPrimary,
     marginBottom: Spacing.xs,
   },
@@ -97,30 +126,38 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: Typography.subheading,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.textPrimary,
     marginBottom: Spacing.sm,
   },
-  fab: {
-    position: 'absolute',
-    bottom: 70,
-    right: Spacing.xl,
-    width: 60,
-    height: 60,
-    borderRadius: Radius.full,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fabIcon: {
-    fontSize: 28,
-    color: Colors.white,
-  },
   centerContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    color: "red",
+  },
+  createButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: Radius.full,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+  },
+  buttonPressed: {
+    opacity: 0.85,
+  },
+  createButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
   },
 });
-
-export default InstructorCourses;

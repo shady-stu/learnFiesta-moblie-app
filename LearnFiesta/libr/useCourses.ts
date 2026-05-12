@@ -1,9 +1,34 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchCourses } from "@/api/services/courseService";
+import { useEffect, useState } from "react";
+import { subscribeToCourses } from "@/api/services/courseService";
+import type { Course } from "@/types/course";
 
 export const useCourses = () => {
-    return useQuery({
-        queryKey: ["courses"],
-        queryFn: fetchCourses,
-    });
+    const [data, setData] = useState<Course[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        const unsubscribe = subscribeToCourses(
+            (courses) => {
+                setData(courses);
+                setError(null);
+                setIsLoading(false);
+            },
+            (subscriptionError) => {
+                setError(subscriptionError);
+                setIsLoading(false);
+            }
+        );
+
+        return unsubscribe;
+    }, []);
+
+    return {
+        data,
+        isLoading,
+        error,
+        isError: Boolean(error),
+    };
 };

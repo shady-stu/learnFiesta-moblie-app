@@ -1,6 +1,6 @@
-// InstructorCard.tsx
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { Typography } from '@/constants/typography';
@@ -16,22 +16,36 @@ export type Instructor = {
   rating: number;
   isActive: boolean;
 };
-const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }: Instructor) => {
+
+type InstructorCardProps = Instructor & {
+  onEdit?: () => void;
+};
+
+const InstructorCard = ({
+  title,
+  students,
+  revenue,
+  rating,
+  isActive,
+  imageUrl,
+  onEdit,
+}: InstructorCardProps) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardImagePlaceholder}>
-        {imageUrl && (
+        {imageUrl ? (
           <Image
             source={{ uri: imageUrl }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
           />
-        )}
-        {isActive && (
+        ) : null}
+
+        {isActive ? (
           <View style={styles.activeBadge}>
             <Text style={styles.activeBadgeText}>ACTIVE</Text>
           </View>
-        )}
+        ) : null}
       </View>
       <View style={styles.cardBody}>
         <Text style={styles.cardTitle}>{title}</Text>
@@ -49,20 +63,19 @@ const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }
 
           <View>
             <Text style={styles.cardStatLabel}>Rating</Text>
-            <Text style={styles.cardStatValue}>
-  {rating > 0 ? (
-    <>
-      <Text>{rating} </Text>
-      <Text style={{ color: '#F59E0B' }}>★</Text>
-    </>
-  ) : 'N/A'}
-</Text>
+            <Text style={styles.cardStatValue}>{rating > 0 ? rating : 'N/A'}</Text>
           </View>
         </View>
 
         <View style={styles.cardActions}>
-          <TouchableOpacity style={styles.editButton}>
-            <Text style={styles.editButtonText}>Edit</Text>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={onEdit}
+            disabled={!onEdit}
+            accessibilityRole="button"
+          >
+            <MaterialIcons name="edit" size={18} color={Colors.textPrimary} />
+            <Text style={styles.editButtonText}>Edit Course</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -97,7 +110,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.success,
   },
-  cardBody: { padding: Spacing.md },
+  cardBody: {
+    padding: Spacing.md,
+  },
   cardTitle: {
     fontSize: Typography.body,
     fontWeight: '600',
@@ -124,7 +139,11 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.md,
   },
   editButton: {
+    minHeight: 42,
     alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 6,
     paddingVertical: 8,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -132,6 +151,7 @@ const styles = StyleSheet.create({
   },
   editButtonText: {
     fontSize: Typography.body,
+    fontWeight: '600',
     color: Colors.textPrimary,
   },
 });

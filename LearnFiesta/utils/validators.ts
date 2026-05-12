@@ -1,3 +1,4 @@
+// utils/validators.ts
 export const validateEmail = (email: string): string | null => {
     if (!email) return "Email is required";
     const regex = /\S+@\S+\.\S+/;
@@ -11,6 +12,7 @@ export const validatePassword = (password: string): string | null => {
     return null;
 };
 
+// Shared type for registration form (used across files)
 export type RegisterFormData = {
     fullName: string;
     email: string;
@@ -31,28 +33,12 @@ export const validateRegisterForm = (
     data: RegisterFormData
 ): RegisterFormErrors => {
     const errors: RegisterFormErrors = {};
-
-    if (!data.fullName.trim()) {
-        errors.fullName = "Full name is required";
-    }
-
+    if (!data.fullName.trim()) errors.fullName = "Full name is required";
     const emailError = validateEmail(data.email);
-    if (emailError) {
-        errors.email = emailError;
-    }
-
+    if (emailError) errors.email = emailError;
     const passwordError = validatePassword(data.password);
-    if (passwordError) {
-        errors.password = passwordError;
-    }
-
-    if (data.password !== data.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match";
-    }
-
-    if (!data.agreeTerms) {
-        errors.agreeTerms = "You must agree to the Terms & Conditions";
-    }
-
+    if (passwordError) errors.password = passwordError;
+    if (data.password !== data.confirmPassword) errors.confirmPassword = "Passwords do not match";
+    if (!data.agreeTerms) errors.agreeTerms = "You must agree to the Terms & Conditions";
     return errors;
 };

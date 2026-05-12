@@ -6,21 +6,28 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 import CourseCard from "@/components/CourseCard";
+import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
 import CourseTabs, { CourseTab } from "@/components/courses/CourseTabs";
 
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius";
-import LoadingView from "@/components/ui/LoadingView";
 
+import LoadingView from "@/components/ui/LoadingView";
 import { useOfflineCourses } from "@/hooks/useOfflineCourses";
 
+const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
+
 export default function MyCourses() {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<CourseTab>("all");
   const [refreshCount, setRefreshCount] = useState(0);
 
@@ -36,6 +43,13 @@ export default function MyCourses() {
     return item.status === activeTab;
   });
 
+  const handleLessonPress = (courseId: string) => {
+    router.push({
+      pathname: "/lesson/[id]",
+      params: { id: courseId },
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
@@ -45,7 +59,11 @@ export default function MyCourses() {
         activeOpacity={0.8}
         onPress={() => setRefreshCount((count) => count + 1)}
       >
-        <Ionicons name="refresh-outline" size={18} color={Colors.white} />
+        <Ionicons
+          name="refresh-outline"
+          size={18}
+          color={Colors.white}
+        />
 
         <Text style={styles.refreshText}>
           {isOnline ? "Refresh Online" : "Refresh Offline"}
@@ -64,18 +82,42 @@ export default function MyCourses() {
         </Text>
       )}
 
-      <CourseTabs activeTab={activeTab} onChangeTab={setActiveTab} />
+      <CourseTabs
+        activeTab={activeTab}
+        onChangeTab={setActiveTab}
+      />
+
+      <View style={styles.previewWrap}>
+        <FirebaseCoursePreviewCard
+          courseId={FIREBASE_PREVIEW_COURSE_ID}
+          onPress={() =>
+            handleLessonPress(FIREBASE_PREVIEW_COURSE_ID)
+          }
+        />
+      </View>
 
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>
-            {isOnline ? "No courses found" : "No offline courses saved yet"}
+            {isOnline
+              ? "No courses found"
+              : "No offline courses saved yet"}
           </Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
           {filteredEnrollments.map((item) => (
-            <CourseCard key={item.id} enrollment={item} />
+            <TouchableOpacity
+              key={item.id}
+              onPress={() =>
+                handleLessonPress((item as any).courseId)
+              }
+            >
+              <CourseCard enrollment={item} />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       )}
@@ -89,12 +131,14 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     backgroundColor: Colors.background,
   },
+
   header: {
     fontSize: Typography.title,
     fontWeight: "bold",
     marginBottom: Spacing.md,
     color: Colors.textPrimary,
   },
+
   refreshBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -106,26 +150,35 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginBottom: Spacing.sm,
   },
+
   refreshText: {
     color: Colors.white,
     fontWeight: "600",
     fontSize: Typography.caption,
   },
+
   offlineText: {
     color: Colors.textSecondary,
     marginBottom: Spacing.md,
     fontSize: Typography.caption,
   },
+
   errorText: {
     color: "red",
     marginBottom: Spacing.md,
   },
+
+  previewWrap: {
+    marginBottom: Spacing.lg,
+  },
+
   empty: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
   },
+
   emptyText: {
     color: Colors.textSecondary,
     fontSize: Typography.subheading,

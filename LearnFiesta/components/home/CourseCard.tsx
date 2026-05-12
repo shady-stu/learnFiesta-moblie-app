@@ -1,68 +1,102 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';
 import { Spacing } from '@/constants/spacing';
-
+import Price from "@/components/ui/Price";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { auth } from "@/api/services/firebase";
+import { useAddToCart } from "@/hooks/useCart";
 type CourseCardProps = {
+  courseId: string;
   title: string;
   instructor: string;
   rating: number;
   reviews: string;
-  price: string
+  price: number;
+  oldPrice?: number;
   image: string;
+  
 };
 
 export default function CourseCard({
+  courseId,
   title,
   instructor,
   rating,
   reviews,
   price,
+  oldPrice,
   image,
 }: CourseCardProps) {
+  const [flipped, setFlipped] = useState(false);
+  const router = useRouter();
+  const userId = auth.currentUser?.uid ?? "";
+  const addToCartMutation = useAddToCart(userId);
 
-  
-  const renderPrice = () => {
-  if(price === 'Free') {
-    return 'Free';
-  } else {
-    return `$${price}`;
-  }
+  const handleAddToCart = async () => {
+    if (!userId) {
+      Alert.alert("Sign in required", "Please sign in before adding items to cart.");
+      return;
+    }
+
+    await addToCartMutation.mutateAsync({
+      id: `${userId}-${courseId}`,
+      courseId,
+      title,
+      instructorName: instructor,
+      price,
+      imageUrl: image,
+    });
+    Alert.alert("Added to cart", "Course was added to your cart.");
+    setFlipped(false);
   };
 
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: image }} style={styles.image} />
-
-      <View style={styles.content}>
-        <ThemedText numberOfLines={2} style={styles.title}>
-          {title}
-        </ThemedText>
-
-        <ThemedText style={styles.instructor}>
-          {instructor}
-        </ThemedText>
-
-        <View style={styles.ratingRow}>
-          <ThemedText style={styles.rating}>{rating}</ThemedText>
-          <Ionicons name="star" size={14} color="#F59E0B" />
-          <ThemedText style={styles.reviews}>({reviews})</ThemedText>
-        </View>
-
-        <View style={styles.footer}>
-          
-          <ThemedText style={styles.price}>
-            {renderPrice()}
-          </ThemedText>
-          <Pressable style={styles.addtocart}>
-            <Ionicons name="cart" size={16} color={Colors.textSecondary} />
+    <Pressable style={styles.card} onPress={() => setFlipped((prev) => !prev)}>
+      {!flipped ? (
+        <>
+          <Image source={{ uri: image }} style={styles.image} />
+          <View style={styles.content}>
+            <ThemedText numberOfLines={2} style={styles.title}>
+              {title}
+            </ThemedText>
+            <ThemedText style={styles.instructor}>{instructor}</ThemedText>
+            <View style={styles.ratingRow}>
+              <ThemedText style={styles.rating}>{rating}</ThemedText>
+              <Ionicons name="star" size={14} color="#F59E0B" />
+              <ThemedText style={styles.reviews}>({reviews})</ThemedText>
+            </View>
+            <View style={styles.footer}>
+              <Price price={price} oldPrice={oldPrice} />
+            </View>
+          </View>
+        </>
+      ) : (
+        <View style={styles.backFace}>
+          <Text style={styles.backTitle} numberOfLines={2}>{title}</Text>
+          <Pressable
+            style={styles.primaryAction}
+            onPress={handleAddToCart}
+            disabled={addToCartMutation.isPending}
+          >
+            <Text style={styles.primaryActionText}>
+              {addToCartMutation.isPending ? "Adding..." : "Add to Cart"}
+            </Text>
           </Pressable>
-         
+          <Pressable
+            style={styles.secondaryAction}
+            onPress={() =>
+              router.push({ pathname: "/course/[id]", params: { id: courseId } })
+            }
+          >
+            <Text style={styles.secondaryActionText}>View Details</Text>
+          </Pressable>
         </View>
-      </View>
-    </View>
+      )}
+    </Pressable>
   );
 }
 const styles = StyleSheet.create({
@@ -125,5 +159,40 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FB',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backFace: {
+    flex: 1,
+    minHeight: 230,
+    padding: Spacing.md,
+    justifyContent: "center",
+    gap: 12,
+    backgroundColor: Colors.surface,
+  },
+  backTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+  },
+  primaryAction: {
+    backgroundColor: Colors.primary,
+    borderRadius: Radius.sm,
+    paddingVertical: 10,
+    alignItems: "center",
+  },
+  primaryActionText: {
+    color: Colors.white,
+    fontWeight: "700",
+  },
+  secondaryAction: {
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: Radius.sm,
+    paddingVertical: 10,
+    alignItems: "center",
+    backgroundColor: Colors.white,
+  },
+  secondaryActionText: {
+    color: Colors.textPrimary,
+    fontWeight: "700",
   },
 });
