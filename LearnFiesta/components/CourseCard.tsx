@@ -4,25 +4,19 @@ import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius";
- 
-
 export type Enrollment = {
   id: string;
   courseId: string;
-
   title: string;
   author: string;
   img: string;
   totalLessons: number;
-
   progress: number;
   lessonsDone: number;
   status: "progress" | "completed";
 };
-
 const CourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
   const isDone = enrollment.progress === 100;
-
   return (
     <View style={s.card}>
      <Image source={{ uri: enrollment.img }} style={s.image} />

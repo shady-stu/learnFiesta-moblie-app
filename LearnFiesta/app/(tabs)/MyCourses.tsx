@@ -6,35 +6,36 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 import CourseCard from "@/components/CourseCard";
 import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
+import CourseTabs, { CourseTab } from "@/components/courses/CourseTabs";
+
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius";
+
 import LoadingView from "@/components/ui/LoadingView";
-import { useCourse } from "@/hooks/use-course";
+import { useOfflineCourses } from "@/hooks/useOfflineCourses";
 
 const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
 
 export default function MyCourses() {
   const router = useRouter();
-  const [activeTab, setActiveTab] =
-    useState<"all" | "progress" | "completed">("all");
 
-  const { data: enrollments = [], isLoading, isError } = useCourse();
+  const [activeTab, setActiveTab] = useState<CourseTab>("all");
+  const [refreshCount, setRefreshCount] = useState(0);
 
-  if (isLoading) return <LoadingView />;
+  const { enrollments, isOnline, isError, loading } =
+    useOfflineCourses(refreshCount);
 
-  if (isError) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text style={{ color: "red" }}>Failed to load courses.</Text>
-      </View>
-    );
+  if (loading) {
+    return <LoadingView />;
   }
 
   const filteredEnrollments = enrollments.filter((item) => {
@@ -53,42 +54,55 @@ export default function MyCourses() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
 
-      {/* Tabs */}
-      <View style={styles.tabs}>
-        {(["all", "progress", "completed"] as const).map((tab) => (
-          <TouchableOpacity
-            key={tab}
-            style={[styles.tab, activeTab === tab && styles.tabActive]}
-            onPress={() => setActiveTab(tab)}
-          >
-            <Text
-              style={
-                activeTab === tab
-                  ? styles.tabTextActive
-                  : styles.tabText
-              }
-            >
-              {tab === "all"
-                ? "All"
-                : tab === "progress"
-                ? "In Progress"
-                : "Completed"}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <TouchableOpacity
+        style={styles.refreshBtn}
+        activeOpacity={0.8}
+        onPress={() => setRefreshCount((count) => count + 1)}
+      >
+        <Ionicons
+          name="refresh-outline"
+          size={18}
+          color={Colors.white}
+        />
+
+        <Text style={styles.refreshText}>
+          {isOnline ? "Refresh Online" : "Refresh Offline"}
+        </Text>
+      </TouchableOpacity>
+
+      {!isOnline && (
+        <Text style={styles.offlineText}>
+          Offline mode: showing saved courses
+        </Text>
+      )}
+
+      {isOnline && isError && (
+        <Text style={styles.errorText}>
+          Failed to load courses from Firebase.
+        </Text>
+      )}
+
+      <CourseTabs
+        activeTab={activeTab}
+        onChangeTab={setActiveTab}
+      />
 
       <View style={styles.previewWrap}>
         <FirebaseCoursePreviewCard
           courseId={FIREBASE_PREVIEW_COURSE_ID}
-          onPress={() => handleLessonPress(FIREBASE_PREVIEW_COURSE_ID)}
+          onPress={() =>
+            handleLessonPress(FIREBASE_PREVIEW_COURSE_ID)
+          }
         />
       </View>
 
-      {/* Empty state */}
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyText}>No courses found</Text>
+          <Text style={styles.emptyText}>
+            {isOnline
+              ? "No courses found"
+              : "No offline courses saved yet"}
+          </Text>
         </View>
       ) : (
         <ScrollView
@@ -112,15 +126,61 @@ export default function MyCourses() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: Spacing.lg, backgroundColor: Colors.background },
-  centerContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-  header: { fontSize: Typography.title, fontWeight: "bold", marginBottom: Spacing.md, color: Colors.textPrimary },
-  tabs: { flexDirection: "row", gap: Spacing.sm, marginBottom: Spacing.lg },
-  previewWrap: { marginBottom: Spacing.lg },
-  tab: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, backgroundColor: Colors.muted, borderRadius: Radius.full },
-  tabActive: { backgroundColor: Colors.primary },
-  tabText: { color: Colors.textSecondary, fontSize: Typography.caption },
-  tabTextActive: { color: Colors.white, fontSize: Typography.caption, fontWeight: "600" },
-  empty: { flex: 1, justifyContent: "center", alignItems: "center", marginTop: 50 },
-  emptyText: { color: Colors.textSecondary, fontSize: Typography.subheading },
+  container: {
+    flex: 1,
+    padding: Spacing.lg,
+    backgroundColor: Colors.background,
+  },
+
+  header: {
+    fontSize: Typography.title,
+    fontWeight: "bold",
+    marginBottom: Spacing.md,
+    color: Colors.textPrimary,
+  },
+
+  refreshBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: Colors.primary,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: Radius.full,
+    alignSelf: "flex-start",
+    marginBottom: Spacing.sm,
+  },
+
+  refreshText: {
+    color: Colors.white,
+    fontWeight: "600",
+    fontSize: Typography.caption,
+  },
+
+  offlineText: {
+    color: Colors.textSecondary,
+    marginBottom: Spacing.md,
+    fontSize: Typography.caption,
+  },
+
+  errorText: {
+    color: "red",
+    marginBottom: Spacing.md,
+  },
+
+  previewWrap: {
+    marginBottom: Spacing.lg,
+  },
+
+  empty: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+
+  emptyText: {
+    color: Colors.textSecondary,
+    fontSize: Typography.subheading,
+  },
 });
