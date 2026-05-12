@@ -19,9 +19,16 @@ import { Course, CreateCourseDTO } from "@/types/course";
 const normalizeCourse = (id: string, data: any): Course => ({
   id,
   title: data.title ?? "",
+  categoryId: data.categoryId ?? "",
+  categoryName: data.categoryName ?? "",
   instructorId: data.instructorId ?? "",
   instructorName: data.instructorName ?? "",
   duration: data.duration ?? "",
+  totalLessons: data.totalLessons ?? 0,
+  description: data.description ?? "",
+  whatYouWillLearn: Array.isArray(data.whatYouWillLearn)
+    ? data.whatYouWillLearn
+    : [],
   rating: data.rating ?? 0,
   reviewsCount: data.reviewsCount ?? 0,
   price: data.price ?? 0,

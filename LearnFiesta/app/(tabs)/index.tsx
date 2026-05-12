@@ -18,7 +18,6 @@ import HeroBanner from "@/components/home/HeroBanner";
 import ContinueLearningCard from "@/components/home/ContinueLearningCard";
 import CourseCard from "@/components/home/CourseCard";
 import CategoryCard from "@/components/home/CategoryCard";
-import LoadingView from "@/components/ui/LoadingView";
 
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
@@ -94,6 +93,7 @@ export default function HomeScreen() {
               renderItem={({ item }) => (
                 <View style={styles.courseWrapper}>
                   <CourseCard
+                    courseId={item.id}
                     title={item.title}
                     instructor={item.instructorName}
                     rating={item.rating}
@@ -155,16 +155,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-    <Pressable
-          onPress={() =>
-            router.push({
-              pathname: '/create-course',
-            })
-          }
-          style={styles.testButton}
-        >
-          <Text style={styles.testButtonText}>Create Course</Text>
-        </Pressable>
+   
 
     </SafeAreaView>
   );
