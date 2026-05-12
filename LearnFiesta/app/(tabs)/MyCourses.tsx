@@ -10,21 +10,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
 import CourseCard from "@/components/CourseCard";
 import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
 import CourseTabs, { CourseTab } from "@/components/courses/CourseTabs";
-
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
-import { Radius } from "@/constants/radius";
-
+import { Radius } from "@/constants/radius"
 import LoadingView from "@/components/ui/LoadingView";
 import { useOfflineCourses } from "@/hooks/useOfflineCourses";
-
 const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
-
 export default function MyCourses() {
   const router = useRouter();
 
