@@ -4,21 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="details done2">
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/app/checkout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CheckoutHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CourseSummaryCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/CreditCardForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/InputField.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/OrderSummaryCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PaymentTabs.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/PrimaryButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/SectionTitle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/checkout/TrustBadges.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/constants/mockcourses.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LearnFiesta/types/CheckoutFormData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ac338559-bb53-4c71-8374-dd14e8843a46" name="Changes" comment="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2">
+      <changelist_data name="salehowes12" email="s12326654@stu.najah.edu" automatic="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/CourseHeader.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/CourseTabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/CurriculumTab.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/Coursetabs/ResourcesTab.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/InstructorCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LearnFiesta/components/courseDetails/VideoPreview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/InstructorCourses.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/InstructorCourses.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/create-course.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(instructor)/create-course.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(learning)/course/[id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courses/CourseCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courses/CourseCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/courses/Rating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/courses/Rating.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/components/haptic-tab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/components/haptic-tab.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LearnFiesta/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/LearnFiesta/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,14 +33,6 @@
   <component name="ComposerSettings">
     <execution />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="TypeScript JSX File" />
-        <option value="TypeScript File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
@@ -44,7 +41,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="learnfiesta" />
+        <entry key="$PROJECT_DIR$" value="QusaiNew" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,9 +59,6 @@
   }
 }</component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\Users\user\.config\herd-lite\bin\php.exe" />
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -76,23 +70,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;QusaiNew&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/wamp64/www&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\user\\PhpstormProjects\\group-8\\LearnFiesta\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "learnfiesta",
+    "last_opened_file_path": "C:/wamp64/www",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\user\\PhpstormProjects\\group-8\\LearnFiesta\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\PhpstormProjects\group-8\LearnFiesta\app\(instructor)" />
@@ -141,17 +134,6 @@
       <workItem from="1778068999933" duration="7728000" />
       <workItem from="1778078585545" duration="48000" />
       <workItem from="1778078645901" duration="767000" />
-      <workItem from="1778098556353" duration="38000" />
-      <workItem from="1778157881807" duration="2259000" />
-      <workItem from="1778163439059" duration="1746000" />
-      <workItem from="1778165285265" duration="8938000" />
-      <workItem from="1778197460263" duration="461000" />
-      <workItem from="1778247319793" duration="6179000" />
-      <workItem from="1778279544932" duration="24000" />
-      <workItem from="1778281267615" duration="727000" />
-      <workItem from="1778282339118" duration="3209000" />
-      <workItem from="1778331238049" duration="12011000" />
-      <workItem from="1778530324414" duration="107000" />
     </task>
     <task id="LOCAL؜-٠٠٠٠١" summary="loaddone">
       <option name="closed" value="true" />
@@ -161,117 +143,15 @@
       <option name="project" value="LOCAL؜" />
       <updated>1776274350502</updated>
     </task>
-    <task id="LOCAL؜-٠٠٠٠٢" summary="details done">
-      <option name="closed" value="true" />
-      <created>1778257958241</created>
-      <option name="number" value="٠٠٠٠٢" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٢" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778257958241</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٣" summary="details done1">
-      <option name="closed" value="true" />
-      <created>1778282550258</created>
-      <option name="number" value="٠٠٠٠٣" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٣" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778282550259</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٤" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283477094</created>
-      <option name="number" value="٠٠٠٠٤" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٤" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283477094</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٥" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283702785</created>
-      <option name="number" value="٠٠٠٠٥" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٥" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283702785</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٦" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778283934593</created>
-      <option name="number" value="٠٠٠٠٦" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٦" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778283934593</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٧" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284034974</created>
-      <option name="number" value="٠٠٠٠٧" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٧" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284034974</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٨" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284103504</created>
-      <option name="number" value="٠٠٠٠٨" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٨" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284103504</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠٠٩" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284194117</created>
-      <option name="number" value="٠٠٠٠٩" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠٠٩" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284194117</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٠" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284448278</created>
-      <option name="number" value="٠٠٠١٠" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٠" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284448278</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١١" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778284777754</created>
-      <option name="number" value="٠٠٠١١" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١١" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778284777754</updated>
-    </task>
-    <task id="LOCAL؜-٠٠٠١٢" summary="details done2">
-      <option name="closed" value="true" />
-      <created>1778285152545</created>
-      <option name="number" value="٠٠٠١٢" />
-      <option name="presentableId" value="LOCAL؜-٠٠٠١٢" />
-      <option name="project" value="LOCAL؜" />
-      <updated>1778285152545</updated>
-    </task>
-    <option name="localTasksCounter" value="13" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="loaddone" />
     <MESSAGE value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
-    <MESSAGE value="details done" />
-    <MESSAGE value="details done1" />
-    <MESSAGE value="details done2" />
-    <option name="LAST_COMMIT_MESSAGE" value="details done2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge pull request #20 from shady-stu/saleh&#10;&#10;done 2" />
   </component>
 </project>

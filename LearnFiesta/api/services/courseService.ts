@@ -1,35 +1,30 @@
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
-  limit,
+  serverTimestamp,
   onSnapshot,
   query,
-  serverTimestamp,
-  updateDoc,
   where,
+  limit,
+  Unsubscribe,
+  getDoc,
+  doc,
   writeBatch,
-  type Unsubscribe,
+  updateDoc,
 } from "firebase/firestore";
 
 import { auth, db } from "@/api/services/firebase";
 import { Course, CreateCourseDTO } from "@/types/course";
 
-const normalizeCourse = (id: string, data: Record<string, any>): Course => ({
+const normalizeCourse = (id: string, data: any): Course => ({
   id,
   title: data.title ?? "",
-  description: data.description ?? "",
-  whatYouWillLearn: data.whatYouWillLearn ?? [],
   instructorId: data.instructorId ?? "",
-  instructorName: data.instructorName ?? "Instructor",
-  categoryId: data.categoryId ?? "",
-  categoryName: data.categoryName ?? "",
-  duration: data.duration ?? "0m",
-  totalLessons: data.totalLessons ?? 0,
+  instructorName: data.instructorName ?? "",
+  duration: data.duration ?? "",
   rating: data.rating ?? 0,
   reviewsCount: data.reviewsCount ?? 0,
-  price: Number(data.price ?? 0),
+  price: data.price ?? 0,
   oldPrice: data.oldPrice ?? null,
   imageUrl: data.imageUrl ?? "",
   badge: data.badge ?? null,

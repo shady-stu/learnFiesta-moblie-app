@@ -18,6 +18,7 @@ import HeroBanner from "@/components/home/HeroBanner";
 import ContinueLearningCard from "@/components/home/ContinueLearningCard";
 import CourseCard from "@/components/home/CourseCard";
 import CategoryCard from "@/components/home/CategoryCard";
+import LoadingView from "@/components/ui/LoadingView";
 
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
@@ -28,7 +29,7 @@ import { useCategories } from "@/hooks/useCategories";
 export default function HomeScreen() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) router.replace("/(auth)/login");
+      if (!user) router.replace("/login");
     });
 
     return unsubscribe;
@@ -49,7 +50,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={["top"]}>
-      <AppHeader onCartPress={() => router.push("/cart")} />
+      <AppHeader />
 
       <ScrollView
         contentContainerStyle={styles.content}
@@ -93,7 +94,6 @@ export default function HomeScreen() {
               renderItem={({ item }) => (
                 <View style={styles.courseWrapper}>
                   <CourseCard
-                    courseId={item.id}
                     title={item.title}
                     instructor={item.instructorName}
                     rating={item.rating}
@@ -154,6 +154,18 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
+
+    <Pressable
+          onPress={() =>
+            router.push({
+              pathname: '/create-course',
+            })
+          }
+          style={styles.testButton}
+        >
+          <Text style={styles.testButtonText}>Create Course</Text>
+        </Pressable>
+
     </SafeAreaView>
   );
 }
@@ -193,5 +205,23 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+  },
+
+  testButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: 999,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+  },
+  testButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

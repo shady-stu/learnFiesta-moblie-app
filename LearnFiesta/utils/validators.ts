@@ -1,3 +1,4 @@
+// utils/validators.ts
 export const validateEmail = (email: string): string | null => {
     if (!email) return "Email is required";
     const regex = /\S+@\S+\.\S+/;
@@ -11,6 +12,7 @@ export const validatePassword = (password: string): string | null => {
     return null;
 };
 
+// Shared type for registration form (used across files)
 export type RegisterFormData = {
     fullName: string;
     email: string;
