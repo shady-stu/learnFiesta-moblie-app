@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import {Colors} from "@/constants/colors";
 import PrimaryButton from "./PrimaryButton";
-import {Course} from "@/types/course";
+import { CartItem } from "@/types/cart";
 type OrderSummaryCardProps ={
-    courses: Course[];
+    courses: CartItem[];
     onPress: () => void;
     total: number;
 }
@@ -22,14 +22,8 @@ const OrderSummaryCard = ({onPress, courses, total}: OrderSummaryCardProps) => {
                 </View>
             ))}
 
-
-            <View style={styles.row}>
-                <Text style={styles.discount}>Discount (FIESTA10)</Text>
-                <Text style={styles.discount}>-$10.00</Text>
-            </View>
-
             <View style={styles.divider} />
-
+s
             <View style={styles.row}>
                 <Text style={styles.total}>Total</Text>
                 <Text style={styles.totalPrice}>

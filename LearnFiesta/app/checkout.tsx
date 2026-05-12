@@ -1,5 +1,5 @@
-import React from "react";
-import { ScrollView, View, StyleSheet,} from "react-native";
+import React, {useState} from "react";
+import { Text,ScrollView, View, StyleSheet,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Colors} from "@/constants/colors";
 import CheckoutHeader from "../components/checkout/CheckoutHeader";
@@ -11,9 +11,13 @@ import OrderSummaryCard from "../components/checkout/OrderSummaryCard";
 import TrustBadges from "../components/checkout/TrustBadges";
 import {useForm} from "react-hook-form";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
-import { mockCourses } from "@/constants/mockcourses";
+import { useCartContext } from "./context/CartContext";
+
 export default function Checkout  ()  {
+    const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
+    const { cart } = useCartContext();
     const { control, handleSubmit } = useForm<CheckoutFormData>({
+        mode: "all",
         defaultValues: {
             cardholderName: "",
             cardNumber: "",
@@ -21,11 +25,13 @@ export default function Checkout  ()  {
             cvv: "",
         },
     });
-    const subtotal = mockCourses.reduce((s, c) => s + c.price, 0);
-    const discount = 10;
-    const total = subtotal - discount;
-    const onSubmit = (data: any) => {
-        console.log(data);
+    const subtotal = cart.items.reduce(
+        (sum, item) => sum + item.price,
+        0
+    );
+    const onSubmit = (data: CheckoutFormData) => {
+        console.log("Checkout Data:", data);
+        console.log("Cart:", cart.items);
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -40,19 +46,37 @@ export default function Checkout  ()  {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.list}
                 >
-                {mockCourses.map((course) => (
-                    <View key={course.id} style={{ marginBottom: 12 }}>
-                        <CourseSummaryCard course={course} />
-                    </View>
-                ))}</ScrollView>
+                    {cart.items.map((item) => (
+                        <View
+                            key={item.courseId}
+                            style={styles.cardWrapper}
+                        >
+                            <CourseSummaryCard course={item} />
+                        </View>
+                    ))}</ScrollView>
                 <View style={{ height: 32 }} />
                 <SectionTitle title="Payment Method" />
-                <PaymentTabs />
-                <CreditCardForm control={control} />
+                <PaymentTabs
+                    selected={paymentMethod}
+                    onChange={setPaymentMethod}
+                />
+                {paymentMethod === "card" ? (
+                    <CreditCardForm control={control} />
+                ) : (
+                    <View style={{ padding: 16 }}>
+                        <Text style={{ fontWeight: "500" }}>
+                            Pay with PayPal
+                        </Text>
+
+                        <Text style={{ color: "gray", marginTop: 6 }}>
+                            You will be redirected to PayPal after checkout.
+                        </Text>
+                    </View>
+                )}
                 <View style={{ height: 32 }} />
                 <OrderSummaryCard
-                    courses={mockCourses}
-                    total={total}
+                    courses={cart.items}
+                    total={subtotal}
                     onPress={handleSubmit(onSubmit)}
                 />
                 <TrustBadges />
@@ -79,6 +103,6 @@ const styles = StyleSheet.create({
     },
 
     cardWrapper: {
-        width: 320, // 👈 important for horizontal layout
+        width: 320,
     },
 });
