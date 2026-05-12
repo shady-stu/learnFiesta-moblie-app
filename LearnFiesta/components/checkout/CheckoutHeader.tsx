@@ -2,13 +2,18 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {Colors} from "@/constants/colors";
-
+import { useRouter } from "expo-router";
 const CheckoutHeader = () => {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <View style={styles.left}>
-                <TouchableOpacity>
-                    <Ionicons name="arrow-back" size={24} color={Colors.primary} />
+                <TouchableOpacity onPress={() => router.push("/cart")}>
+                    <Ionicons
+                        name="arrow-back"
+                        size={24}
+                        color={Colors.primary}
+                    />
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Checkout</Text>

@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Control } from "react-hook-form";
 import InputField from "./InputField";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
-interface CreditCardFormProps {
+type CreditCardFormProps = {
     control: Control<CheckoutFormData>;
 }
 

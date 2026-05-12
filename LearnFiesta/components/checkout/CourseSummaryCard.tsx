@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { Colors } from "@/constants/colors";
-import {Course} from "@/types/course";
+import { CartItem } from "@/types/cart";
 type Props = {
-    course: Course;
+    course: CartItem;
 };
 const CourseSummaryCard =  ({ course }: Props)  => {
     return (
@@ -21,13 +21,6 @@ const CourseSummaryCard =  ({ course }: Props)  => {
                 <Text style={styles.instructor}>
                     Instructor: {course.instructorName}
                 </Text>
-
-                <View style={styles.ratingRow}>
-                    <Text style={styles.star}>⭐</Text>
-                    <Text style={styles.rating}>
-                        {course.rating} ({course.reviewsCount} reviews)
-                    </Text>
-                </View>
             </View>
 
             <View style={styles.priceContainer}>

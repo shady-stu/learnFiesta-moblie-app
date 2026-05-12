@@ -54,7 +54,7 @@ export default function CartScreen() {
           <CartSummary
             totalItems={cart.totalItems}
             totalPrice={cart.totalPrice}
-            onCheckout={() => { /* checkout logic */ }}
+            onCheckout={() => router.push("/checkout")}
           />
         </>
       )}
