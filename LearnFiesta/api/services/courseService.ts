@@ -1,35 +1,37 @@
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
-  limit,
+  serverTimestamp,
   onSnapshot,
   query,
-  serverTimestamp,
-  updateDoc,
   where,
+  limit,
+  Unsubscribe,
+  getDoc,
+  doc,
   writeBatch,
-  type Unsubscribe,
+  updateDoc,
 } from "firebase/firestore";
 
 import { auth, db } from "@/api/services/firebase";
 import { Course, CreateCourseDTO } from "@/types/course";
 
-const normalizeCourse = (id: string, data: Record<string, any>): Course => ({
+const normalizeCourse = (id: string, data: any): Course => ({
   id,
   title: data.title ?? "",
-  description: data.description ?? "",
-  whatYouWillLearn: data.whatYouWillLearn ?? [],
-  instructorId: data.instructorId ?? "",
-  instructorName: data.instructorName ?? "Instructor",
   categoryId: data.categoryId ?? "",
   categoryName: data.categoryName ?? "",
-  duration: data.duration ?? "0m",
+  instructorId: data.instructorId ?? "",
+  instructorName: data.instructorName ?? "",
+  duration: data.duration ?? "",
   totalLessons: data.totalLessons ?? 0,
+  description: data.description ?? "",
+  whatYouWillLearn: Array.isArray(data.whatYouWillLearn)
+    ? data.whatYouWillLearn
+    : [],
   rating: data.rating ?? 0,
   reviewsCount: data.reviewsCount ?? 0,
-  price: Number(data.price ?? 0),
+  price: data.price ?? 0,
   oldPrice: data.oldPrice ?? null,
   imageUrl: data.imageUrl ?? "",
   badge: data.badge ?? null,
@@ -111,6 +113,7 @@ export type CourseFoundation = {
   id: string;
   title: string;
   description: string;
+  whatYouWillLearn: string[];
   categoryId: string;
   categoryName: string;
   imageUrl: string;
@@ -132,6 +135,9 @@ export const fetchCourseFoundation = async (
     id: snapshot.id,
     title: data.title ?? "",
     description: data.description ?? "",
+    whatYouWillLearn: Array.isArray(data.whatYouWillLearn)
+      ? data.whatYouWillLearn
+      : [],
     categoryId: data.categoryId ?? "",
     categoryName: data.categoryName ?? "",
     imageUrl: data.imageUrl ?? "",
@@ -225,6 +231,7 @@ export const updateCourseFoundation = async (
     categoryName: data.categoryName || "",
     imageUrl: data.thumbnail || data.imageUrl || "",
     price: Number(data.price),
+    whatYouWillLearn: data.whatYouWillLearn || [],
     badge: Number(data.price) === 0 ? "Free" : "Best Seller",
     updatedAt: serverTimestamp(),
   });

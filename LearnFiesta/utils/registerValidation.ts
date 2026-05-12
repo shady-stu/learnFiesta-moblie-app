@@ -1,7 +1,5 @@
-// utils/registerValidation.ts
 import { validatePassword, type RegisterFormData } from './validators';
 
-// Re-export type if needed elsewhere
 export type { RegisterFormData };
 
 export const validateFullName = (value: string) => {

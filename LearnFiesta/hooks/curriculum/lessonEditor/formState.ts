@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState, useWatch } from "react-hook-form";
 import type { CurriculumLesson } from "@/api/services/curriculumService";
 import { lessonFormSchema } from "@/domain/curriculum/schemas";
 import {
@@ -23,6 +23,13 @@ export function useLessonEditorFormState() {
     mode: "onChange",
     reValidateMode: "onChange",
   });
+  const lessonForm = useWatch({
+    control: lessonFormController.control,
+    defaultValue: emptyLessonForm(),
+  }) as LessonFormState;
+  const { errors } = useFormState({
+    control: lessonFormController.control,
+  });
 
   const openLessonEditor = (sectionId: string, lesson?: CurriculumLesson) => {
     setLessonEditor({ sectionId, lesson });
@@ -35,7 +42,40 @@ export function useLessonEditorFormState() {
   };
 
   const setLessonField = (field: string, value: string) => {
-    lessonFormController.setValue(field as any, value as any, setValueOptions);
+    if (field === "title") {
+      lessonFormController.setValue("title", value, setValueOptions);
+      lessonFormController.trigger("title");
+      return;
+    }
+
+    if (field === "type") {
+      lessonFormController.setValue("type", value as LessonFormState["type"], setValueOptions);
+      lessonFormController.trigger("type");
+      return;
+    }
+
+    if (field === "durationMinutes") {
+      lessonFormController.setValue("durationMinutes", value, setValueOptions);
+      lessonFormController.trigger("durationMinutes");
+      return;
+    }
+
+    if (field === "description") {
+      lessonFormController.setValue("description", value, setValueOptions);
+      lessonFormController.trigger("description");
+      return;
+    }
+
+    if (field === "contentUrl") {
+      lessonFormController.setValue("contentUrl", value, setValueOptions);
+      lessonFormController.trigger("contentUrl");
+      return;
+    }
+
+    if (field === "keyConceptsText") {
+      lessonFormController.setValue("keyConceptsText", value, setValueOptions);
+      lessonFormController.trigger("keyConceptsText");
+    }
   };
 
   // Update one resource row field by index
@@ -46,6 +86,7 @@ export function useLessonEditorFormState() {
       return { ...resource, [field]: value };
     });
     lessonFormController.setValue("resources", updated, setValueOptions);
+    lessonFormController.trigger(`resources.${index}`);
   };
 
   // Add a new empty resource row
@@ -76,6 +117,7 @@ export function useLessonEditorFormState() {
       return { ...item, [field]: value };
     });
     lessonFormController.setValue("qa", updated, setValueOptions);
+    lessonFormController.trigger(`qa.${index}`);
   };
 
   // Add a new empty Q&A row
@@ -100,6 +142,8 @@ export function useLessonEditorFormState() {
 
   return {
     lessonEditor,
+    lessonForm,
+    errors,
     lessonFormController,
     openLessonEditor,
     closeLessonEditor,

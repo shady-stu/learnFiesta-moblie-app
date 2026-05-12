@@ -27,8 +27,8 @@ export function useLessonEditor(courseId?: string) {
 
   return {
     lessonEditor: formState.lessonEditor,
-    lessonForm: formState.lessonFormController.watch(),
-    errors: formState.lessonFormController.formState.errors,
+    lessonForm: formState.lessonForm,
+    errors: formState.errors,
     saving: mutations.saving,
     openLessonEditor: formState.openLessonEditor,
     closeLessonEditor: formState.closeLessonEditor,

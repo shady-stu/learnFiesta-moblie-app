@@ -28,7 +28,7 @@ import { useCategories } from "@/hooks/useCategories";
 export default function HomeScreen() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) router.replace("/(auth)/login");
+      if (!user) router.replace("/login");
     });
 
     return unsubscribe;
@@ -49,7 +49,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={["top"]}>
-      <AppHeader onCartPress={() => router.push("/cart")} />
+      <AppHeader />
 
       <ScrollView
         contentContainerStyle={styles.content}
@@ -154,6 +154,9 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
+
+   
+
     </SafeAreaView>
   );
 }
@@ -193,5 +196,23 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+  },
+
+  testButton: {
+    position: "absolute",
+    bottom: 70,
+    right: Spacing.xl,
+    backgroundColor: Colors.primary,
+    borderRadius: 999,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+  },
+  testButtonText: {
+    color: Colors.white,
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

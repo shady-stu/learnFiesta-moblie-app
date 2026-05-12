@@ -83,10 +83,13 @@ const thumbnail = watch("thumbnail");
       const savedCourseId = await mutateAsync({
         courseId,
         data: {
-          ...data,
-          imageUrl: data.thumbnail,
-          price: Number(data.price),
+          title: data.title,
+          category: data.category,
+          description: data.description,
           categoryName: selectedCategory?.title || "",
+          imageUrl: data.thumbnail,
+          thumbnail: data.thumbnail,
+          price: Number(data.price),
         },
       });
       
@@ -199,6 +202,7 @@ const thumbnail = watch("thumbnail");
             </>
           )}
         />
+
       </View>
 
      
