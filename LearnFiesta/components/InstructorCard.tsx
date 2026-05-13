@@ -9,10 +9,8 @@ import { Radius } from '@/constants/radius';
 export type Instructor = {
   id: string;
   courseId: string;
-
   title: string;
   imageUrl: string;
-
   students: number;
   revenue: number;
   rating: number;
@@ -35,7 +33,6 @@ const InstructorCard = ({ title, students, revenue, rating, isActive, imageUrl }
           </View>
         )}
       </View>
-
       <View style={styles.cardBody}>
         <Text style={styles.cardTitle}>{title}</Text>
 
