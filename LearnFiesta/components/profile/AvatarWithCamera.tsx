@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, Alert, ActivityIndicator, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '@/api/services/firebase';
 import { uploadToCloudinary } from '@/api/services/cloudinary';
+import { Colors } from '@/constants/colors';
 import { profileStyles as styles } from './styles';
 
 type Props = {
@@ -71,11 +73,11 @@ export default function AvatarWithCamera({ photoURL, onPhotoUpdate }: Props) {
                 <Image source={{ uri: photoURL }} style={styles.avatar} />
             ) : (
                 <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                    <Text style={styles.avatarPlaceholderText}>📷</Text>
+                    <Text style={styles.avatarPlaceholderText}>No Photo</Text>
                 </View>
             )}
             <View style={styles.editIconBadge}>
-                <Text style={styles.editIcon}>✎</Text>
+                <Ionicons name="camera-outline" size={16} color={Colors.white} />
             </View>
             {uploading && <ActivityIndicator style={{ position: 'absolute', top: 40, left: 40 }} />}
         </TouchableOpacity>

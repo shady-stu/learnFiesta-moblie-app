@@ -1,6 +1,7 @@
 
 import { useEffect } from "react";
 import { View, ScrollView, Button, Text, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,6 +15,7 @@ import { useCourseFoundation } from "@/hooks/useCourseFoundation";
 import { useSaveCourseFoundation } from "@/hooks/useSaveCourseFoundation";
 import { useCategories } from '@/hooks/useCategories';
 import { useLocalSearchParams, useRouter } from "expo-router";
+import NavigationHeader from "@/components/common/NavigationHeader";
 
 // 1. Define your Zod Validation Schema
 const courseSchema = z.object({
@@ -122,11 +124,17 @@ const thumbnail = watch("thumbnail");
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 40 }}
-      showsVerticalScrollIndicator={false}
-    >
+    <SafeAreaView style={styles.screen} edges={["top"]}>
+      <NavigationHeader
+        title={isEditing ? "Edit Course" : "Create Course"}
+        onBackPress={() => router.replace("/(instructor)/InstructorCourses")}
+      />
+
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.step}>STEP 1</Text>
@@ -278,11 +286,16 @@ const thumbnail = watch("thumbnail");
           />
         </View>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#FDF7FF",
+  },
   container: {
     flex: 1,
     backgroundColor: "#FDF7FF",

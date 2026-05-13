@@ -1,7 +1,5 @@
-import { auth } from "@/api/services/firebase";
-import {useAddToCart} from "@/hooks/useCart";
 import React, { useState } from "react";
-import {View, ScrollView, StyleSheet, Text, ActivityIndicator, Alert} from "react-native";
+import {View, ScrollView, StyleSheet, Text, ActivityIndicator} from "react-native";
 import CourseHeader from "@/components/courseDetails/CourseHeader";
 import VideoPreview from "@/components/courseDetails/VideoPreview";
 import CourseHeaderInfo from "@/components/courseDetails/CourseHeaderInfo";
@@ -18,10 +16,10 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import {useCourseById} from "@/libr/useCourseById";
 import Toast from "@/components/ui/Toast";
 import { useToast } from "@/hooks/useToast";
+import { useCartContext } from "@/app/context/CartContext";
 const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 export default function CourseDetailsScreen() {
-    const userId = auth.currentUser?.uid;
-    const addToCartMutation = useAddToCart(userId ?? "");
+    const { addItem, isAdding, isInCart } = useCartContext();
     const [activeTab, setActiveTab] = useState("Curriculum");
     const { id } = useLocalSearchParams();
     const { data: course, isLoading } = useCourseById(id as string);
@@ -31,8 +29,12 @@ export default function CourseDetailsScreen() {
         if (!course) return null;
         if (activeTab === "Curriculum") { return <CurriculumTab courseId={course.id} />; }
         if (activeTab === "Resources") { return <ResourcesTab courseId={course.id}/>; }
-        if (activeTab === "What you'll learn") { return ( <LearnTab items={course.whatYouWillLearn || []} /> ); }
-        if (activeTab === "Description") { return ( <DescriptionTab description={course.description || ""}/> ); }
+        if (activeTab === "What you'll learn") {
+            return <LearnTab items={course.whatYouWillLearn || []} />;
+        }
+        if (activeTab === "Description") {
+            return <DescriptionTab description={course.description || ""} />;
+        }
     };
 
     if (isLoading) {
@@ -51,33 +53,31 @@ export default function CourseDetailsScreen() {
         );
     }
     const handleAddToCart = () => {
-        if (!userId) {
-            Alert.alert("Login required", "Please login first");
+        if (isInCart(course.id)) {
+            showToast("Already in cart", "success");
             return;
         }
-        addToCartMutation.mutate({
+        addItem({
             id: course.id,
             courseId: course.id,
             title: course.title,
             price: course.price,
             imageUrl: course.imageUrl,
             instructorName: course.instructorName,
-        },{
-            onSuccess: () => {
+        })
+            .then(() => {
                 showToast("Added to cart", "success");
-            },
-                onError: () => {
+            })
+            .catch(() => {
                 showToast("Failed to add", "error");
-            }
-        });
+            });
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <CourseHeader
                 title="Course Details"
-                onBack={() => router.replace("/")}
-                onShare={() => {}}
+                onBack={() => router.back()}
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -99,7 +99,9 @@ export default function CourseDetailsScreen() {
                     avatarUrl="https://i.pravatar.cc/150?img=12"
                 />
 
-                <View style={styles.priceSection}> <Price price={course.price} /> </View>
+                <View style={styles.priceSection}>
+                    <Price price={course.price} />
+                </View>
 
                 <CourseTabs
                     tabs={TABS}
@@ -107,10 +109,16 @@ export default function CourseDetailsScreen() {
                     onTabChange={setActiveTab}
                 />
 
-                <View style={styles.content}> {renderTabContent()} </View>
+                <View style={styles.content}>
+                    {renderTabContent()}
+                </View>
             </ScrollView>
 
-            <EnrollBottomBar onEnroll={handleAddToCart}/>
+            <EnrollBottomBar
+                onEnroll={handleAddToCart}
+                loading={isAdding}
+                enrollLabel={isInCart(course.id) ? "In Cart" : "Add to Cart"}
+            />
             <Toast
                 visible={toast.visible}
                 message={toast.message}

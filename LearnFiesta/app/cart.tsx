@@ -1,12 +1,13 @@
 import { FlatList, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 
 
 import CartItem from '@/components/cart/CartItem';
 import CartSummary from '@/components/cart/CartSummary';
 import CartEmpty from '@/components/cart/CartEmpty';
 import CategoryScreenState from '@/components/category/CategoryScreenState';
+import NavigationHeader from '@/components/common/NavigationHeader';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { useCartContext } from './context/CartContext';
@@ -17,7 +18,7 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <Stack.Screen options={{ title: 'My Cart' }} />
+      <NavigationHeader title="My Cart" />
 
       {isLoading && (
         <CategoryScreenState loading title="Loading cart..." />

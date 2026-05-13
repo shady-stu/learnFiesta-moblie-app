@@ -7,6 +7,8 @@ import {
   emptyLessonForm,
   type LessonEditorState,
   type LessonFormState,
+  type LessonQaItem,
+  type ResourceFormState,
 } from "@/types/curriculum";
 
 const setValueOptions = {
@@ -14,6 +16,14 @@ const setValueOptions = {
   shouldValidate: true,
   shouldTouch: true,
 } as const;
+
+const lessonTextFields = [
+  "title",
+  "durationMinutes",
+  "description",
+  "contentUrl",
+  "keyConceptsText",
+] as const;
 
 export function useLessonEditorFormState() {
   const [lessonEditor, setLessonEditor] = useState<LessonEditorState>(null);
@@ -23,10 +33,12 @@ export function useLessonEditorFormState() {
     mode: "onChange",
     reValidateMode: "onChange",
   });
+
   const lessonForm = useWatch({
     control: lessonFormController.control,
     defaultValue: emptyLessonForm(),
   }) as LessonFormState;
+
   const { errors } = useFormState({
     control: lessonFormController.control,
   });
@@ -41,103 +53,71 @@ export function useLessonEditorFormState() {
     lessonFormController.reset(emptyLessonForm());
   };
 
-  const setLessonField = (field: string, value: string) => {
-    if (field === "title") {
-      lessonFormController.setValue("title", value, setValueOptions);
-      lessonFormController.trigger("title");
-      return;
-    }
+  const saveLessonField = (
+    field: (typeof lessonTextFields)[number],
+    value: string
+  ) => {
+    lessonFormController.setValue(field, value, setValueOptions);
+    lessonFormController.trigger(field);
+  };
 
+  const saveResources = (resources: ResourceFormState[]) => {
+    lessonFormController.setValue("resources", resources, setValueOptions);
+  };
+
+  const saveQa = (qa: LessonQaItem[]) => {
+    lessonFormController.setValue("qa", qa, setValueOptions);
+  };
+
+  const setLessonField = (field: string, value: string) => {
     if (field === "type") {
       lessonFormController.setValue("type", value as LessonFormState["type"], setValueOptions);
       lessonFormController.trigger("type");
       return;
     }
 
-    if (field === "durationMinutes") {
-      lessonFormController.setValue("durationMinutes", value, setValueOptions);
-      lessonFormController.trigger("durationMinutes");
-      return;
-    }
-
-    if (field === "description") {
-      lessonFormController.setValue("description", value, setValueOptions);
-      lessonFormController.trigger("description");
-      return;
-    }
-
-    if (field === "contentUrl") {
-      lessonFormController.setValue("contentUrl", value, setValueOptions);
-      lessonFormController.trigger("contentUrl");
-      return;
-    }
-
-    if (field === "keyConceptsText") {
-      lessonFormController.setValue("keyConceptsText", value, setValueOptions);
-      lessonFormController.trigger("keyConceptsText");
-    }
+    const textField = lessonTextFields.find((item) => item === field);
+    if (textField) saveLessonField(textField, value);
   };
 
-  // Update one resource row field by index
   const setResourceField = (index: number, field: string, value: string) => {
     const resources = lessonFormController.getValues("resources");
-    const updated = resources.map((resource, resourceIndex) => {
-      if (resourceIndex !== index) return resource;
-      return { ...resource, [field]: value };
-    });
-    lessonFormController.setValue("resources", updated, setValueOptions);
+    saveResources(
+      resources.map((resource, resourceIndex) =>
+        resourceIndex === index ? { ...resource, [field]: value } : resource
+      )
+    );
     lessonFormController.trigger(`resources.${index}`);
   };
 
-  // Add a new empty resource row
   const addResourceRow = () => {
     const resources = lessonFormController.getValues("resources");
-    lessonFormController.setValue(
-      "resources",
-      [...resources, { title: "", type: "pdf", url: "" }],
-      setValueOptions
-    );
+    saveResources([...resources, { title: "", type: "pdf", url: "" }]);
   };
 
-  // Remove resource row by index
   const removeResourceRow = (index: number) => {
     const resources = lessonFormController.getValues("resources");
-    lessonFormController.setValue(
-      "resources",
-      resources.filter((_, resourceIndex) => resourceIndex !== index),
-      setValueOptions
-    );
+    saveResources(resources.filter((_, resourceIndex) => resourceIndex !== index));
   };
 
-  // Update one Q&A row field by index
   const setQaField = (index: number, field: "question" | "answer", value: string) => {
     const qa = lessonFormController.getValues("qa");
-    const updated = qa.map((item, qaIndex) => {
-      if (qaIndex !== index) return item;
-      return { ...item, [field]: value };
-    });
-    lessonFormController.setValue("qa", updated, setValueOptions);
+    saveQa(
+      qa.map((item, qaIndex) =>
+        qaIndex === index ? { ...item, [field]: value } : item
+      )
+    );
     lessonFormController.trigger(`qa.${index}`);
   };
 
-  // Add a new empty Q&A row
   const addQaRow = () => {
     const qa = lessonFormController.getValues("qa");
-    lessonFormController.setValue(
-      "qa",
-      [...qa, { question: "", answer: "" }],
-      setValueOptions
-    );
+    saveQa([...qa, { question: "", answer: "" }]);
   };
 
-  // Remove Q&A row by index
   const removeQaRow = (index: number) => {
     const qa = lessonFormController.getValues("qa");
-    lessonFormController.setValue(
-      "qa",
-      qa.filter((_, qaIndex) => qaIndex !== index),
-      setValueOptions
-    );
+    saveQa(qa.filter((_, qaIndex) => qaIndex !== index));
   };
 
   return {

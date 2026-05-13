@@ -7,8 +7,7 @@ import { Spacing } from '@/constants/spacing';
 import Price from "@/components/ui/Price";
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { auth } from "@/api/services/firebase";
-import { useAddToCart } from "@/hooks/useCart";
+import { useCartContext } from "@/app/context/CartContext";
 type CourseCardProps = {
   courseId: string;
   title: string;
@@ -33,17 +32,18 @@ export default function CourseCard({
 }: CourseCardProps) {
   const [flipped, setFlipped] = useState(false);
   const router = useRouter();
-  const userId = auth.currentUser?.uid ?? "";
-  const addToCartMutation = useAddToCart(userId);
+  const { addItem, isAdding, isInCart } = useCartContext();
+  const inCart = isInCart(courseId);
 
   const handleAddToCart = async () => {
-    if (!userId) {
-      Alert.alert("Sign in required", "Please sign in before adding items to cart.");
+    if (inCart) {
+      Alert.alert("Already in cart", "This course is already in your cart.");
+      setFlipped(false);
       return;
     }
 
-    await addToCartMutation.mutateAsync({
-      id: `${userId}-${courseId}`,
+    await addItem({
+      id: courseId,
       courseId,
       title,
       instructorName: instructor,
@@ -80,10 +80,10 @@ export default function CourseCard({
           <Pressable
             style={styles.primaryAction}
             onPress={handleAddToCart}
-            disabled={addToCartMutation.isPending}
+            disabled={isAdding}
           >
             <Text style={styles.primaryActionText}>
-              {addToCartMutation.isPending ? "Adding..." : "Add to Cart"}
+              {isAdding ? "Adding..." : inCart ? "In Cart" : "Add to Cart"}
             </Text>
           </Pressable>
           <Pressable
