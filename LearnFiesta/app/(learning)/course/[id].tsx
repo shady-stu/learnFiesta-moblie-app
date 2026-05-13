@@ -7,7 +7,7 @@ import VideoPreview from "@/components/courseDetails/VideoPreview";
 import CourseHeaderInfo from "@/components/courseDetails/CourseHeaderInfo";
 import InstructorCard from "@/components/courseDetails/InstructorCard";
 import CourseTabs from "@/components/courseDetails/CourseTabs";
-import EnrollBottomBar from "@/components/courseDetails/ EnrollBottomBar";
+import EnrollBottomBar from "@/components/courseDetails/EnrollBottomBar";
 import Price from "@/components/ui/Price";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CurriculumTab from "@/components/courseDetails/Coursetabs/CurriculumTab";

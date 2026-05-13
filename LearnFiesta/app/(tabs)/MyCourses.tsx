@@ -22,7 +22,7 @@ import { Radius } from "@/constants/radius";
 
 import LoadingView from "@/components/ui/LoadingView";
 import { useOfflineCourses } from "@/hooks/useOfflineCourses";
-
+import { clearAllEnrollments } from "@/api/services/ServicebyCourse"
 const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
 
 export default function MyCourses() {
@@ -59,6 +59,13 @@ export default function MyCourses() {
         activeOpacity={0.8}
         onPress={() => setRefreshCount((count) => count + 1)}
       >
+        <TouchableOpacity
+            onPress={async () => {
+              await clearAllEnrollments();
+            }}
+        >
+          <Text>Clear Offline Courses</Text>
+        </TouchableOpacity>
         <Ionicons
           name="refresh-outline"
           size={18}
