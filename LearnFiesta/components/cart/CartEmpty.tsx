@@ -12,7 +12,7 @@ export default function CartEmpty() {
       <Text style={styles.subtitle}>Add courses to get started</Text>
 
       <Pressable
-        onPress={() => router.replace('/')}
+        onPress={() => router.replace('/(tabs)')}
         style={({ pressed }) => [
           styles.button,
           pressed && styles.buttonPressed,

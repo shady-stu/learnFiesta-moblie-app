@@ -23,7 +23,7 @@ const OrderSummaryCard = ({onPress, courses, total}: OrderSummaryCardProps) => {
             ))}
 
             <View style={styles.divider} />
-s
+
             <View style={styles.row}>
                 <Text style={styles.total}>Total</Text>
                 <Text style={styles.totalPrice}>

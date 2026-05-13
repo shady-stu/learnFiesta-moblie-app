@@ -6,27 +6,38 @@ import { Colors } from '@/constants/colors';
 type NavigationHeaderProps = {
   title: string;
   showBackButton?: boolean;
+  onBackPress?: () => void;
   onShare?: () => void;
 };
 
-export default function NavigationHeader({ title, showBackButton = true, onShare }: NavigationHeaderProps) {
+export default function NavigationHeader({
+  title,
+  showBackButton = true,
+  onBackPress,
+  onShare,
+}: NavigationHeaderProps) {
   const router = useRouter();
+  const handleBack = onBackPress ?? (() => router.back());
 
   return (
     <View style={styles.container}>
       {showBackButton ? (
-        <TouchableOpacity onPress={() => router.back()} style={styles.iconButton}>
+        <TouchableOpacity onPress={handleBack} style={styles.iconButton}>
           <Ionicons name="arrow-back" size={24} color={Colors.primary} />
         </TouchableOpacity>
       ) : (
         <View style={styles.iconButton} />
       )}
 
-      <Text style={styles.title}>{title}</Text>
+      <Text numberOfLines={1} style={styles.title}>{title}</Text>
 
-      <TouchableOpacity onPress={onShare} style={styles.iconButton}>
-        <Ionicons name="share-outline" size={24} color={Colors.primary} />
-      </TouchableOpacity>
+      {onShare ? (
+        <TouchableOpacity onPress={onShare} style={styles.iconButton}>
+          <Ionicons name="share-outline" size={24} color={Colors.primary} />
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.iconButton} />
+      )}
     </View>
   );
 }
@@ -40,14 +51,20 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: Colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.primary + '20', // إضافة شفافية 20% (hex: #5624D020)
+    borderBottomColor: Colors.border,
   },
   title: {
+    flex: 1,
+    textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
     color: Colors.textPrimary,
   },
   iconButton: {
+    width: 40,
+    height: 40,
     padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

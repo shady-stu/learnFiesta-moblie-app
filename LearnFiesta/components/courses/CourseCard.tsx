@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, Image, StyleSheet, TouchableOpacity, Pressable} from "react-native";
+import {View, Text, Image, StyleSheet, TouchableOpacity, Pressable, Alert} from "react-native";
 import Rating from "@/components/courses/Rating";
 import Price from "../ui/Price";
 import {Course} from "@/types/course";
@@ -8,6 +8,7 @@ import {Colors} from "@/constants/colors";
 import { Ionicons } from '@expo/vector-icons';
 import Badge from "@/components/ui/Badge";
 import { useRouter } from "expo-router";
+import { useCartContext } from "@/app/context/CartContext";
 type Props = {
     course: Course;
     isBookmarked: boolean;
@@ -16,8 +17,28 @@ type Props = {
 
 export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Props) {
     const router = useRouter();
-    return (
+    const { addItem, isAdding, isInCart } = useCartContext();
+    const inCart = isInCart(course.id);
 
+    const handleAddToCart = async () => {
+        if (inCart) {
+            Alert.alert("Already in cart", "This course is already in your cart.");
+            return;
+        }
+
+        await addItem({
+            id: course.id,
+            courseId: course.id,
+            title: course.title,
+            instructorName: course.instructorName,
+            price: course.price,
+            imageUrl: course.imageUrl,
+        });
+
+        Alert.alert("Added to cart", "Course was added to your cart.");
+    };
+
+    return (
 
         <Pressable
             onPress={() => router.push({pathname: "/course/[id]", params: { id: course.id },})}
@@ -31,13 +52,34 @@ export default function CourseCard({ course, isBookmarked, onToggleBookmark}: Pr
                 <View style={styles.topRow}>
                     {course.badge && <Badge label={course.badge} />}
 
-                    <TouchableOpacity onPress={onToggleBookmark}>
-                        <Ionicons
-                            name={isBookmarked ? "bookmark" : "bookmark-outline"}
-                            size={22}
-                            color={isBookmarked ? "#AA60C8" : "#999"}
-                        />
-                    </TouchableOpacity>
+                    <View style={styles.actions}>
+                        <TouchableOpacity
+                            onPress={(event) => {
+                                event.stopPropagation();
+                                handleAddToCart();
+                            }}
+                            disabled={isAdding}
+                        >
+                            <Ionicons
+                                name={inCart ? "cart" : "cart-outline"}
+                                size={22}
+                                color={inCart ? Colors.primary : "#999"}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={(event) => {
+                                event.stopPropagation();
+                                onToggleBookmark();
+                            }}
+                        >
+                            <Ionicons
+                                name={isBookmarked ? "bookmark" : "bookmark-outline"}
+                                size={22}
+                                color={isBookmarked ? "#AA60C8" : "#999"}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
 
@@ -85,6 +127,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 4,
+    },
+    actions: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
     },
     badge: {
         fontSize: 10,

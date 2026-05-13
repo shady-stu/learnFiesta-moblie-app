@@ -48,7 +48,7 @@ export default function Search() {
             <SearchInput
                 value={searchText}
                 onChange={setSearchText}
-                onBackPress={() => router.back()}
+                onBackPress={() => router.push("/(tabs)")}
                 onCartPress={() => router.push("/cart")}
             />
             <View style={{ marginBottom: 10 }}>

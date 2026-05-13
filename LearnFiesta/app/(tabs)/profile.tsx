@@ -85,6 +85,7 @@ export default function ProfileScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.header}>
                     <Text style={styles.appName}>LearnFiesta</Text>
+                    <Text style={styles.pageSubtitle}>Your learning profile and account settings</Text>
                 </View>
 
                 <View style={styles.userCard}>
@@ -94,6 +95,11 @@ export default function ProfileScreen() {
                     />
                     <Text style={styles.userName}>{profile.name}</Text>
                     <Text style={styles.userEmail}>{profile.email}</Text>
+                    <View style={styles.roleBadge}>
+                        <Text style={styles.roleBadgeText}>
+                            {(profile.role || 'student').toUpperCase()}
+                        </Text>
+                    </View>
 
                     <TouchableOpacity style={styles.editButton} onPress={() => setModalVisible(true)}>
                         <Text style={styles.editButtonText}>Edit Name</Text>

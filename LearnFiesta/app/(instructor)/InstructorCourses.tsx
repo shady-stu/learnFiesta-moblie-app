@@ -2,11 +2,12 @@ import {
   View,
   Text,
   ScrollView,
-  SafeAreaView,
   Pressable,
   StyleSheet,
 } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import InstructorCard from "@/components/InstructorCard";
 import LoadingView from "@/components/ui/LoadingView";
 import PerformanceCard from "@/components/PerformanceCard";
@@ -17,6 +18,7 @@ import { Typography } from "@/constants/typography";
 import { useInstructor } from "@/hooks/useInstructor";
 
 export default function InstructorCourses() {
+  const insets = useSafeAreaInsets();
   const { data: instructors = [], isLoading, isError } = useInstructor();
 
   if (isLoading) return <LoadingView />;
@@ -52,8 +54,21 @@ export default function InstructorCourses() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.topBar}>
+          <Pressable
+            onPress={() => router.push("/(tabs)/profile")}
+            style={({ pressed }) => [
+              styles.backButton,
+              pressed && styles.buttonPressed,
+            ]}
+          >
+            <Ionicons name="arrow-back" size={18} color={Colors.primary} />
+            <Text style={styles.backButtonText}>Back to Profile</Text>
+          </Pressable>
+        </View>
+
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Instructor Courses</Text>
           <Text style={styles.headerSubtitle}>
@@ -62,22 +77,36 @@ export default function InstructorCourses() {
         </View>
 
         <Text style={styles.sectionTitle}>Active Courses</Text>
-        {activeCourses.map((course) => (
-          <InstructorCard
-            key={course.id}
-            {...course}
-            onEdit={() => openEditCourse(course.courseId)}
-          />
-        ))}
+        {activeCourses.length > 0 ? (
+          activeCourses.map((course) => (
+            <InstructorCard
+              key={course.id}
+              {...course}
+              onEdit={() => openEditCourse(course.courseId)}
+            />
+          ))
+        ) : (
+          <View style={styles.emptyCard}>
+            <Text style={styles.emptyTitle}>No active courses yet</Text>
+            <Text style={styles.emptyText}>Create or publish a course to see it here.</Text>
+          </View>
+        )}
 
         <Text style={styles.sectionTitle}>Other Courses</Text>
-        {inactiveCourses.map((course) => (
-          <InstructorCard
-            key={course.id}
-            {...course}
-            onEdit={() => openEditCourse(course.courseId)}
-          />
-        ))}
+        {inactiveCourses.length > 0 ? (
+          inactiveCourses.map((course) => (
+            <InstructorCard
+              key={course.id}
+              {...course}
+              onEdit={() => openEditCourse(course.courseId)}
+            />
+          ))
+        ) : (
+          <View style={styles.emptyCard}>
+            <Text style={styles.emptyTitle}>No draft courses</Text>
+            <Text style={styles.emptyText}>Courses that are not active will appear here.</Text>
+          </View>
+        )}
 
         <PerformanceCard
           totalStudents={totalStudents}
@@ -91,10 +120,12 @@ export default function InstructorCourses() {
         onPress={openCreateCourse}
         style={({ pressed }) => [
           styles.createButton,
+          { bottom: Math.max(insets.bottom, 16) + 24 },
           pressed && styles.buttonPressed,
         ]}
       >
-        <Text style={styles.createButtonText}>Create Course</Text>
+        <Ionicons name="add" size={18} color={Colors.white} />
+        <Text style={styles.createButtonText}>New Course</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -107,11 +138,34 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: Spacing.lg,
-    paddingBottom: 100,
+    paddingBottom: 110,
+  },
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: Spacing.lg,
+    marginBottom: Spacing.md,
   },
   header: {
-    paddingTop: Spacing.xl,
     paddingBottom: Spacing.lg,
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    alignSelf: "flex-start",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: Radius.md,
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  backButtonText: {
+    color: Colors.primary,
+    fontWeight: "700",
+    fontSize: Typography.caption,
   },
   headerTitle: {
     fontSize: Typography.title,
@@ -138,10 +192,15 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
   },
+  buttonPressed: {
+    opacity: 0.85,
+  },
   createButton: {
     position: "absolute",
-    bottom: 70,
     right: Spacing.xl,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     backgroundColor: Colors.primary,
     borderRadius: Radius.full,
     paddingVertical: 14,
@@ -152,12 +211,26 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     elevation: 3,
   },
-  buttonPressed: {
-    opacity: 0.85,
-  },
   createButtonText: {
     color: Colors.white,
     fontWeight: "700",
     fontSize: 16,
+  },
+  emptyCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: Radius.md,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    padding: Spacing.md,
+    marginBottom: Spacing.lg,
+  },
+  emptyTitle: {
+    color: Colors.textPrimary,
+    fontWeight: "700",
+    marginBottom: Spacing.xs,
+  },
+  emptyText: {
+    color: Colors.textSecondary,
+    fontSize: Typography.caption,
   },
 });

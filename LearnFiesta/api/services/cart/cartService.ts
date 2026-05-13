@@ -5,7 +5,6 @@ import {
   getDocs,
   setDoc,
   deleteDoc,
-  serverTimestamp,
 } from 'firebase/firestore';
 import type { CartItem } from '@/types/cart';
 import { db } from '../firebase';
@@ -18,7 +17,9 @@ const cartItemRef = (userId: string, courseId: string) =>
 
 export async function fetchCart(userId: string): Promise<CartItem[]> {
   const snapshot = await getDocs(cartRef(userId));
-  return snapshot.docs.map((d) => d.data() as CartItem);
+  return snapshot.docs
+    .map((d) => d.data() as CartItem)
+    .sort((a, b) => b.addedAt - a.addedAt);
 }
 
 

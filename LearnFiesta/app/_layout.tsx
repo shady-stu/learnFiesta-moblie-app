@@ -4,6 +4,7 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/api/services/firebase';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/libr/queryClient";
+import CartProvider from "@/app/context/CartContext";
 export default function RootLayout() {
 
   const [user, setUser] = useState<User | null>(null);
@@ -32,8 +33,14 @@ export default function RootLayout() {
     return <Redirect href="/(tabs)" />;
   }
   return (
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      {user ? (
+        <CartProvider userId={user.uid}>
+          <Stack screenOptions={{ headerShown: false }} />
+        </CartProvider>
+      ) : (
         <Stack screenOptions={{ headerShown: false }} />
-      </QueryClientProvider>
+      )}
+    </QueryClientProvider>
   );
 }
