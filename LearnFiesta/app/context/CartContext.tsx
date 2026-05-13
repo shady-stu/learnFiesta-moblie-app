@@ -13,7 +13,7 @@ type CartContextType = {
   isLoading: boolean;
   isError: boolean;
   addItem: (item: Omit<CartItem, 'addedAt'>) => Promise<void>;
-  removeItem: (courseId: string) => void;
+  removeItem: (courseId: string) => Promise<void>;
   clearCart: () => Promise<void>;
   isInCart: (courseId: string) => boolean;
   isAdding: boolean;
@@ -54,7 +54,7 @@ const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
 
   const clearCart = async () => {
     for (const item of items) {
-      await removeMutate(item.courseId);
+      await removeMutateAsync(item.courseId);
     }
   };
 
@@ -63,7 +63,7 @@ const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
     isLoading,
     isError,
     addItem: addMutateAsync,
-    removeItem: removeMutate,
+    removeItem: removeMutateAsync,
     clearCart,
     isInCart,
     isAdding,
