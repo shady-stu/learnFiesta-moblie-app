@@ -38,7 +38,7 @@ export default function ResourcesTab({ courseId }: Props) {
                 <Pressable
                     key={item.id}
                     style={styles.card}
-                    onPress={() => Linking.openURL(item.url)}
+                    onPress={() => item.url && Linking.openURL(item.url)}
                 >
                     <Ionicons
                         name={getResourceIcon(item.type) as any}

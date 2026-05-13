@@ -22,13 +22,14 @@ export default function LectureRow({title, duration, type, isLocked = true }: Pr
         if (type === "video") return "#5523d1";
         if (type === "article") return "#5523d1";
         if (type === "quiz") return "#5523d1";
-        return "#999";
+        return "help-circle";
     };
 
     const getLabel = () => {
         if (type === "video") return "Video";
         if (type === "article") return "Article";
         if (type === "quiz") return "Quiz";
+        return "Unknown";
     };
 
     return (

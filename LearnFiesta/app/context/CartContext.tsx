@@ -14,6 +14,7 @@ type CartContextType = {
   isError: boolean;
   addItem: (item: Omit<CartItem, 'addedAt'>) => Promise<void>;
   removeItem: (courseId: string) => void;
+  clearCart: () => Promise<void>;
   isInCart: (courseId: string) => boolean;
   isAdding: boolean;
   isRemoving: boolean;
@@ -35,9 +36,11 @@ export  default function CartProvider({ userId, children }: Props) {
     isError,
   } = useCartQuery(userId);
 
-  const { mutateAsync: addMutateAsync, isPending: isAdding } = useAddToCart(userId);
-  const { mutate: removeMutate, isPending: isRemoving } = useRemoveFromCart(userId);
+const { mutateAsync: addMutateAsync, isPending: isAdding } =
+  useAddToCart(userId);
 
+const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
+  useRemoveFromCart(userId);
 
   const cart: Cart = useMemo(() => ({
     items,
@@ -49,12 +52,19 @@ export  default function CartProvider({ userId, children }: Props) {
   const isInCart = (courseId: string) =>
     items.some((item) => item.courseId === courseId);
 
+  const clearCart = async () => {
+    for (const item of items) {
+      await removeMutate(item.courseId);
+    }
+  };
+
   const value: CartContextType = {
     cart,
     isLoading,
     isError,
     addItem: addMutateAsync,
     removeItem: removeMutate,
+    clearCart,
     isInCart,
     isAdding,
     isRemoving,
