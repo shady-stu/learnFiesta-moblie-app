@@ -12,10 +12,12 @@ import TrustBadges from "../components/checkout/TrustBadges";
 import {useForm} from "react-hook-form";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
 import { useCartContext } from "./context/CartContext";
-
+import { purchaseCourses } from "@/api/services/ServicebyCourse"
+import { useRouter } from "expo-router";;
 export default function Checkout  ()  {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
-    const { cart } = useCartContext();
+    const router = useRouter();
+    const { cart, clearCart } = useCartContext();
     const { control, handleSubmit } = useForm<CheckoutFormData>({
         mode: "all",
         defaultValues: {
@@ -29,9 +31,11 @@ export default function Checkout  ()  {
         (sum, item) => sum + item.price,
         0
     );
-    const onSubmit = (data: CheckoutFormData) => {
+    const onSubmit = async (data: CheckoutFormData) => {
         console.log("Checkout Data:", data);
-        console.log("Cart:", cart.items);
+        await purchaseCourses(cart.items);
+        await clearCart();
+        router.push("/(tabs)/MyCourses");
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -77,7 +81,10 @@ export default function Checkout  ()  {
                 <OrderSummaryCard
                     courses={cart.items}
                     total={subtotal}
-                    onPress={handleSubmit(onSubmit)}
+                    onPress={async () => {
+                        await handleSubmit(onSubmit)();
+                        router.push("/(tabs)/MyCourses");
+                    }}
                 />
                 <TrustBadges />
             </ScrollView>

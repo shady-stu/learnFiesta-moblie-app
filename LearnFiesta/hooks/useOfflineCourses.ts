@@ -65,26 +65,29 @@ export function useOfflineCourses(refreshCount: number) {
   useEffect(() => {
     let cancelled = false;
 
-    async function saveOnlineCourses() {
-      try {
-        if (!isOnline) return;
+    async function load() {
+      const netState = await Network.getNetworkStateAsync();
 
-        await saveEnrollmentsOffline(onlineEnrollments);
+      const online =
+          Boolean(netState.isConnected) &&
+          Boolean(netState.isInternetReachable ?? true);
 
-        if (!cancelled) {
-          setOfflineEnrollments(onlineEnrollments);
-        }
-      } catch (error) {
-        console.log("Save courses offline error:", error);
+      if (cancelled) return;
+
+      setIsOnline(online);
+
+      if (!online) {
+        const saved = await getOfflineEnrollments();
+        setOfflineEnrollments(saved); // OK: ONLY offline load
       }
     }
 
-    saveOnlineCourses();
+    load();
 
     return () => {
       cancelled = true;
     };
-  }, [isOnline, onlineEnrollments]);
+  }, [refreshCount]);
 
   const enrollments: Enrollment[] =
     isOnline === true ? onlineEnrollments : offlineEnrollments;
