@@ -13,22 +13,21 @@ export function getDb() {
   return dbPromise;
 }
 
-
 export async function initCoursesDb() {
   const db = await getDb();
 
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS enrollments (
-         id TEXT NOT NULL,
-         userId TEXT NOT NULL,
-         data TEXT NOT NULL,
-         PRIMARY KEY (id, userId)
-      );
+      id TEXT NOT NULL,
+      userId TEXT NOT NULL,
+      data TEXT NOT NULL,
+      PRIMARY KEY (id, userId)
+    );
   `);
+
 
   return db;
 }
-
 export async function saveEnrollmentsOffline(enrollments: Enrollment[]) {
   const db = await getDb();
   const user = getAuth().currentUser;

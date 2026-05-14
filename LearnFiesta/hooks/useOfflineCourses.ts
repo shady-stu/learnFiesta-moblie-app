@@ -5,7 +5,7 @@ import type { Enrollment } from "@/components/CourseCard";
 import { useCourse } from "@/hooks/use-course";
 import {
   initCoursesDb,
-  saveEnrollmentsOffline,
+
   getOfflineEnrollments,
 } from "@/db/offlineCoursesDb";
 
