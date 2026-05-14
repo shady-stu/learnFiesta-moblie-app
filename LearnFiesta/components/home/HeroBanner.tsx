@@ -1,26 +1,40 @@
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
+import type { Course } from '@/types/course';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';
 import { Spacing } from '@/constants/spacing';
 
-export default function HeroBanner() {
+type Props = {
+  course?: Course;
+  onPress: () => void;
+};
+
+export default function HeroBanner({ course, onPress }: Props) {
+  const imageUrl =
+    course?.imageUrl ||
+    'https://images.unsplash.com/photo-1515879218367-8466d910aaa4';
+
   return (
     <ImageBackground
-      source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCYyi2comxe12VWmP3ONrIi03TyANBlq4i9GXC5sAvBRJoczLV4_5lJV8C_jlsRrm3YkE9K4r6HHf6Q05XvCU4buZScymOyu6zD6AJksTZMxEl-unqxNVdnV5O4cwTR5lsVzpTySpQIK691xqk47ppL1p1sDT9w3jAzIsU8TAIJ0ySe-5AMQ3rED038Uq1q080HJhjolV91o9nWuAM6Sd_GZ3AC6ammrHnXlS90k3pnBOeZ2A2kZnUFWBO5AKaVlc0TmaeV8sBeLjg' }}
+      source={{ uri: imageUrl }}
       style={styles.container}
       imageStyle={styles.image}
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
-        <ThemedText style={styles.badge}>FEATURED COURSE</ThemedText>
-        <ThemedText style={styles.title}>Master UI/UX Design with Figma 2024</ThemedText>
-        <ThemedText style={styles.subtitle}>
-          Learn industry secrets from top designers.
+        <ThemedText style={styles.badge}>
+          {course?.badge || 'BEST SELLER'}
+        </ThemedText>
+        <ThemedText numberOfLines={2} style={styles.title}>
+          {course?.title || 'Find your next course'}
+        </ThemedText>
+        <ThemedText numberOfLines={2} style={styles.subtitle}>
+          {course?.description || 'Explore popular courses selected from LearnFiesta.'}
         </ThemedText>
 
-        <Pressable style={styles.button}>
-          <ThemedText style={styles.buttonText}>Enroll Now</ThemedText>
+        <Pressable style={styles.button} onPress={onPress}>
+          <ThemedText style={styles.buttonText}>View Course</ThemedText>
         </Pressable>
       </View>
     </ImageBackground>
@@ -39,7 +53,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(86, 36, 208, 0.65)',
+    backgroundColor: 'rgba(28, 29, 31, 0.62)',
   },
   content: {
     padding: Spacing.lg,

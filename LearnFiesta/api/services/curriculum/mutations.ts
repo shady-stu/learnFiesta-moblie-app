@@ -218,11 +218,6 @@ export const deleteCurriculumLesson = async (
 
 export const syncCourseMetrics = async (courseId: string): Promise<CurriculumMetrics> => {
   const sections = await fetchCourseSections(courseId);
-  const lessonTitles = sections
-    .flatMap((section) => section.lessons)
-    .sort((a, b) => a.order - b.order)
-    .map((lesson) => lesson.title.trim())
-    .filter(Boolean);
   const totalLessons = sections.reduce((sum, section) => sum + section.lessons.length, 0);
   const totalMinutes = sections.reduce(
     (sum, section) =>
@@ -245,7 +240,6 @@ export const syncCourseMetrics = async (courseId: string): Promise<CurriculumMet
     totalLessons: metrics.totalLessons,
     durationMinutes: metrics.totalMinutes,
     duration: metrics.duration,
-    whatYouWillLearn: lessonTitles,
     updatedAt: serverTimestamp(),
   });
 

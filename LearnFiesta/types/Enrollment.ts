@@ -7,5 +7,7 @@ export type Enrollment = {
   totalLessons: number;
   progress: number;
   lessonsDone: number;
+  completedLessonIds?: string[];
+  nextLessonId?: string | null;
   status: "progress" | "completed";
 };

@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { router } from "expo-router";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -24,6 +24,24 @@ import { Spacing } from "@/constants/spacing";
 import { auth } from "@/api/services/firebase";
 import { useRecommendedCourses } from "@/hooks/useRecommendedCourses";
 import { useCategories } from "@/hooks/useCategories";
+import { useOfflineCourses } from "@/hooks/useOfflineCourses";
+import { chooseContinueCourse, getContinueLessonParams } from "@/utils/learningNavigation";
+import type { Course } from "@/types/course";
+
+const chooseFeaturedCourse = (courses: Course[] = []) => {
+  const bestSellerCourses = courses.filter((course) =>
+    String(course.badge || "").toLowerCase().includes("best")
+  );
+
+  const candidates = bestSellerCourses.length > 0
+    ? bestSellerCourses
+    : [...courses].sort((a, b) => b.reviewsCount - a.reviewsCount);
+
+  if (candidates.length === 0) return undefined;
+
+  const randomIndex = Math.floor(Math.random() * candidates.length);
+  return candidates[randomIndex];
+};
 
 export default function HomeScreen() {
   useEffect(() => {
@@ -46,6 +64,36 @@ export default function HomeScreen() {
     isLoading: loadingCourses,
     isError: coursesError,
   } = useRecommendedCourses();
+  const { enrollments } = useOfflineCourses(0);
+  const continueCourse = chooseContinueCourse(enrollments);
+  const featuredCourse = useMemo(
+    () => chooseFeaturedCourse(recommendedCourses ?? []),
+    [recommendedCourses]
+  );
+
+  const openContinueCourse = () => {
+    if (!continueCourse) {
+      router.push("/search");
+      return;
+    }
+
+    router.push({
+      pathname: "/lesson/[id]",
+      params: getContinueLessonParams(continueCourse),
+    });
+  };
+
+  const openFeaturedCourse = () => {
+    if (!featuredCourse) {
+      router.push("/search");
+      return;
+    }
+
+    router.push({
+      pathname: "/course/[id]",
+      params: { id: featuredCourse.id },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.screen} edges={["top"]}>
@@ -55,7 +103,7 @@ export default function HomeScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <HeroBanner />
+        <HeroBanner course={featuredCourse} onPress={openFeaturedCourse} />
 
         {/* Continue Learning */}
         <View style={styles.section}>
@@ -64,7 +112,10 @@ export default function HomeScreen() {
             actionLabel="View All"
             onPress={() => router.push("/MyCourses")}
           />
-          <ContinueLearningCard />
+          <ContinueLearningCard
+            enrollment={continueCourse}
+            onPress={openContinueCourse}
+          />
         </View>
 
         {/* Recommended */}

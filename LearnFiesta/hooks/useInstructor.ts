@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { subscribeToUserInstructors } from "@/api/services/ServicebyInstructor";
-import type { Instructor } from "@/components/InstructorCard";
+import { subscribeToUserInstructors } from "@/api/services/instructor/instructorService";
+import type { Instructor } from "@/types/Instructor";
 
 export const useInstructor = () => {
   const [data, setData] = useState<Instructor[]>([]);
