@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import * as Network from "expo-network";
 
-import type { Enrollment } from "@/components/CourseCard";
-import { useCourse } from "@/hooks/use-course";
+import type { Enrollment } from "@/types/Enrollment";
+import { listenToUserEnrollments } from "@/api/services/enrollments/enrollmentService";
 import {
   initCoursesDb,
-
+  saveEnrollmentsOffline,
   getOfflineEnrollments,
 } from "@/db/offlineCoursesDb";
 
@@ -13,12 +13,8 @@ export function useOfflineCourses(refreshCount: number) {
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [offlineEnrollments, setOfflineEnrollments] = useState<Enrollment[]>([]);
   const [dbLoading, setDbLoading] = useState(true);
-
-  const {
-    data: onlineEnrollments = [],
-    isLoading,
-    isError,
-  } = useCourse(isOnline === true, refreshCount);
+  const [onlineEnrollments, setOnlineEnrollments] = useState<Enrollment[]>([]);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,36 +59,28 @@ export function useOfflineCourses(refreshCount: number) {
   }, [refreshCount]);
 
   useEffect(() => {
-    let cancelled = false;
+    if (!isOnline) return;
 
-    async function load() {
-      const netState = await Network.getNetworkStateAsync();
+    setIsError(false);
 
-      const online =
-          Boolean(netState.isConnected) &&
-          Boolean(netState.isInternetReachable ?? true);
-
-      if (cancelled) return;
-
-      setIsOnline(online);
-
-      if (!online) {
-        const saved = await getOfflineEnrollments();
-        setOfflineEnrollments(saved); // OK: ONLY offline load
+    const unsubscribe = listenToUserEnrollments(
+      async (enrollments) => {
+        setOnlineEnrollments(enrollments);
+        await saveEnrollmentsOffline(enrollments);
+      },
+      (error) => {
+        console.log("Realtime enrollments error:", error);
+        setIsError(true);
       }
-    }
+    );
 
-    load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [refreshCount]);
+    return unsubscribe;
+  }, [isOnline]);
 
   const enrollments: Enrollment[] =
     isOnline === true ? onlineEnrollments : offlineEnrollments;
 
-  const loading = isOnline === null || dbLoading || (isOnline && isLoading);
+  const loading = isOnline === null || dbLoading;
 
   return {
     enrollments,

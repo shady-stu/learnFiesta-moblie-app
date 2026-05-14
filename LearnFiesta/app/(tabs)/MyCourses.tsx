@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import CourseCard from "@/components/CourseCard";
+import CourseCard from "@/components/courses/EnrollmentCourseCard";
 import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
 import CourseTabs, { CourseTab } from "@/components/courses/CourseTabs";
 import { Colors } from "@/constants/colors";
@@ -19,7 +19,9 @@ import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius"
 import LoadingView from "@/components/ui/LoadingView";
 import { useOfflineCourses } from "@/hooks/useOfflineCourses";
-import { clearAllEnrollments } from "@/api/services/ServicebyCourse"
+import { clearAllEnrollments } from "@/api/services/enrollments/enrollmentService"
+import { getContinueLessonParams } from "@/utils/learningNavigation";
+import type { Enrollment } from "@/types/Enrollment";
 
 const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
 export default function MyCourses() {
@@ -40,7 +42,14 @@ export default function MyCourses() {
     return item.status === activeTab;
   });
 
-  const handleLessonPress = (courseId: string) => {
+  const openEnrollmentLesson = (enrollment: Enrollment) => {
+    router.push({
+      pathname: "/lesson/[id]",
+      params: getContinueLessonParams(enrollment),
+    });
+  };
+
+  const openCourseFromStart = (courseId: string) => {
     router.push({
       pathname: "/lesson/[id]",
       params: { id: courseId },
@@ -95,7 +104,7 @@ export default function MyCourses() {
         <FirebaseCoursePreviewCard
           courseId={FIREBASE_PREVIEW_COURSE_ID}
           onPress={() =>
-            handleLessonPress(FIREBASE_PREVIEW_COURSE_ID)
+            openCourseFromStart(FIREBASE_PREVIEW_COURSE_ID)
           }
         />
       </View>
@@ -116,9 +125,7 @@ export default function MyCourses() {
           {filteredEnrollments.map((item) => (
             <TouchableOpacity
               key={item.id}
-              onPress={() =>
-                handleLessonPress((item as any).courseId)
-              }
+              onPress={() => openEnrollmentLesson(item)}
             >
               <CourseCard enrollment={item} />
             </TouchableOpacity>

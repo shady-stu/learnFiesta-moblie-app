@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import type { Enrollment } from "@/components/CourseCard";
+import type { Enrollment } from "@/types/Enrollment";
 import { getAuth } from "firebase/auth";
 const DB_NAME = "my_courses_offline.db";
 

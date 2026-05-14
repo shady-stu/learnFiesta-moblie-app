@@ -12,7 +12,7 @@ import TrustBadges from "../components/checkout/TrustBadges";
 import {useForm} from "react-hook-form";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
 import { useCartContext } from "./context/CartContext";
-import { purchaseCourses } from "@/api/services/ServicebyCourse"
+import { purchaseCourses } from "@/api/services/enrollments/enrollmentService"
 import { useRouter } from "expo-router";;
 export default function Checkout  ()  {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");

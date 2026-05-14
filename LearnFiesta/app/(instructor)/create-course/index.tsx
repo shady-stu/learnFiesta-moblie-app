@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { View, ScrollView, Button, Text, StyleSheet, Alert } from "react-native";
+import { View, ScrollView, Button, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,9 @@ const courseSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
   category: z.string().min(1, "Please select a category"),
   description: z.string().min(10, "Description must be at least 10 characters"),
+  whatYouWillLearn: z
+    .array(z.string().trim().min(3, "Learning point must be at least 3 characters"))
+    .min(1, "Add at least one learning point"),
   // Validate that price is entered and is a valid number
   price: z.string()
     .min(1, "Price is required")
@@ -61,6 +64,7 @@ export default function CreateCourseScreen() {
       title: "",
       category: "",
       description: "",
+      whatYouWillLearn: [""],
       price: "",
     },
   });
@@ -72,12 +76,42 @@ export default function CreateCourseScreen() {
       title: editingCourse.title,
       category: editingCourse.categoryId,
       description: editingCourse.description,
+      whatYouWillLearn: editingCourse.whatYouWillLearn.length
+        ? editingCourse.whatYouWillLearn
+        : [""],
       price: String(editingCourse.price),
       thumbnail: editingCourse.imageUrl,
     });
   }, [editingCourse, reset]);
 
 const thumbnail = watch("thumbnail");
+const learningPoints = watch("whatYouWillLearn");
+
+  const addLearningPoint = () => {
+    setValue("whatYouWillLearn", [...learningPoints, ""], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const updateLearningPoint = (index: number, value: string) => {
+    setValue(
+      "whatYouWillLearn",
+      learningPoints.map((point, pointIndex) =>
+        pointIndex === index ? value : point
+      ),
+      { shouldValidate: true, shouldDirty: true }
+    );
+  };
+
+  const removeLearningPoint = (index: number) => {
+    setValue(
+      "whatYouWillLearn",
+      learningPoints.filter((_, pointIndex) => pointIndex !== index),
+      { shouldValidate: true, shouldDirty: true }
+    );
+  };
+
   const onSubmit = async (data: FormData) => {
     try {
       const selectedCategory = categories.find((cat: any) => cat.id === data.category);
@@ -88,6 +122,9 @@ const thumbnail = watch("thumbnail");
           title: data.title,
           category: data.category,
           description: data.description,
+          whatYouWillLearn: data.whatYouWillLearn
+            .map((point) => point.trim())
+            .filter(Boolean),
           categoryName: selectedCategory?.title || "",
           imageUrl: data.thumbnail,
           thumbnail: data.thumbnail,
@@ -210,6 +247,44 @@ const thumbnail = watch("thumbnail");
             </>
           )}
         />
+
+        <View style={styles.learningBlock}>
+          <Text style={styles.sectionTitle}>What students will learn</Text>
+          <Text style={styles.helperText}>
+            Write each learning outcome as a separate point.
+          </Text>
+
+          {learningPoints.map((point, index) => (
+            <View key={`learning-point-${index}`} style={styles.learningPointRow}>
+              <View style={styles.learningPointInput}>
+                <TextInputField
+                  label={`Point ${index + 1}`}
+                  value={point}
+                  onChangeText={(value) => updateLearningPoint(index, value)}
+                  placeholder="Example: Build a real mobile screen"
+                  error={errors.whatYouWillLearn?.[index]?.message}
+                />
+              </View>
+
+              {learningPoints.length > 1 && (
+                <TouchableOpacity
+                  style={styles.removePointButton}
+                  onPress={() => removeLearningPoint(index)}
+                >
+                  <Text style={styles.removePointText}>Remove</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ))}
+
+          {typeof errors.whatYouWillLearn?.message === "string" && (
+            <Text style={styles.errorText}>{errors.whatYouWillLearn.message}</Text>
+          )}
+
+          <TouchableOpacity style={styles.addPointButton} onPress={addLearningPoint}>
+            <Text style={styles.addPointText}>Add learning point</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
 
@@ -356,6 +431,44 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 14,
     color: "#1D1A24",
+  },
+  helperText: {
+    color: "#6B7280",
+    fontSize: 12,
+    marginBottom: 12,
+  },
+  learningBlock: {
+    marginTop: 4,
+  },
+  learningPointRow: {
+    marginBottom: 6,
+  },
+  learningPointInput: {
+    flex: 1,
+  },
+  addPointButton: {
+    borderWidth: 1,
+    borderColor: "#5624D0",
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 4,
+  },
+  addPointText: {
+    color: "#5624D0",
+    fontWeight: "700",
+  },
+  removePointButton: {
+    alignSelf: "flex-end",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: -10,
+    marginBottom: 8,
+  },
+  removePointText: {
+    color: "#EF4444",
+    fontWeight: "600",
+    fontSize: 12,
   },
   priceBox: {
     flexDirection: "row",

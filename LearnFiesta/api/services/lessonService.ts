@@ -33,6 +33,7 @@ export type LearningLesson = {
   keyConcepts: string[];
   resources: LessonResource[];
   qa: LearningQuestion[];
+  totalLessons: number;
   prevLessonId: string | null;
   nextLessonId: string | null;
 };
@@ -99,6 +100,7 @@ const flattenLessons = (
           : course.whatYouWillLearn,
         resources: lesson.resources,
         qa: normalizeQa(data.qa),
+        totalLessons: 0,
         prevLessonId: null,
         nextLessonId: null,
       };
@@ -114,6 +116,7 @@ const withNavigation = (
 
   return {
     ...lesson,
+    totalLessons: lessons.length,
     prevLessonId: index > 0 ? lessons[index - 1].id : null,
     nextLessonId: index < lessons.length - 1 ? lessons[index + 1].id : null,
   };

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/api/services/firebase';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '@/libr/queryClient';
+import { queryClient } from '@/lib/queryClient';
 import CartProvider from '@/app/context/CartContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

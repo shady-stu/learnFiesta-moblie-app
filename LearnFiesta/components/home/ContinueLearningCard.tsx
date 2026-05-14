@@ -1,34 +1,57 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/themed-text';
+import type { Enrollment } from '@/types/Enrollment';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';
 import { Spacing } from '@/constants/spacing';
 
-export default function ContinueLearningCard() {
+type Props = {
+  enrollment?: Enrollment;
+  onPress: () => void;
+};
+
+export default function ContinueLearningCard({ enrollment, onPress }: Props) {
+  if (!enrollment) {
+    return (
+      <View style={styles.card}>
+        <View style={[styles.thumbnail, styles.emptyThumbnail]}>
+          <Ionicons name="book-outline" size={24} color={Colors.primary} />
+        </View>
+
+        <View style={styles.content}>
+          <ThemedText style={styles.meta}>No course in progress</ThemedText>
+          <ThemedText style={styles.title}>Start a course to continue learning here</ThemedText>
+        </View>
+      </View>
+    );
+  }
+
+  const progress = Math.max(0, Math.min(enrollment.progress, 100));
+  const nextLessonText = enrollment.nextLessonId
+    ? `Next lesson • ${enrollment.lessonsDone} of ${enrollment.totalLessons} done`
+    : 'Course completed';
+
   return (
-    <View style={styles.card}>
-      <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4' }}
-        style={styles.thumbnail}
-      />
+    <Pressable style={styles.card} onPress={onPress}>
+      <Image source={{ uri: enrollment.img }} style={styles.thumbnail} />
 
       <View style={styles.content}>
-        <ThemedText style={styles.meta}>Next: Lesson 14 • Advanced Hooks</ThemedText>
-        <ThemedText style={styles.title}>React Development Masterclass</ThemedText>
+        <ThemedText style={styles.meta}>{nextLessonText}</ThemedText>
+        <ThemedText numberOfLines={2} style={styles.title}>{enrollment.title}</ThemedText>
 
         <View style={styles.progressRow}>
           <View style={styles.progressBackground}>
-            <View style={styles.progressFill} />
+            <View style={[styles.progressFill, { width: `${progress}%` }]} />
           </View>
-          <ThemedText style={styles.progressText}>65%</ThemedText>
+          <ThemedText style={styles.progressText}>{progress}%</ThemedText>
         </View>
       </View>
 
-      <Pressable style={styles.playButton}>
+      <View style={styles.playButton}>
         <Ionicons name="play" size={20} color={Colors.primary} />
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 }
 
@@ -47,6 +70,11 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: Radius.sm,
+    backgroundColor: Colors.muted,
+  },
+  emptyThumbnail: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     flex: 1,
@@ -74,7 +102,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressFill: {
-    width: '65%',
     height: '100%',
     backgroundColor: Colors.primary,
   },

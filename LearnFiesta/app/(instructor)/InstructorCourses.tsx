@@ -8,9 +8,9 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import InstructorCard from "@/components/InstructorCard";
+import InstructorCard from "@/components/instructor/InstructorCourseCard";
 import LoadingView from "@/components/ui/LoadingView";
-import PerformanceCard from "@/components/PerformanceCard";
+import PerformanceCard from "@/components/instructor/PerformanceCard";
 import { Colors } from "@/constants/colors";
 import { Radius } from "@/constants/radius";
 import { Spacing } from "@/constants/spacing";

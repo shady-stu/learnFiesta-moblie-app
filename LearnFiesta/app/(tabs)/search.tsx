@@ -7,7 +7,7 @@ import {FilterChip} from "@/components/ui/FilterChip";
 import CourseCard  from "@/components/courses/CourseCard";
 import {Colors} from "@/constants/colors";
 import { useBookmarks } from "@/hooks/useBookmarks";
-import {useCourses} from "@/libr/useCourses";
+import {useCourses} from "@/lib/useCourses";
 import LoadingView from "@/components/ui/LoadingView";
 
 export default function Search() {
