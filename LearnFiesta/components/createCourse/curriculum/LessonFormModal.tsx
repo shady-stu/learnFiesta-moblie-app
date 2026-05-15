@@ -9,6 +9,7 @@ import LessonResourcesSection from "./LessonResourcesSection";
 
 export default function LessonFormModal({
   editor,
+  control,
   form,
   errors,
   saving,
@@ -16,7 +17,6 @@ export default function LessonFormModal({
   onSave,
   onAddResource,
   onRemoveResource,
-  onChangeLessonField,
   onChangeResourceField,
   onAddQa,
   onRemoveQa,
@@ -37,9 +37,9 @@ export default function LessonFormModal({
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <LessonBasicFieldsSection
+              control={control}
               form={form}
               errors={errors}
-              onChangeLessonField={onChangeLessonField}
             />
             <LessonQaSection
               form={form}

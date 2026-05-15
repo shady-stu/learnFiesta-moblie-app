@@ -45,12 +45,18 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
     setEditingSection(null);
     sectionForm.reset({ title: "" });
     setSectionModalVisible(true);
+    setTimeout(() => {
+      void sectionForm.trigger("title");
+    }, 0);
   };
 
   const openEditSection = (section: CurriculumSection) => {
     setEditingSection(section);
     sectionForm.reset({ title: section.title });
     setSectionModalVisible(true);
+    setTimeout(() => {
+      void sectionForm.trigger("title");
+    }, 0);
   };
 
   const closeSectionModal = () => {

@@ -1,23 +1,44 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useController } from "react-hook-form";
 import { Colors } from "@/constants/colors";
 import { LESSON_TYPES } from "./options";
 import { curriculumStyles as styles } from "./styles";
 import type { LessonFormModalProps } from "@/types/curriculum";
 
-type Props = Pick<LessonFormModalProps, "form" | "errors" | "onChangeLessonField">;
+type Props = Pick<LessonFormModalProps, "control" | "form" | "errors">;
 
 export default function LessonBasicFieldsSection({
+  control,
   form,
   errors,
-  onChangeLessonField,
 }: Props) {
+  const { field: titleField } = useController({ control, name: "title" });
+  const { field: typeField } = useController({ control, name: "type" });
+  const { field: durationField } = useController({
+    control,
+    name: "durationMinutes",
+  });
+  const { field: contentUrlField } = useController({
+    control,
+    name: "contentUrl",
+  });
+  const { field: descriptionField } = useController({
+    control,
+    name: "description",
+  });
+  const { field: keyConceptsField } = useController({
+    control,
+    name: "keyConceptsText",
+  });
+
   return (
     <>
       <Text style={styles.label}>Lesson title</Text>
       <TextInput
-        value={form.title}
-        onChangeText={(value) => onChangeLessonField("title", value)}
+        value={titleField.value}
+        onChangeText={titleField.onChange}
+        onBlur={titleField.onBlur}
         placeholder="Example: Course introduction"
         placeholderTextColor={Colors.textSecondary}
         style={styles.input}
@@ -31,7 +52,7 @@ export default function LessonBasicFieldsSection({
         {LESSON_TYPES.map((type) => (
           <Pressable
             key={type.value}
-            onPress={() => onChangeLessonField("type", type.value)}
+            onPress={() => typeField.onChange(type.value)}
             style={[
               styles.choiceChip,
               form.type === type.value && styles.choiceChipActive,
@@ -56,8 +77,9 @@ export default function LessonBasicFieldsSection({
 
       <Text style={styles.label}>Duration in minutes</Text>
       <TextInput
-        value={form.durationMinutes}
-        onChangeText={(value) => onChangeLessonField("durationMinutes", value)}
+        value={durationField.value}
+        onChangeText={durationField.onChange}
+        onBlur={durationField.onBlur}
         placeholder="15"
         placeholderTextColor={Colors.textSecondary}
         keyboardType="numeric"
@@ -69,8 +91,9 @@ export default function LessonBasicFieldsSection({
 
       <Text style={styles.label}>Content URL</Text>
       <TextInput
-        value={form.contentUrl}
-        onChangeText={(value) => onChangeLessonField("contentUrl", value)}
+        value={contentUrlField.value}
+        onChangeText={contentUrlField.onChange}
+        onBlur={contentUrlField.onBlur}
         placeholder="Video, article, or quiz link"
         placeholderTextColor={Colors.textSecondary}
         autoCapitalize="none"
@@ -79,18 +102,23 @@ export default function LessonBasicFieldsSection({
 
       <Text style={styles.label}>Description</Text>
       <TextInput
-        value={form.description}
-        onChangeText={(value) => onChangeLessonField("description", value)}
+        value={descriptionField.value}
+        onChangeText={descriptionField.onChange}
+        onBlur={descriptionField.onBlur}
         placeholder="What students will do in this lesson"
         placeholderTextColor={Colors.textSecondary}
         multiline
         style={[styles.input, styles.textArea]}
       />
+      {errors?.description?.message ? (
+        <Text style={styles.formErrorText}>{errors.description.message}</Text>
+      ) : null}
 
       <Text style={styles.label}>Key Concepts (one per line)</Text>
       <TextInput
-        value={form.keyConceptsText}
-        onChangeText={(value) => onChangeLessonField("keyConceptsText", value)}
+        value={keyConceptsField.value}
+        onChangeText={keyConceptsField.onChange}
+        onBlur={keyConceptsField.onBlur}
         placeholder={"Example:\nUI vs UX\nVisual hierarchy"}
         placeholderTextColor={Colors.textSecondary}
         multiline
