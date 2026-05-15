@@ -15,9 +15,9 @@ import DescriptionTab from "@/components/courseDetails/Coursetabs/DescriptionTab
 import {useLocalSearchParams, useRouter} from "expo-router";
 import {useCourseById} from "@/lib/useCourseById";
 import Toast from "@/components/ui/Toast";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/cart/useToast";
 import { useCartContext } from "@/app/context/CartContext";
-import {useInstructorById} from "@/hooks/useInstructor";
+import {useInstructorById} from "@/hooks/instructor/useInstructor";
 const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 export default function CourseDetailsScreen() {
     const { addItem, isAdding, isInCart } = useCartContext();

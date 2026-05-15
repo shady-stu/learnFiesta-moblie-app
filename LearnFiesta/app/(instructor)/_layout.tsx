@@ -1,5 +1,5 @@
 import { Redirect, Stack } from "expo-router";
-import { useCurrentUserRole } from "@/hooks/useCurrentUserRole";
+import { useCurrentUserRole } from "@/hooks/role/useCurrentUserRole";
 
 export default function InstructorLayout() {
     const { isInstructor, isLoading } = useCurrentUserRole();

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useCategoryCoursesScreen } from '@/hooks/useCategoryCoursesScreen';
+import { useCategoryCoursesScreen } from '@/hooks/category/useCategoryCoursesScreen';
 import CategoryScreenState from '@/components/category/CategoryScreenState';
 import CategoryCoursesList from '@/components/category/CategoryCoursesList';
 import NavigationHeader from '@/components/common/NavigationHeader';

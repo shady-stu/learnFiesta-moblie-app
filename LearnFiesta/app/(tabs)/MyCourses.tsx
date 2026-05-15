@@ -11,19 +11,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import CourseCard from "@/components/courses/EnrollmentCourseCard";
-import FirebaseCoursePreviewCard from "@/components/courses/FirebaseCoursePreviewCard";
 import CourseTabs, { CourseTab } from "@/components/courses/CourseTabs";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius"
 import LoadingView from "@/components/ui/LoadingView";
-import { useOfflineCourses } from "@/hooks/useOfflineCourses";
+import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
 import { clearAllEnrollments } from "@/api/services/enrollments/enrollmentService"
 import { getContinueLessonParams } from "@/utils/learningNavigation";
 import type { Enrollment } from "@/types/Enrollment";
 
-const FIREBASE_PREVIEW_COURSE_ID = "frLh0ltD0nQRGIzfyMCp";
 export default function MyCourses() {
   const router = useRouter();
 
@@ -46,13 +44,6 @@ export default function MyCourses() {
     router.push({
       pathname: "/lesson/[id]",
       params: getContinueLessonParams(enrollment),
-    });
-  };
-
-  const openCourseFromStart = (courseId: string) => {
-    router.push({
-      pathname: "/lesson/[id]",
-      params: { id: courseId },
     });
   };
 
@@ -99,15 +90,6 @@ export default function MyCourses() {
         activeTab={activeTab}
         onChangeTab={setActiveTab}
       />
-
-      <View style={styles.previewWrap}>
-        <FirebaseCoursePreviewCard
-          courseId={FIREBASE_PREVIEW_COURSE_ID}
-          onPress={() =>
-            openCourseFromStart(FIREBASE_PREVIEW_COURSE_ID)
-          }
-        />
-      </View>
 
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
@@ -177,10 +159,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginBottom: Spacing.md,
-  },
-
-  previewWrap: {
-    marginBottom: Spacing.lg,
   },
 
   empty: {

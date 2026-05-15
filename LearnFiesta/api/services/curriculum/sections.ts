@@ -5,7 +5,7 @@ import {
   type Unsubscribe,
 } from "firebase/firestore";
 import { db } from "@/api/services/firebase";
-import type { CurriculumSection } from "./types";
+import type { CurriculumSection } from "./curriculumType";
 import { normalizeSection } from "./shared";
 
 export const listenToCourseSections = (
