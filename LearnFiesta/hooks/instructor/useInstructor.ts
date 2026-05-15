@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { subscribeToUserInstructors } from "@/api/services/ServicebyInstructor";
-import type { Instructor } from "@/components/InstructorCard";
+import { subscribeToUserInstructors } from "@/api/services/instructor/instructorService";
+import { fetchInstructorById } from "@/api/services/fetchCourseById";
+import type { Instructor } from "@/types/Instructor";
+import {useQuery} from "@tanstack/react-query";
 
 export const useInstructor = () => {
   const [data, setData] = useState<Instructor[]>([]);
@@ -32,3 +34,13 @@ export const useInstructor = () => {
     isError: Boolean(error),
   };
 };
+
+export const useInstructorById = (id?: string) => {
+  return useQuery({
+    queryKey: ["instructor", id],
+    queryFn: () => fetchInstructorById(id!),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 10,
+  });
+};
+

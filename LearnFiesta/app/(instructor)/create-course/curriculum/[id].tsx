@@ -10,7 +10,7 @@ import LessonFormModal from "@/components/createCourse/curriculum/LessonFormModa
 import SectionFormModal from "@/components/createCourse/curriculum/SectionFormModal";
 import { curriculumStyles as styles } from "@/components/createCourse/curriculum/styles";
 import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculumService";
-import { useCourseCurriculum } from "@/hooks/useCourseCurriculum";
+import { useCourseCurriculum } from "@/hooks/curriculum/useCourseCurriculum";
 
 const getErrorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;

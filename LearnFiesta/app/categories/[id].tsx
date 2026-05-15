@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack } from 'expo-router';
-import { useCategoryCoursesScreen } from '@/hooks/useCategoryCoursesScreen';
+import { useCategoryCoursesScreen } from '@/hooks/category/useCategoryCoursesScreen';
 import CategoryScreenState from '@/components/category/CategoryScreenState';
 import CategoryCoursesList from '@/components/category/CategoryCoursesList';
+import NavigationHeader from '@/components/common/NavigationHeader';
 import { Colors } from '@/constants/colors';
 
 export default function CategoryCoursesScreen() {
@@ -19,7 +19,7 @@ export default function CategoryCoursesScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <Stack.Screen options={{ title: screenTitle }} />
+      <NavigationHeader title={screenTitle} />
 
       {!categoryId && (
         <CategoryScreenState

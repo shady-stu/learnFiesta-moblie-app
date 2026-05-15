@@ -13,10 +13,11 @@ import ResourcesTab from "@/components/courseDetails/Coursetabs/ResourcesTab";
 import LearnTab from "@/components/courseDetails/Coursetabs/LearnTab";
 import DescriptionTab from "@/components/courseDetails/Coursetabs/DescriptionTab";
 import {useLocalSearchParams, useRouter} from "expo-router";
-import {useCourseById} from "@/libr/useCourseById";
+import {useCourseById} from "@/lib/useCourseById";
 import Toast from "@/components/ui/Toast";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/cart/useToast";
 import { useCartContext } from "@/app/context/CartContext";
+import {useInstructorById} from "@/hooks/instructor/useInstructor";
 const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 export default function CourseDetailsScreen() {
     const { addItem, isAdding, isInCart } = useCartContext();
@@ -24,6 +25,7 @@ export default function CourseDetailsScreen() {
     const { id } = useLocalSearchParams();
     const { data: course, isLoading } = useCourseById(id as string);
     const router = useRouter();
+    const { data: instructor } = useInstructorById(course?.instructorId);
     const { toast, showToast } = useToast();
     const renderTabContent = () => {
         if (!course) return null;
@@ -94,9 +96,9 @@ export default function CourseDetailsScreen() {
                 />
 
                 <InstructorCard
-                    name={course.instructorName}
+                    name={instructor?.name || course.instructorName}
                     role="Instructor"
-                    avatarUrl="https://i.pravatar.cc/150?img=12"
+                    avatarUrl={instructor?.photoURL}
                 />
 
                 <View style={styles.priceSection}>

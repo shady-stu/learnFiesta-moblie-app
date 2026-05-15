@@ -164,7 +164,7 @@ export const createCourse = async (data: CreateCourseInput) => {
     instructorId: user.uid,
     instructorName: userData?.name || "Instructor",
     price: Number(data.price),
-    badge: Number(data.price) === 0 ? "Free" : "Best Seller",
+    badge: Number(data.price) === 0 ? "Free" : null,
     rating: 0,
     reviewsCount: 0,
     totalLessons: 0,
@@ -232,7 +232,7 @@ export const updateCourseFoundation = async (
     imageUrl: data.thumbnail || data.imageUrl || "",
     price: Number(data.price),
     whatYouWillLearn: data.whatYouWillLearn || [],
-    badge: Number(data.price) === 0 ? "Free" : "Best Seller",
+    badge: Number(data.price) === 0 ? "Free" : null,
     updatedAt: serverTimestamp(),
   });
 

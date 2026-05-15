@@ -8,7 +8,7 @@ import type {
   LessonResourceInput,
   LessonType,
   ResourceType,
-} from "./types";
+} from "./curriculumType";
 
 export const courseRef = (courseId: string) => doc(db, "courses", courseId);
 export const sectionRef = (courseId: string, sectionId: string) =>

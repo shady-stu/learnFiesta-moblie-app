@@ -1,39 +1,52 @@
 import { useEffect, useState } from "react";
 import * as Network from "expo-network";
-import type { Enrollment } from "@/components/CourseCard";
-import { useCourse } from "@/hooks/use-course";
-import {initCoursesDb, getOfflineEnrollments,} from "@/db/offlineCoursesDb";
+
+import type { Enrollment } from "@/types/Enrollment";
+import { listenToUserEnrollments } from "@/api/services/enrollments/enrollmentService";
+import {
+  initCoursesDb,
+  getOfflineEnrollments,
+} from "@/db/offlineCoursesDb";
+
 export function useOfflineCourses(refreshCount: number) {
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [offlineEnrollments, setOfflineEnrollments] = useState<Enrollment[]>([]);
+  const [onlineEnrollments, setOnlineEnrollments] = useState<Enrollment[]>([]);
   const [dbLoading, setDbLoading] = useState(true);
-  const {
-    data: onlineEnrollments = [],
-    isLoading,
-    isError,
-  } = useCourse(isOnline === true, refreshCount);
+  const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     let cancelled = false;
+
     async function loadCourses() {
       try {
         setDbLoading(true);
+
         await initCoursesDb();
+
         const netState = await Network.getNetworkStateAsync();
+
         const online =
           Boolean(netState.isConnected) &&
           Boolean(netState.isInternetReachable ?? true);
+
         if (cancelled) return;
+
         setIsOnline(online);
+
         if (!online) {
           const savedCourses = await getOfflineEnrollments();
+
           if (!cancelled) {
             setOfflineEnrollments(savedCourses);
           }
         }
       } catch (error) {
         console.log("SQLite / Network error:", error);
+
         if (!cancelled) {
           setIsOnline(false);
+
           const savedCourses = await getOfflineEnrollments();
           setOfflineEnrollments(savedCourses);
         }
@@ -43,20 +56,45 @@ export function useOfflineCourses(refreshCount: number) {
         }
       }
     }
+
     loadCourses();
+
     return () => {
       cancelled = true;
     };
   }, [refreshCount]);
+
+  useEffect(() => {
+    if (!isOnline) return;
+
+    setIsError(false);
+
+    const unsubscribe = listenToUserEnrollments(
+      async (enrollments) => {
+        setOnlineEnrollments(enrollments);
+      },
+      (error) => {
+        console.log("Realtime enrollments error:", error);
+        setIsError(true);
+      }
+    );
+
+    return unsubscribe;
+  }, [isOnline]);
+
   const uniqueOnlineEnrollments = Array.from(
     new Map(onlineEnrollments.map((item) => [item.courseId, item])).values()
   );
+
   const uniqueOfflineEnrollments = Array.from(
     new Map(offlineEnrollments.map((item) => [item.courseId, item])).values()
   );
-  const enrollments =
+
+  const enrollments: Enrollment[] =
     isOnline === true ? uniqueOnlineEnrollments : uniqueOfflineEnrollments;
-  const loading = isOnline === null || dbLoading || (isOnline && isLoading);
+
+  const loading = isOnline === null || dbLoading;
+
   return {
     enrollments,
     isOnline,

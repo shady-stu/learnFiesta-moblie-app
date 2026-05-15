@@ -12,8 +12,8 @@ import TrustBadges from "../components/checkout/TrustBadges";
 import {useForm} from "react-hook-form";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
 import { useCartContext } from "./context/CartContext";
-import { purchaseCourses } from "@/api/services/ServicebyCourse"
-import { useRouter } from "expo-router";;
+import { purchaseCourses } from "@/api/services/enrollments/enrollmentService"
+import { useRouter } from "expo-router";
 export default function Checkout  ()  {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
     const router = useRouter();
@@ -32,10 +32,15 @@ export default function Checkout  ()  {
         0
     );
     const onSubmit = async (data: CheckoutFormData) => {
-        console.log("Checkout Data:", data);
-        await purchaseCourses(cart.items);
-        await clearCart();
-        router.push("/(tabs)/MyCourses");
+        try {
+            console.log("Checkout Data:", data);
+            await purchaseCourses(cart.items);
+            await clearCart();
+            router.push("/(tabs)/MyCourses");
+
+        } catch (error) {
+            console.log("Checkout error:", error);
+        }
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -83,7 +88,6 @@ export default function Checkout  ()  {
                     total={subtotal}
                     onPress={async () => {
                         await handleSubmit(onSubmit)();
-                        router.push("/(tabs)/MyCourses");
                     }}
                 />
                 <TrustBadges />

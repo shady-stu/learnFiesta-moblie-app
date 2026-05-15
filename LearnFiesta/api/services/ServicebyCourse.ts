@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { db } from "@/api/services/firebase";
 
 import {
@@ -126,3 +127,6 @@ export async function purchaseCourses(cartItems: any[]) {
 export async function clearAllEnrollments() {
   await clearOfflineEnrollments();
 }
+=======
+export * from "@/api/services/enrollments/enrollmentService";
+>>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab

@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import type { Enrollment } from "@/components/CourseCard";
+import type { Enrollment } from "@/types/Enrollment";
 import { getAuth } from "firebase/auth";
 
 const DB_NAME = "my_courses_offline_v2.db";
@@ -19,16 +19,23 @@ export async function initCoursesDb() {
 
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS enrollments (
+<<<<<<< HEAD
       courseId TEXT NOT NULL,
       userId TEXT NOT NULL,
       data TEXT NOT NULL,
       PRIMARY KEY (courseId, userId)
+=======
+      id TEXT NOT NULL,
+      userId TEXT NOT NULL,
+      data TEXT NOT NULL,
+      PRIMARY KEY (id, userId)
+>>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
     );
   `);
 
+
   return db;
 }
-
 export async function saveEnrollmentsOffline(enrollments: Enrollment[]) {
   const db = await initCoursesDb();
   const user = getAuth().currentUser;
@@ -74,9 +81,14 @@ export async function getOfflineEnrollments(): Promise<Enrollment[]> {
 
 export async function clearOfflineEnrollments() {
   const db = await getDb();
+<<<<<<< HEAD
   const user = getAuth().currentUser;
 
   if (!user) return;
 
   await db.runAsync("DELETE FROM enrollments WHERE userId = ?;", [user.uid]);
 }
+=======
+  await db.runAsync("DELETE FROM enrollments;");
+}
+>>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab

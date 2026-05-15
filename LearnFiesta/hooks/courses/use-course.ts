@@ -1,4 +1,4 @@
-import { getUserEnrollments } from "@/api/services/ServicebyCourse";
+import { getUserEnrollments } from "@/api/services/enrollments/enrollmentService";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCourse = (

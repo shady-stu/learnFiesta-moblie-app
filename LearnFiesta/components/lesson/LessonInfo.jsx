@@ -2,7 +2,18 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-export default function LessonInfo({ module, duration, title, description, courseId, prevLessonId, nextLessonId }) {
+export default function LessonInfo({
+  module,
+  duration,
+  title,
+  description,
+  courseId,
+  prevLessonId,
+  nextLessonId,
+  isCompleted,
+  savingCompletion,
+  onCompleteLesson,
+}) {
   return (
     <View style={styles.container}>
       <View style={styles.badgeRow}>
@@ -12,17 +23,32 @@ export default function LessonInfo({ module, duration, title, description, cours
         <Text style={styles.dot}>•</Text>
         <Text style={styles.duration}>{duration}</Text>
       </View>
+
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
 
-    
+      <TouchableOpacity
+        style={[styles.completeButton, isCompleted && styles.completedButton]}
+        onPress={onCompleteLesson}
+        disabled={isCompleted || savingCompletion}
+      >
+        <Ionicons
+          name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
+          size={20}
+          color={isCompleted ? '#16a34a' : 'white'}
+        />
+        <Text style={[styles.completeButtonText, isCompleted && styles.completedButtonText]}>
+          {isCompleted ? 'Lesson completed' : savingCompletion ? 'Saving...' : 'Mark as completed'}
+        </Text>
+      </TouchableOpacity>
+
       <View style={styles.buttonRow}>
         {prevLessonId ? (
           <TouchableOpacity
             style={[styles.navButton, styles.prevButton]}
             onPress={() =>
               router.push({
-                pathname: "/lesson/[id]",
+                pathname: '/lesson/[id]',
                 params: { id: prevLessonId, courseId },
               })
             }
@@ -39,7 +65,7 @@ export default function LessonInfo({ module, duration, title, description, cours
             style={[styles.navButton, styles.nextButton]}
             onPress={() =>
               router.push({
-                pathname: "/lesson/[id]",
+                pathname: '/lesson/[id]',
                 params: { id: nextLessonId, courseId },
               })
             }
@@ -61,8 +87,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#5523d1',
-    borderBottomOpacity: 0.1,
+    borderBottomColor: '#5523d120',
   },
   badgeRow: {
     flexDirection: 'row',
@@ -100,6 +125,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#475569',
     lineHeight: 20,
+  },
+  completeButton: {
+    marginTop: 18,
+    backgroundColor: '#5523d1',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
+  },
+  completedButton: {
+    backgroundColor: '#dcfce7',
+    borderWidth: 1,
+    borderColor: '#bbf7d0',
+  },
+  completeButtonText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  completedButtonText: {
+    color: '#16a34a',
   },
   buttonRow: {
     flexDirection: 'row',
