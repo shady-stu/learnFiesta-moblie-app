@@ -37,10 +37,7 @@ export default function MyCourses() {
   const handleRefresh = () => {
     setRefreshCount((count) => count + 1);
   };
-  const handleClearOffline = async () => {
-    await clearAllEnrollments();
-    setRefreshCount((count) => count + 1);
-  };
+ 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
@@ -58,13 +55,7 @@ export default function MyCourses() {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.clearBtn}
-          activeOpacity={0.8}
-          onPress={handleClearOffline}
-        >
-          <Text style={styles.clearText}>Clear Offline</Text>
-        </TouchableOpacity>
+       
       </View>
 
       {!isOnline && (
