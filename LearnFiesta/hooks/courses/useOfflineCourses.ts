@@ -11,14 +11,14 @@ import {
 export function useOfflineCourses(refreshCount: number) {
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [offlineEnrollments, setOfflineEnrollments] = useState<Enrollment[]>([]);
-  const [dbLoading, setDbLoading] = useState(true);
   const [onlineEnrollments, setOnlineEnrollments] = useState<Enrollment[]>([]);
+  const [dbLoading, setDbLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function checkNetworkAndLoadOffline() {
+    async function loadCourses() {
       try {
         setDbLoading(true);
 
@@ -43,6 +43,13 @@ export function useOfflineCourses(refreshCount: number) {
         }
       } catch (error) {
         console.log("SQLite / Network error:", error);
+
+        if (!cancelled) {
+          setIsOnline(false);
+
+          const savedCourses = await getOfflineEnrollments();
+          setOfflineEnrollments(savedCourses);
+        }
       } finally {
         if (!cancelled) {
           setDbLoading(false);
@@ -50,7 +57,7 @@ export function useOfflineCourses(refreshCount: number) {
       }
     }
 
-    checkNetworkAndLoadOffline();
+    loadCourses();
 
     return () => {
       cancelled = true;
@@ -75,8 +82,16 @@ export function useOfflineCourses(refreshCount: number) {
     return unsubscribe;
   }, [isOnline]);
 
+  const uniqueOnlineEnrollments = Array.from(
+    new Map(onlineEnrollments.map((item) => [item.courseId, item])).values()
+  );
+
+  const uniqueOfflineEnrollments = Array.from(
+    new Map(offlineEnrollments.map((item) => [item.courseId, item])).values()
+  );
+
   const enrollments: Enrollment[] =
-    isOnline === true ? onlineEnrollments : offlineEnrollments;
+    isOnline === true ? uniqueOnlineEnrollments : uniqueOfflineEnrollments;
 
   const loading = isOnline === null || dbLoading;
 
