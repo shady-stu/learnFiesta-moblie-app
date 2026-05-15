@@ -32,7 +32,7 @@ export default function RootLayout() {
   }
 
   if (user && inAuthGroup) {
-    return <Redirect href="/(tabs)" />;
+    return <Redirect href="/post-login-splash" />;
   }
 
   return (

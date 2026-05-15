@@ -38,7 +38,7 @@ export default function Register() {
         setFirebaseError(null);
         try {
             await registerUser(data.email, data.password, data.fullName);
-            router.replace("/(tabs)");
+            router.replace("/post-login-splash");
         } catch (err: any) {
             const msg = getFirebaseErrorMessage(err.code);
             setFirebaseError(msg);
