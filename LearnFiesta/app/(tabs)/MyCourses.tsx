@@ -58,13 +58,7 @@ export default function MyCourses() {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.clearBtn}
-          activeOpacity={0.8}
-          onPress={handleClearOffline}
-        >
-          <Text style={styles.clearText}>Clear Offline</Text>
-        </TouchableOpacity>
+       
       </View>
 
       {!isOnline && (
