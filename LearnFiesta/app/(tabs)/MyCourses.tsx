@@ -37,10 +37,7 @@ export default function MyCourses() {
   const handleRefresh = () => {
     setRefreshCount((count) => count + 1);
   };
-  const handleClearOffline = async () => {
-    await clearAllEnrollments();
-    setRefreshCount((count) => count + 1);
-  };
+ 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
