@@ -34,3 +34,19 @@ export const fetchCourseById = async (id: string): Promise<Course | null> => {
         badge: data.badge || "",
     };
 };
+
+export const fetchInstructorById = async (id: string) => {
+    const ref = doc(db, "users", id);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) return null;
+
+    const data = snap.data();
+
+    return {
+        id: snap.id,
+        name: data.name,
+        photoURL: data.photoURL,
+        role: data.role,
+    };
+};

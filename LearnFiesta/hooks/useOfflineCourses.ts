@@ -5,7 +5,6 @@ import type { Enrollment } from "@/types/Enrollment";
 import { listenToUserEnrollments } from "@/api/services/enrollments/enrollmentService";
 import {
   initCoursesDb,
-  saveEnrollmentsOffline,
   getOfflineEnrollments,
 } from "@/db/offlineCoursesDb";
 
@@ -66,7 +65,6 @@ export function useOfflineCourses(refreshCount: number) {
     const unsubscribe = listenToUserEnrollments(
       async (enrollments) => {
         setOnlineEnrollments(enrollments);
-        await saveEnrollmentsOffline(enrollments);
       },
       (error) => {
         console.log("Realtime enrollments error:", error);
