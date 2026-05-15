@@ -9,19 +9,12 @@ import LoadingView from "@/components/ui/LoadingView";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
-<<<<<<< HEAD
 import { Radius } from "@/constants/radius";
-import { useOfflineCourses } from "@/hooks/useOfflineCourses";
-import { clearAllEnrollments } from "@/api/services/ServicebyCourse";
-=======
-import { Radius } from "@/constants/radius"
-import LoadingView from "@/components/ui/LoadingView";
 import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
-import { clearAllEnrollments } from "@/api/services/enrollments/enrollmentService"
+import { clearAllEnrollments } from "@/api/services/enrollments/enrollmentService";
 import { getContinueLessonParams } from "@/utils/learningNavigation";
 import type { Enrollment } from "@/types/Enrollment";
 
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
 export default function MyCourses() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<CourseTab>("all");
@@ -35,13 +28,7 @@ export default function MyCourses() {
     if (activeTab === "all") return true;
     return item.status === activeTab;
   });
-<<<<<<< HEAD
-  const previewCourseId = enrollments[0]?.courseId;
-  const handleLessonPress = (courseId: string) => {
-=======
-
   const openEnrollmentLesson = (enrollment: Enrollment) => {
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
     router.push({
       pathname: "/lesson/[id]",
       params: getContinueLessonParams(enrollment),
@@ -94,18 +81,6 @@ export default function MyCourses() {
 
       <CourseTabs activeTab={activeTab} onChangeTab={setActiveTab} />
 
-<<<<<<< HEAD
-      {previewCourseId && (
-        <View style={styles.previewWrap}>
-          <FirebaseCoursePreviewCard
-            courseId={previewCourseId}
-            onPress={() => handleLessonPress(previewCourseId)}
-          />
-        </View>
-      )}
-
-=======
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
       {filteredEnrollments.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>
@@ -119,14 +94,9 @@ export default function MyCourses() {
         >
           {filteredEnrollments.map((item) => (
             <TouchableOpacity
-<<<<<<< HEAD
-              key={item.courseId}
-              activeOpacity={0.8}
-              onPress={() => handleLessonPress(item.courseId)}
-=======
               key={item.id}
+              activeOpacity={0.8}
               onPress={() => openEnrollmentLesson(item)}
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
             >
               <CourseCard enrollment={item} />
             </TouchableOpacity>
@@ -189,13 +159,6 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: Spacing.md,
   },
-<<<<<<< HEAD
-  previewWrap: {
-    marginBottom: Spacing.lg,
-  },
-=======
-
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
   empty: {
     flex: 1,
     justifyContent: "center",
@@ -206,11 +169,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontSize: Typography.subheading,
   },
-<<<<<<< HEAD
   listContent: {
     paddingBottom: 100,
   },
 });
-=======
-});
->>>>>>> 517ffbdaaf76fe120b2542cbb6a2cdb7f1b55bab
