@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useCoursesByCategory } from '@/hooks/category/useCoursesByCategory';
-import { useCategories } from './category/useCategories';
+import { useCategories } from '@/hooks/category/useCategories';
 
 export function useCategoryCoursesScreen() {
   const { id, title } = useLocalSearchParams<{ id?: string; title?: string }>();
