@@ -11,7 +11,7 @@ import EditProfileModal from '@/components/profile/EditProfileModal';
 import StatsCard from '@/components/profile/StatsCard';
 import SettingsList from '@/components/profile/SettingsList';
 import InstructorAccessCard from '@/components/profile/InstructorAccessCard';
-import { useCurrentUserRole } from '@/hooks/useCurrentUserRole';
+import { useCurrentUserRole } from '@/hooks/role/useCurrentUserRole';
 
 type UserProfile = {
     name: string;

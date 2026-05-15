@@ -15,7 +15,7 @@ import { Colors } from "@/constants/colors";
 import { Radius } from "@/constants/radius";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
-import { useInstructor } from "@/hooks/useInstructor";
+import { useInstructor } from "@/hooks/instructor/useInstructor";
 
 export default function InstructorCourses() {
   const insets = useSafeAreaInsets();

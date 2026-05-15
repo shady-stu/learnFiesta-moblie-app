@@ -4,7 +4,7 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import { useCartQuery, useAddToCart, useRemoveFromCart } from '@/hooks/useCart';
+import { useCartQuery, useAddToCart, useRemoveFromCart } from '@/hooks/cart/useCart';
 import type { Cart, CartItem } from '@/types/cart';
 
 

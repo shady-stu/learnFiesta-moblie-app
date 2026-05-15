@@ -6,7 +6,7 @@ import SearchInput from "@/components/ui/SearchInput"
 import {FilterChip} from "@/components/ui/FilterChip";
 import CourseCard  from "@/components/courses/CourseCard";
 import {Colors} from "@/constants/colors";
-import { useBookmarks } from "@/hooks/useBookmarks";
+import { useBookmarks } from "@/hooks/bockmark/useBookmarks";
 import {useCourses} from "@/lib/useCourses";
 import LoadingView from "@/components/ui/LoadingView";
 

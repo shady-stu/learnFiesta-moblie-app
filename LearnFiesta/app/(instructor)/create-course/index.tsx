@@ -11,9 +11,9 @@ import SelectField from "@/components/inputs/SelectField";
 import TextAreaField from "@/components/inputs/TextAreaField";
 import ImageUploader from "@/components/upload/ImageUploader";
 import LoadingView from "@/components/ui/LoadingView";
-import { useCourseFoundation } from "@/hooks/useCourseFoundation";
-import { useSaveCourseFoundation } from "@/hooks/useSaveCourseFoundation";
-import { useCategories } from '@/hooks/useCategories';
+import { useCourseFoundation } from "@/hooks/createCourse/useCourseFoundation";
+import { useSaveCourseFoundation } from "@/hooks/createCourse/useSaveCourseFoundation";
+import { useCategories } from '@/hooks/category/useCategories';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import NavigationHeader from "@/components/common/NavigationHeader";
 

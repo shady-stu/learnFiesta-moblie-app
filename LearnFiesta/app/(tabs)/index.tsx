@@ -22,9 +22,9 @@ import CategoryCard from "@/components/home/CategoryCard";
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { auth } from "@/api/services/firebase";
-import { useRecommendedCourses } from "@/hooks/useRecommendedCourses";
-import { useCategories } from "@/hooks/useCategories";
-import { useOfflineCourses } from "@/hooks/useOfflineCourses";
+import { useRecommendedCourses } from "@/hooks/courses/useRecommendedCourses";
+import { useCategories } from "@/hooks/category/useCategories";
+import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
 import { chooseContinueCourse, getContinueLessonParams } from "@/utils/learningNavigation";
 import type { Course } from "@/types/course";
 

@@ -12,7 +12,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { db } from "@/api/services/firebase";
-import type { CurriculumLessonInput, CurriculumMetrics } from "./types";
+import type { CurriculumLessonInput, CurriculumMetrics } from "./curriculumType";
 import { fetchCourseSections } from "./sections";
 import {
   buildLesson,
