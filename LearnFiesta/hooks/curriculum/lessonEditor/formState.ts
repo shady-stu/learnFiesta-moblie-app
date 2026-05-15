@@ -30,7 +30,7 @@ export function useLessonEditorFormState() {
   const lessonFormController = useForm<LessonFormState>({
     resolver: zodResolver(lessonFormSchema),
     defaultValues: emptyLessonForm(),
-    mode: "onChange",
+    mode: "all",
     reValidateMode: "onChange",
   });
 
@@ -46,6 +46,9 @@ export function useLessonEditorFormState() {
   const openLessonEditor = (sectionId: string, lesson?: CurriculumLesson) => {
     setLessonEditor({ sectionId, lesson });
     lessonFormController.reset(emptyLessonForm(lesson));
+    setTimeout(() => {
+      void lessonFormController.trigger(["title", "durationMinutes", "description"]);
+    }, 0);
   };
 
   const closeLessonEditor = () => {
@@ -93,6 +96,9 @@ export function useLessonEditorFormState() {
   const addResourceRow = () => {
     const resources = lessonFormController.getValues("resources");
     saveResources([...resources, { title: "", type: "pdf", url: "" }]);
+    setTimeout(() => {
+      void lessonFormController.trigger(`resources.${resources.length}`);
+    }, 0);
   };
 
   const removeResourceRow = (index: number) => {
@@ -113,6 +119,9 @@ export function useLessonEditorFormState() {
   const addQaRow = () => {
     const qa = lessonFormController.getValues("qa");
     saveQa([...qa, { question: "", answer: "" }]);
+    setTimeout(() => {
+      void lessonFormController.trigger(`qa.${qa.length}`);
+    }, 0);
   };
 
   const removeQaRow = (index: number) => {
@@ -124,6 +133,7 @@ export function useLessonEditorFormState() {
     lessonEditor,
     lessonForm,
     errors,
+    control: lessonFormController.control,
     lessonFormController,
     openLessonEditor,
     closeLessonEditor,

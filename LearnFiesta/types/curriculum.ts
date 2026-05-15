@@ -1,4 +1,4 @@
-import type { FieldErrors } from "react-hook-form";
+import type { Control, FieldErrors } from "react-hook-form";
 import type {
   CurriculumLesson,
   LessonType,
@@ -58,6 +58,7 @@ export const emptyLessonForm = (lesson?: CurriculumLesson): LessonFormState => (
 
 export type LessonFormModalProps = {
   editor: LessonEditorState;
+  control: Control<LessonFormState>;
   form: LessonFormState;
   errors?: FieldErrors<LessonFormState>;
   saving: boolean;
@@ -65,7 +66,6 @@ export type LessonFormModalProps = {
   onSave: () => void;
   onAddResource: () => void;
   onRemoveResource: (index: number) => void;
-  onChangeLessonField: (field: string, value: string) => void;
   onChangeResourceField: (index: number, field: string, value: string) => void;
   onAddQa: () => void;
   onRemoveQa: (index: number) => void;

@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Control, FieldErrors, useController } from "react-hook-form";
 import TextInputField from "@/components/inputs/TextInputField";
 import SelectField from "@/components/inputs/SelectField";
 import TextAreaField from "@/components/inputs/TextAreaField";
@@ -32,6 +32,13 @@ export default function FoundationDetailsCard({
   onUpdateLearningPoint,
   onRemoveLearningPoint,
 }: Props) {
+  const { field: titleField } = useController({ control, name: "title" });
+  const { field: categoryField } = useController({ control, name: "category" });
+  const { field: descriptionField } = useController({
+    control,
+    name: "description",
+  });
+
   const categoryOptions = isLoadingCategories
     ? [{ label: "Loading...", value: "" }]
     : categories.map((category) => ({
@@ -41,44 +48,27 @@ export default function FoundationDetailsCard({
 
   return (
     <View style={styles.cardLarge}>
-      <Controller
-        control={control}
-        name="title"
-        render={({ field }) => (
-          <TextInputField
-            label="Course Title"
-            value={field.value}
-            onChangeText={field.onChange}
-            error={errors.title?.message}
-          />
-        )}
+      <TextInputField
+        label="Course Title"
+        value={titleField.value}
+        onChangeText={titleField.onChange}
+        onBlur={titleField.onBlur}
+        error={errors.title?.message}
       />
 
-      <Controller
-        control={control}
-        name="category"
-        render={({ field }) => (
-          <SelectField
-            label="Category"
-            value={field.value}
-            onChange={field.onChange}
-            options={categoryOptions}
-            error={errors.category?.message}
-          />
-        )}
+      <SelectField
+        label="Category"
+        value={categoryField.value}
+        onChange={categoryField.onChange}
+        options={categoryOptions}
+        error={errors.category?.message}
       />
 
-      <Controller
-        control={control}
-        name="description"
-        render={({ field }) => (
-          <TextAreaField
-            label="Description"
-            value={field.value}
-            onChangeText={field.onChange}
-            error={errors.description?.message}
-          />
-        )}
+      <TextAreaField
+        label="Description"
+        value={descriptionField.value}
+        onChangeText={descriptionField.onChange}
+        error={errors.description?.message}
       />
 
       <View style={styles.learningBlock}>
