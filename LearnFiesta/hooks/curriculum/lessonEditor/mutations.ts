@@ -12,10 +12,13 @@ export function useLessonEditorMutations(
   lessonEditor: LessonEditorState,
   onSaved: () => void
 ) {
+  // One mutation handles both create and update.
+  // If lessonEditor.lesson exists, we update. Otherwise, we create.
   const saveMutation = useMutation({
     mutationFn: async (values: LessonFormState) => {
       if (!courseId || !lessonEditor) return;
-      // Build the payload in one place before sending to Firebase
+      // Build the payload in one place before sending to Firebase.
+      // This keeps form cleanup and type conversion outside the UI.
       const payload = buildLessonPayload(values);
 
       if (lessonEditor.lesson) {
@@ -32,6 +35,7 @@ export function useLessonEditorMutations(
     },
   });
 
+  // Delete is separate because it only needs the section id and lesson id.
   const deleteMutation = useMutation({
     mutationFn: async ({ sectionId, lessonId }: { sectionId: string; lessonId: string }) => {
       if (!courseId) return;
@@ -39,11 +43,13 @@ export function useLessonEditorMutations(
     },
   });
 
+  // Save then close the modal through the callback from useLessonEditor.
   const saveLesson = async (values: LessonFormState) => {
     await saveMutation.mutateAsync(values);
     onSaved();
   };
 
+  // Public delete function used by the section lesson cards.
   const removeLesson = async (sectionId: string, lessonId: string) => {
     await deleteMutation.mutateAsync({ sectionId, lessonId });
   };
