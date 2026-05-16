@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View,Text,StyleSheet,TouchableOpacity,ScrollView,} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -13,30 +13,33 @@ import { Radius } from "@/constants/radius";
 import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
 import { getContinueLessonParams } from "@/utils/learningNavigation";
 import type { Enrollment } from "@/types/Enrollment";
-
 export default function MyCourses() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<CourseTab>("all");
   const [refreshCount, setRefreshCount] = useState(0);
   const { enrollments, isOnline, isError, loading } =
     useOfflineCourses(refreshCount);
+
   if (loading) {
     return <LoadingView />;
   }
+
   const filteredEnrollments = enrollments.filter((item) => {
     if (activeTab === "all") return true;
     return item.status === activeTab;
   });
+
   const openEnrollmentLesson = (enrollment: Enrollment) => {
     router.push({
       pathname: "/lesson/[id]",
       params: getContinueLessonParams(enrollment),
     });
   };
+
   const handleRefresh = () => {
     setRefreshCount((count) => count + 1);
   };
- 
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Courses</Text>
@@ -48,13 +51,10 @@ export default function MyCourses() {
           onPress={handleRefresh}
         >
           <Ionicons name="refresh-outline" size={18} color={Colors.white} />
-
           <Text style={styles.refreshText}>
             {isOnline ? "Refresh Online" : "Refresh Offline"}
           </Text>
         </TouchableOpacity>
-
-       
       </View>
 
       {!isOnline && (
@@ -103,18 +103,21 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     backgroundColor: Colors.background,
   },
+
   header: {
     fontSize: Typography.title,
     fontWeight: "bold",
     marginBottom: Spacing.md,
     color: Colors.textPrimary,
   },
+
   actions: {
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
     marginBottom: Spacing.sm,
   },
+
   refreshBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -124,41 +127,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     borderRadius: Radius.full,
   },
+
   refreshText: {
     color: Colors.white,
     fontWeight: "600",
     fontSize: Typography.caption,
   },
-  clearBtn: {
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: Radius.full,
-    backgroundColor: Colors.surface,
-  },
-  clearText: {
-    color: Colors.textPrimary,
-    fontWeight: "600",
-    fontSize: Typography.caption,
-  },
+
   offlineText: {
     color: Colors.textSecondary,
     marginBottom: Spacing.md,
     fontSize: Typography.caption,
   },
+
   errorText: {
     color: "red",
     marginBottom: Spacing.md,
   },
+
   empty: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
   },
+
   emptyText: {
     color: Colors.textSecondary,
     fontSize: Typography.subheading,
   },
+
   listContent: {
     paddingBottom: 100,
   },

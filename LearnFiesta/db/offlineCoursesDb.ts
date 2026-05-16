@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 import type { Enrollment } from "@/types/Enrollment";
 import { getAuth } from "firebase/auth";
 
-const DB_NAME = "my_courses_offline_v2.db";
+const DB_NAME = "my_courses_offline_v3.db";
 
 let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
@@ -26,9 +26,9 @@ export async function initCoursesDb() {
     );
   `);
 
-
   return db;
 }
+
 export async function saveEnrollmentsOffline(enrollments: Enrollment[]) {
   const db = await initCoursesDb();
   const user = getAuth().currentUser;
