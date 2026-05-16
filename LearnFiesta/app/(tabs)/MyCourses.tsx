@@ -11,7 +11,6 @@ import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { Radius } from "@/constants/radius";
 import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
-import { clearAllEnrollments } from "@/api/services/enrollments/enrollmentService";
 import { getContinueLessonParams } from "@/utils/learningNavigation";
 import type { Enrollment } from "@/types/Enrollment";
 

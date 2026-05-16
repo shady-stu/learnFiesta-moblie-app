@@ -15,10 +15,14 @@ import { useSubmitCourseFoundation } from "@/hooks/createCourse/useSubmitCourseF
 
 export function useCourseFoundationForm() {
   const router = useRouter();
+
+  // courseId exists only when the instructor opens the form to edit a course.
   const { courseId: courseIdParam } = useLocalSearchParams<{ courseId?: string }>();
   const courseId = Array.isArray(courseIdParam) ? courseIdParam[0] : courseIdParam;
   const isEditing = Boolean(courseId);
 
+  // These two queries prepare the data needed by the form.
+  // Categories fill the select input, and editingCourse fills the form in edit mode.
   const { data: categories = [], isLoading: isLoadingCategories } = useCategories();
   const {
     data: editingCourse,
@@ -26,6 +30,8 @@ export function useCourseFoundationForm() {
     isError: isCourseLoadError,
   } = useCourseFoundation(courseId);
 
+  // Main React Hook Form setup.
+  // Zod handles validation, and mode "all" shows errors while the user types.
   const {
     control,
     handleSubmit,
@@ -43,17 +49,20 @@ export function useCourseFoundationForm() {
   const thumbnail = watch("thumbnail");
   const learningPoints = watch("whatYouWillLearn");
 
+  // Draft sync is used only for new courses, not for editing existing courses.
   const { clearDraft } = useCourseFoundationDraftSync({
     isEditing,
     reset,
     watch,
   });
 
+  // Keeps add/update/remove logic for learning points outside the screen component.
   const learningPointActions = useLearningPointsField({
     learningPoints,
     setValue,
   });
 
+  // Handles the Firebase save and navigation to the curriculum step.
   const { isPending, submitCourseFoundation } = useSubmitCourseFoundation({
     categories,
     clearDraft,
@@ -62,6 +71,8 @@ export function useCourseFoundationForm() {
     router,
   });
 
+  // When editing, copy Firebase values into the form.
+  // This runs after the course data finishes loading.
   useEffect(() => {
     if (!editingCourse) return;
 
@@ -78,6 +89,7 @@ export function useCourseFoundationForm() {
   }, [editingCourse, reset]);
 
   return {
+    // The screen receives one clean object from this hook instead of managing many hooks itself.
     ...learningPointActions,
     categories,
     control,
