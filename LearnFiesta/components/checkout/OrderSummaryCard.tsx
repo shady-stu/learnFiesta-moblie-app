@@ -17,7 +17,12 @@ const OrderSummaryCard = ({onPress, courses, total}: OrderSummaryCardProps) => {
 
             {courses.map((c) => (
                 <View key={c.id} style={styles.row}>
-                    <Text style={styles.label}>{c.title}</Text>
+                    <Text
+                        style={styles.label}
+                        numberOfLines={2}
+                    >
+                        {c.title}
+                    </Text>
                     <Text style={styles.price}>${c.price}</Text>
                 </View>
             ))}
@@ -74,6 +79,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         color: Colors.textPrimary,
+        flexShrink: 0,
     },
 
     oldPrice: {
