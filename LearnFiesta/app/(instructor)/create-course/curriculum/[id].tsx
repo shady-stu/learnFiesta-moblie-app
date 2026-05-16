@@ -155,6 +155,7 @@ export default function CurriculumBuilderScreen() {
 
       <LessonFormModal
         editor={lessonEditorState.lessonEditor}
+        control={lessonEditorState.control}
         form={lessonEditorState.lessonForm}
         errors={lessonEditorState.errors}
         saving={saving}
@@ -165,7 +166,6 @@ export default function CurriculumBuilderScreen() {
         onChangeQaField={lessonEditorState.setQaField}
         onAddResource={lessonEditorState.addResourceRow}
         onRemoveResource={lessonEditorState.removeResourceRow}
-        onChangeLessonField={lessonEditorState.setLessonField}
         onChangeResourceField={lessonEditorState.setResourceField}
       />
     </View>

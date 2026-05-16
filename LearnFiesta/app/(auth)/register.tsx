@@ -15,6 +15,7 @@ import {
     validateConfirmPassword,
 } from "@/utils/registerValidation";
 import { registerStyles as styles } from "@/styles/auth/register.styles";
+import { Colors } from "@/constants/colors";
 
 export default function Register() {
     const { control, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>({
@@ -111,7 +112,7 @@ export default function Register() {
                             name="agreeTerms"
                             rules={{ required: "You must agree to the terms" }}
                             render={({ field }) => (
-                                <ExpoCheckbox value={field.value} onValueChange={field.onChange} color={field.value ? "#6C3EF4" : undefined} />
+                                <ExpoCheckbox value={field.value} onValueChange={field.onChange} color={field.value ? Colors.primary : undefined} />
                             )}
                         />
                         <Text style={styles.checkboxLabel}>I agree to the Terms & Conditions and Privacy Policy</Text>

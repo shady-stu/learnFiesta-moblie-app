@@ -18,6 +18,7 @@ export function useLessonEditor(courseId?: string) {
         const message =
           errors.title?.message ||
           errors.durationMinutes?.message ||
+          errors.description?.message ||
           errors.resources?.root?.message ||
           "Please check lesson fields.";
         throw new Error(message);
@@ -27,6 +28,7 @@ export function useLessonEditor(courseId?: string) {
 
   return {
     lessonEditor: formState.lessonEditor,
+    control: formState.control,
     lessonForm: formState.lessonForm,
     errors: formState.errors,
     saving: mutations.saving,

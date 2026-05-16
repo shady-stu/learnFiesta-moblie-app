@@ -41,7 +41,10 @@ export const lessonFormSchema = z.object({
       const minutes = Number(value);
       return Number.isFinite(minutes) && minutes > 0;
     }, "Duration must be a positive number."),
-  description: z.string(),
+  description: z
+    .string()
+    .trim()
+    .min(10, "Describe the lesson in at least 10 characters."),
   contentUrl: z.string(),
   keyConceptsText: z.string(),
   qa: z.array(qaSchema),
