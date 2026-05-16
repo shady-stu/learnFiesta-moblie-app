@@ -17,29 +17,13 @@ export type Instructor = {
   isActive: boolean;
 };
 
-type InstructorCardProps = Instructor & {
-  onEdit?: () => void;
-};
+type InstructorCardProps = Instructor & { onEdit?: () => void;};
 
-const InstructorCard = ({
-  title,
-  students,
-  revenue,
-  rating,
-  isActive,
-  imageUrl,
-  onEdit,
-}: InstructorCardProps) => {
+const InstructorCard = ({title,students,revenue,rating,isActive,imageUrl,onEdit,}: InstructorCardProps) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardImagePlaceholder}>
-        {imageUrl ? (
-          <Image
-            source={{ uri: imageUrl }}
-            style={StyleSheet.absoluteFillObject}
-            resizeMode="cover"
-          />
-        ) : null}
+        {imageUrl ? (<Image source={{ uri: imageUrl }} style={StyleSheet.absoluteFillObject} resizeMode="cover" /> ) : null}
 
         {isActive ? (
           <View style={styles.activeBadge}>

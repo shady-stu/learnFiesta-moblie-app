@@ -17,8 +17,7 @@ export default function MyCourses() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<CourseTab>("all");
   const [refreshCount, setRefreshCount] = useState(0);
-  const { enrollments, isOnline, isError, loading } =
-    useOfflineCourses(refreshCount);
+  const { enrollments, isOnline, isError, loading } =useOfflineCourses(refreshCount);
 
   if (loading) {
     return <LoadingView />;
@@ -45,11 +44,7 @@ export default function MyCourses() {
       <Text style={styles.header}>My Courses</Text>
 
       <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.refreshBtn}
-          activeOpacity={0.8}
-          onPress={handleRefresh}
-        >
+        <TouchableOpacity style={styles.refreshBtn} activeOpacity={0.8} onPress={handleRefresh}>
           <Ionicons name="refresh-outline" size={18} color={Colors.white} />
           <Text style={styles.refreshText}>
             {isOnline ? "Refresh Online" : "Refresh Offline"}

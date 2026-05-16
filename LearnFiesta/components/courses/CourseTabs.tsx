@@ -23,11 +23,7 @@ export default function CourseTabs({ activeTab, onChangeTab }: Props) {
           onPress={() => onChangeTab(tab)}
         >
           <Text style={activeTab === tab ? styles.tabTextActive : styles.tabText}>
-            {tab === "all"
-              ? "All"
-              : tab === "progress"
-              ? "In Progress"
-              : "Completed"}
+            {tab === "all"? "All" : tab === "progress" ? "In Progress" : "Completed"}
           </Text>
         </TouchableOpacity>
       ))}

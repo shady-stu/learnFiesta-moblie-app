@@ -1,38 +1,25 @@
 import { useEffect, useState } from "react";
 import * as Network from "expo-network";
-
 import type { Enrollment } from "@/types/Enrollment";
 import { listenToUserEnrollments } from "@/api/services/enrollments/enrollmentService";
-import {
-  initCoursesDb,
-  getOfflineEnrollments,
-  saveEnrollmentsOffline,
-} from "@/db/offlineCoursesDb";
-
+import {initCoursesDb,getOfflineEnrollments,saveEnrollmentsOffline,} from "@/db/offlineCoursesDb";
 export function useOfflineCourses(refreshCount: number) {
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [offlineEnrollments, setOfflineEnrollments] = useState<Enrollment[]>([]);
   const [onlineEnrollments, setOnlineEnrollments] = useState<Enrollment[]>([]);
   const [dbLoading, setDbLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-
   useEffect(() => {
     let cancelled = false;
-
     async function loadCourses() {
       try {
         setDbLoading(true);
-
         await initCoursesDb();
-
         const netState = await Network.getNetworkStateAsync();
-
         const online =
           Boolean(netState.isConnected) &&
           Boolean(netState.isInternetReachable ?? true);
-
         if (cancelled) return;
-
         setIsOnline(online);
 
         if (!online) {
