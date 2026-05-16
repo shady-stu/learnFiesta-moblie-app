@@ -28,7 +28,7 @@ const CourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
 
         <View style={s.row}>
           <Text style={[s.progressText, isDone && s.doneText]}>
-            {isDone ? "✅ Completed" : `${enrollment.progress}% Complete`}
+            {isDone ? " Completed" : `${enrollment.progress}% Complete`}
           </Text>
         </View>
       </View>
