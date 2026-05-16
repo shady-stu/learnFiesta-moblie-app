@@ -14,9 +14,11 @@ export const useSaveCourseFoundation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    // If courseId exists we update; otherwise we create a new course.
     mutationFn: ({ courseId, data }: SaveCourseFoundationInput) =>
       courseId ? updateCourseFoundation(courseId, data) : createCourse(data),
     onSuccess: (savedCourseId, variables) => {
+      // Refresh screens that may show this course after saving.
       void queryClient.invalidateQueries({ queryKey: ["courses"] });
       void queryClient.invalidateQueries({ queryKey: ["recommendedCourses"] });
       void queryClient.invalidateQueries({ queryKey: ["instructors"] });
@@ -25,6 +27,7 @@ export const useSaveCourseFoundation = () => {
       });
 
       if (variables.courseId) {
+        // Refresh the edit form data after updating an existing course.
         void queryClient.invalidateQueries({
           queryKey: ["courseFoundation", variables.courseId],
         });

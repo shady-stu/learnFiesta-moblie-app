@@ -17,6 +17,8 @@ export function useCourseFoundationDraftSync({ isEditing, reset, watch }: Props)
     useCourseFoundationDraft(!isEditing);
   const didRestoreDraft = useRef(false);
 
+  // Restore draft once in create mode.
+  // We skip this in edit mode because existing course data should win.
   useEffect(() => {
     if (isEditing || isDraftLoading || didRestoreDraft.current) return;
 
@@ -27,6 +29,8 @@ export function useCourseFoundationDraftSync({ isEditing, reset, watch }: Props)
     }
   }, [draft, isDraftLoading, isEditing, reset]);
 
+  // Watch form changes and save them as a local draft.
+  // The timeout is a small debounce so we do not write to storage on every key press.
   useEffect(() => {
     if (isEditing || isDraftLoading || !didRestoreDraft.current) return;
 
@@ -38,6 +42,7 @@ export function useCourseFoundationDraftSync({ isEditing, reset, watch }: Props)
       }
 
       saveTimeout = setTimeout(() => {
+        // Normalize empty values before saving so the draft always matches form shape.
         saveDraft({
           title: values.title || "",
           category: values.category || "",
