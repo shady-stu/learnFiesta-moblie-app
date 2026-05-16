@@ -14,8 +14,11 @@ import {
 } from "@/domain/curriculum/schemas";
 
 export function useSectionActions(courseId?: string, sectionCount = 0) {
+  // Modal state for adding or editing a section.
   const [sectionModalVisible, setSectionModalVisible] = useState(false);
   const [editingSection, setEditingSection] = useState<CurriculumSection | null>(null);
+
+  // Section title form with real-time Zod validation.
   const sectionForm = useForm<SectionFormValues>({
     resolver: zodResolver(sectionFormSchema),
     defaultValues: { title: "" },
@@ -23,6 +26,8 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
     reValidateMode: "onChange",
   });
 
+  // One save mutation handles both create and update.
+  // editingSection tells us which action is needed.
   const saveMutation = useMutation({
     mutationFn: async (title: string) => {
       if (!courseId) return;
@@ -34,6 +39,7 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
     },
   });
 
+  // Delete mutation only needs the section id.
   const deleteMutation = useMutation({
     mutationFn: async (sectionId: string) => {
       if (!courseId) return;
@@ -41,15 +47,18 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
     },
   });
 
+  // Prepare the modal for creating a new section.
   const openAddSection = () => {
     setEditingSection(null);
     sectionForm.reset({ title: "" });
     setSectionModalVisible(true);
     setTimeout(() => {
+      // Show validation feedback immediately when the modal opens.
       void sectionForm.trigger("title");
     }, 0);
   };
 
+  // Prepare the modal with existing section data for editing.
   const openEditSection = (section: CurriculumSection) => {
     setEditingSection(section);
     sectionForm.reset({ title: section.title });
@@ -59,12 +68,14 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
     }, 0);
   };
 
+  // Reset modal state so the next open starts clean.
   const closeSectionModal = () => {
     setSectionModalVisible(false);
     setEditingSection(null);
     sectionForm.reset({ title: "" });
   };
 
+  // Validate the section title before saving it to Firebase.
   const saveSection = async () => {
     await sectionForm.handleSubmit(
       async (values) => {
@@ -72,17 +83,21 @@ export function useSectionActions(courseId?: string, sectionCount = 0) {
         closeSectionModal();
       },
       async (errors) => {
+        // Return a simple message for the alert/toast layer.
         const message = errors.title?.message || "Please check the section data.";
         throw new Error(message);
       }
     )();
   };
 
+  // Public delete action used by section cards.
   const removeSection = async (sectionId: string) => {
     await deleteMutation.mutateAsync(sectionId);
   };
 
   const sectionTitle = sectionForm.watch("title");
+
+  // Setter used by the modal input. It also triggers live validation.
   const setSectionTitle = (title: string) => {
     sectionForm.setValue("title", title, {
       shouldDirty: true,

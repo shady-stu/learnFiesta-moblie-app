@@ -5,6 +5,7 @@ import {
 } from "@/api/services/curriculumService";
 
 export function useCurriculumSections(courseId?: string) {
+  // This hook only reads curriculum data: sections, loading, errors, and totals.
   const [sections, setSections] = useState<CurriculumSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +20,7 @@ export function useCurriculumSections(courseId?: string) {
     setLoading(true);
     setError(null);
 
+    // Firestore listener keeps the curriculum screen updated in real time.
     const unsubscribe = listenToCourseSections(
       courseId,
       (nextSections) => {
@@ -34,11 +36,13 @@ export function useCurriculumSections(courseId?: string) {
     return unsubscribe;
   }, [courseId]);
 
+  // Derived value used by the header and publish summary.
   const totalLessons = useMemo(
     () => sections.reduce((total, section) => total + section.lessons.length, 0),
     [sections]
   );
 
+  // Derived value used to show total curriculum duration.
   const totalMinutes = useMemo(
     () =>
       sections.reduce(
