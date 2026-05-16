@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import {View,Text,ScrollView,Pressable,StyleSheet,} from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,13 +10,10 @@ import { Radius } from "@/constants/radius";
 import { Spacing } from "@/constants/spacing";
 import { Typography } from "@/constants/typography";
 import { useInstructor } from "@/hooks/instructor/useInstructor";
-
 export default function InstructorCourses() {
   const insets = useSafeAreaInsets();
   const { data: instructors = [], isLoading, isError } = useInstructor();
-
   if (isLoading) return <LoadingView />;
-
   if (isError) {
     return (
       <View style={styles.centerContainer}>
@@ -34,18 +25,14 @@ export default function InstructorCourses() {
   const activeCourses = instructors.filter((course) => course.isActive);
   const inactiveCourses = instructors.filter((course) => !course.isActive);
   const totalStudents = instructors.reduce(
-    (sum, course) => sum + (course.students || 0),
-    0
+    (sum, course) => sum + (course.students || 0), 0
   );
   const totalRevenue = instructors.reduce(
-    (sum, course) => sum + (course.revenue || 0),
-    0
+    (sum, course) => sum + (course.revenue || 0),0
   );
-
   const openCreateCourse = () => {
     router.push({ pathname: "/(instructor)/create-course" });
   };
-
   const openEditCourse = (courseId: string) => {
     router.push({
       pathname: "/(instructor)/create-course",

@@ -6,6 +6,7 @@ import { listenToUserEnrollments } from "@/api/services/enrollments/enrollmentSe
 import {
   initCoursesDb,
   getOfflineEnrollments,
+  saveEnrollmentsOffline,
 } from "@/db/offlineCoursesDb";
 
 export function useOfflineCourses(refreshCount: number) {
@@ -72,6 +73,13 @@ export function useOfflineCourses(refreshCount: number) {
     const unsubscribe = listenToUserEnrollments(
       async (enrollments) => {
         setOnlineEnrollments(enrollments);
+
+        try {
+          await saveEnrollmentsOffline(enrollments);
+          setOfflineEnrollments(enrollments);
+        } catch (error) {
+          console.log("Failed to sync offline enrollments:", error);
+        }
       },
       (error) => {
         console.log("Realtime enrollments error:", error);
