@@ -17,6 +17,7 @@ const setValueOptions = {
   shouldTouch: true,
 } as const;
 
+// These are simple lesson fields. Arrays like resources and Q&A are handled separately.
 const lessonTextFields = [
   "title",
   "durationMinutes",
@@ -27,6 +28,8 @@ const lessonTextFields = [
 
 export function useLessonEditorFormState() {
   const [lessonEditor, setLessonEditor] = useState<LessonEditorState>(null);
+
+  // React Hook Form owns the lesson form values, and Zod validates them in real time.
   const lessonFormController = useForm<LessonFormState>({
     resolver: zodResolver(lessonFormSchema),
     defaultValues: emptyLessonForm(),
@@ -34,15 +37,18 @@ export function useLessonEditorFormState() {
     reValidateMode: "onChange",
   });
 
+  // Live form values used by the lesson modal UI.
   const lessonForm = useWatch({
     control: lessonFormController.control,
     defaultValue: emptyLessonForm(),
   }) as LessonFormState;
 
+  // Validation errors are read from React Hook Form instead of being managed manually.
   const { errors } = useFormState({
     control: lessonFormController.control,
   });
 
+  // Open the modal for adding a new lesson or editing an existing one.
   const openLessonEditor = (sectionId: string, lesson?: CurriculumLesson) => {
     setLessonEditor({ sectionId, lesson });
     lessonFormController.reset(emptyLessonForm(lesson));
@@ -51,11 +57,13 @@ export function useLessonEditorFormState() {
     }, 0);
   };
 
+  // Close the modal and reset values so old lesson data does not leak into the next edit.
   const closeLessonEditor = () => {
     setLessonEditor(null);
     lessonFormController.reset(emptyLessonForm());
   };
 
+  // Update a normal text field and immediately validate it.
   const saveLessonField = (
     field: (typeof lessonTextFields)[number],
     value: string
@@ -64,14 +72,17 @@ export function useLessonEditorFormState() {
     lessonFormController.trigger(field);
   };
 
+  // Save the resources array back into the form state.
   const saveResources = (resources: ResourceFormState[]) => {
     lessonFormController.setValue("resources", resources, setValueOptions);
   };
 
+  // Save the Q&A array back into the form state.
   const saveQa = (qa: LessonQaItem[]) => {
     lessonFormController.setValue("qa", qa, setValueOptions);
   };
 
+  // Public setter used by the UI for basic lesson fields.
   const setLessonField = (field: string, value: string) => {
     if (field === "type") {
       lessonFormController.setValue("type", value as LessonFormState["type"], setValueOptions);
@@ -83,6 +94,7 @@ export function useLessonEditorFormState() {
     if (textField) saveLessonField(textField, value);
   };
 
+  // Update one resource row while keeping all other rows unchanged.
   const setResourceField = (index: number, field: string, value: string) => {
     const resources = lessonFormController.getValues("resources");
     saveResources(
@@ -93,6 +105,7 @@ export function useLessonEditorFormState() {
     lessonFormController.trigger(`resources.${index}`);
   };
 
+  // Add a new empty resource row and validate it right away.
   const addResourceRow = () => {
     const resources = lessonFormController.getValues("resources");
     saveResources([...resources, { title: "", type: "pdf", url: "" }]);
@@ -101,11 +114,13 @@ export function useLessonEditorFormState() {
     }, 0);
   };
 
+  // Remove one resource row by index.
   const removeResourceRow = (index: number) => {
     const resources = lessonFormController.getValues("resources");
     saveResources(resources.filter((_, resourceIndex) => resourceIndex !== index));
   };
 
+  // Update one Q&A row while keeping the other rows unchanged.
   const setQaField = (index: number, field: "question" | "answer", value: string) => {
     const qa = lessonFormController.getValues("qa");
     saveQa(
@@ -116,6 +131,7 @@ export function useLessonEditorFormState() {
     lessonFormController.trigger(`qa.${index}`);
   };
 
+  // Add a new empty Q&A row and validate it right away.
   const addQaRow = () => {
     const qa = lessonFormController.getValues("qa");
     saveQa([...qa, { question: "", answer: "" }]);
@@ -124,6 +140,7 @@ export function useLessonEditorFormState() {
     }, 0);
   };
 
+  // Remove one Q&A row by index.
   const removeQaRow = (index: number) => {
     const qa = lessonFormController.getValues("qa");
     saveQa(qa.filter((_, qaIndex) => qaIndex !== index));

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import {router, useRouter} from 'expo-router';
 import { Colors } from '@/constants/colors';
 
 type NavigationHeaderProps = {
@@ -17,7 +17,7 @@ export default function NavigationHeader({
   onShare,
 }: NavigationHeaderProps) {
   const router = useRouter();
-  const handleBack = onBackPress ?? (() => router.back());
+  const handleBack = onBackPress ?? (() => router.replace("/(tabs)"));
 
   return (
     <View style={styles.container}>
