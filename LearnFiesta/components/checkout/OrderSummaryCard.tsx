@@ -73,6 +73,8 @@ const styles = StyleSheet.create({
 
     label: {
         color: Colors.textSecondary,
+        flex: 1,
+        flexShrink: 1,
     },
 
     price: {
