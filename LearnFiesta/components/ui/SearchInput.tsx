@@ -9,12 +9,7 @@ type SearchInputProps = {
     onBackPress?: () => void;
     onCartPress?: () => void;
 };
-export default function SearchInput({
-    value,
-    onChange,
-    onBackPress,
-    onCartPress,
-}:SearchInputProps) {
+export default function SearchInput({value, onChange, onBackPress, onCartPress,}:SearchInputProps) {
     const { cart } = useCartContext();
     const cartCount = cart.totalItems;
 
@@ -23,13 +18,24 @@ export default function SearchInput({
             <TouchableOpacity style={styles.iconButton} onPress={onBackPress}>
                 <MaterialIcons name="arrow-back" size={24} color="#5523d1" />
             </TouchableOpacity>
-            <TextInput
-                style={styles.input}
-                placeholder="Search for courses, skills, or mentors..."
-                placeholderTextColor="#9ca3af"
-                value={value}
-                onChangeText={onChange}
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Search for courses, skills, or mentors..."
+                    placeholderTextColor="#9ca3af"
+                    value={value}
+                    onChangeText={onChange}
+                />
+
+                {value.length > 0 && (
+                    <TouchableOpacity
+                        onPress={() => onChange("")}
+                        style={styles.clearButton}
+                    >
+                        <MaterialIcons name="close" size={18} color="#6b7280" />
+                    </TouchableOpacity>
+                )}
+            </View>
             <TouchableOpacity style={styles.iconButton} onPress={onCartPress}>
                 <MaterialIcons name="shopping-cart" size={24} color="#5523d1" />
                 {cartCount > 0 ? (
@@ -81,5 +87,18 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 10,
         fontWeight: "700",
+    },
+    inputContainer: {
+        flex: 1,
+        position: "relative",
+        justifyContent: "center",
+    },
+
+    clearButton: {
+        position: "absolute",
+        right: 12,
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
     },
 });

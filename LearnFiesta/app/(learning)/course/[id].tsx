@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View, ScrollView, StyleSheet, Text, ActivityIndicator} from "react-native";
+import {View, ScrollView, StyleSheet, Text} from "react-native";
 import CourseHeader from "@/components/courseDetails/CourseHeader";
 import VideoPreview from "@/components/courseDetails/VideoPreview";
 import CourseHeaderInfo from "@/components/courseDetails/CourseHeaderInfo";
@@ -18,6 +18,7 @@ import Toast from "@/components/ui/Toast";
 import { useToast } from "@/hooks/cart/useToast";
 import { useCartContext } from "@/app/context/CartContext";
 import {useInstructorById} from "@/hooks/instructor/useInstructor";
+import LoadingView from "@/components/ui/LoadingView";
 const TABS = ["Curriculum", "Resources", "What you'll learn", "Description",];
 export default function CourseDetailsScreen() {
     const { addItem, isAdding, isInCart } = useCartContext();
@@ -40,11 +41,7 @@ export default function CourseDetailsScreen() {
     };
 
     if (isLoading) {
-     return (
-          <SafeAreaView style={styles.loadingContainer}>
-             <ActivityIndicator size="large" color="#5523d1" />
-        </SafeAreaView>
-        );
+        return <LoadingView />;
      }
 
     if (!course) {
