@@ -1,11 +1,12 @@
 import { doc, onSnapshot, type Unsubscribe } from "firebase/firestore";
-import { db } from "@/api/services/firebase";
+
 import {
   listenToCourseSections,
   type CurriculumLesson,
   type CurriculumSection,
   type LessonResource,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
+import { db } from "../firebase/firebase";
 
 type LearningNote = {
   id: string;

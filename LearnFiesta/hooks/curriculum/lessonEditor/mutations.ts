@@ -3,7 +3,7 @@ import {
   createCurriculumLesson,
   deleteCurriculumLesson,
   updateCurriculumLesson,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
 import { buildLessonPayload } from "@/domain/curriculum/validators";
 import type { LessonEditorState, LessonFormState } from "@/types/curriculum";
 

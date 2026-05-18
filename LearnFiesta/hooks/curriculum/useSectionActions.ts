@@ -7,7 +7,7 @@ import {
   deleteCurriculumSection,
   updateCurriculumSection,
   type CurriculumSection,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
 import {
   sectionFormSchema,
   type SectionFormValues,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as ImageManipulator from "expo-image-manipulator";
-import { uploadToCloudinary } from "@/api/services/cloudinary";
+import { uploadToCloudinary } from "@/api/upload/cloudinary";
 
 export const useUploadTask = () => {
   const [progress, setProgress] = useState(0);

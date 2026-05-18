@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, Text, TextInput, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useController } from "react-hook-form";
 import { Colors } from "@/constants/colors";
@@ -41,6 +41,9 @@ export default function LessonBasicFieldsSection({
         onBlur={titleField.onBlur}
         placeholder="Example: Course introduction"
         placeholderTextColor={Colors.textSecondary}
+        returnKeyType="next"
+        blurOnSubmit
+        onSubmitEditing={Keyboard.dismiss}
         style={styles.input}
       />
       {errors?.title?.message ? (
@@ -83,6 +86,9 @@ export default function LessonBasicFieldsSection({
         placeholder="15"
         placeholderTextColor={Colors.textSecondary}
         keyboardType="numeric"
+        returnKeyType="next"
+        blurOnSubmit
+        onSubmitEditing={Keyboard.dismiss}
         style={styles.input}
       />
       {errors?.durationMinutes?.message ? (
@@ -97,6 +103,10 @@ export default function LessonBasicFieldsSection({
         placeholder="Video, article, or quiz link"
         placeholderTextColor={Colors.textSecondary}
         autoCapitalize="none"
+        autoCorrect={false}
+        returnKeyType="next"
+        blurOnSubmit
+        onSubmitEditing={Keyboard.dismiss}
         style={styles.input}
       />
 
@@ -108,6 +118,8 @@ export default function LessonBasicFieldsSection({
         placeholder="What students will do in this lesson"
         placeholderTextColor={Colors.textSecondary}
         multiline
+        returnKeyType="default"
+        blurOnSubmit={false}
         style={[styles.input, styles.textArea]}
       />
       {errors?.description?.message ? (
@@ -122,6 +134,8 @@ export default function LessonBasicFieldsSection({
         placeholder={"Example:\nUI vs UX\nVisual hierarchy"}
         placeholderTextColor={Colors.textSecondary}
         multiline
+        returnKeyType="default"
+        blurOnSubmit={false}
         style={[styles.input, styles.textArea]}
       />
     </>

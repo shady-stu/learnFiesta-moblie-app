@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {router, useRouter} from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
 
 type NavigationHeaderProps = {

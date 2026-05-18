@@ -9,7 +9,7 @@ import CurriculumStateView from "@/components/createCourse/curriculum/Curriculum
 import LessonFormModal from "@/components/createCourse/curriculum/LessonFormModal";
 import SectionFormModal from "@/components/createCourse/curriculum/SectionFormModal";
 import { curriculumStyles as styles } from "@/components/createCourse/curriculum/styles";
-import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculumService";
+import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculum/curriculumService";
 import { useCourseCurriculum } from "@/hooks/curriculum/useCourseCurriculum";
 
 const getErrorMessage = (error: unknown, fallback: string) =>
@@ -102,6 +102,7 @@ export default function CurriculumBuilderScreen() {
         style={styles.container}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
       >
         <CurriculumHeader
           mode={isEditing ? "edit" : "create"}

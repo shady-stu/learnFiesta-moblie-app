@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {fetchResources} from "@/api/services/resourceService";
+import {fetchResources} from "@/api/services/resources/resourceService";
 
 export const useResources = (courseId: string) => {
     return useQuery({

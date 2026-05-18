@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useFormState, useWatch } from "react-hook-form";
-import type { CurriculumLesson } from "@/api/services/curriculumService";
+import type { CurriculumLesson } from "@/api/services/curriculum/curriculumService";
 import { lessonFormSchema } from "@/domain/curriculum/schemas";
 import {
   emptyLessonForm,

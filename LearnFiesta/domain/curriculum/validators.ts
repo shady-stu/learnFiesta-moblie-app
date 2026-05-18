@@ -1,4 +1,4 @@
-import type { CurriculumLessonInput } from "@/api/services/curriculumService";
+import type { CurriculumLessonInput } from "@/api/services/curriculum/curriculumService";
 import type { LessonFormState } from "@/types/curriculum";
 
 export const buildLessonPayload = (

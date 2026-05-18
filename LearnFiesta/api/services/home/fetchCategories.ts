@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import type { Category } from '@/types/Category';
 
