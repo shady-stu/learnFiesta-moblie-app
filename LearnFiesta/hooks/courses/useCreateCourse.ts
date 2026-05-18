@@ -1,0 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createCourse } from "@/api/services/courses/courseService";
+
+export const useCreateCourse = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createCourse,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
+    },
+  });
+};
