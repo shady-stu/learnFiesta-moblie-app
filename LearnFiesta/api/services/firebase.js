@@ -4,14 +4,13 @@ import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { getStorage } from "firebase/storage";
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyBCPY0xTaWhhPiFjo4DErNORiAwdhg1clE",
-  authDomain: "learnfiesta-82598.firebaseapp.com",
-  projectId: "learnfiesta-82598",
-  storageBucket: "learnfiesta-82598.appspot.com",
-  messagingSenderId: "923434476518",
-  appId: "1:923434476518:web:bb6f5b157c5f7905076c27",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -19,6 +18,6 @@ const app = initializeApp(firebaseConfig);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
+
 export const storage = getStorage(app);
 export const db = getFirestore(app);
-
