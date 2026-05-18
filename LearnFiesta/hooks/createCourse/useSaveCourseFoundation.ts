@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createCourse,
   updateCourseFoundation,
-} from "@/api/services/courseService";
+} from "@/api/services/courses/courseService";
 import type { CreateCourseDTO } from "@/types/course";
 
 type SaveCourseFoundationInput = {

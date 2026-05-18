@@ -7,7 +7,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import type { CartItem } from '@/types/cart';
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 
 const cartRef = (userId: string) =>
   collection(db, 'users', userId, 'cart');

@@ -1,7 +1,7 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/themed/themed-text';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { useCartContext } from '@/app/context/CartContext';

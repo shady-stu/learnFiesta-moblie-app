@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { subscribeToCourses } from "@/api/services/courseService";
+import { subscribeToCourses } from "@/api/services/courses/courseService";
 import type { Course } from "@/types/course";
 
 export const useCourses = () => {

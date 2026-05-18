@@ -13,7 +13,7 @@ import ResourcesTab from "@/components/courseDetails/Coursetabs/ResourcesTab";
 import LearnTab from "@/components/courseDetails/Coursetabs/LearnTab";
 import DescriptionTab from "@/components/courseDetails/Coursetabs/DescriptionTab";
 import {useLocalSearchParams, useRouter} from "expo-router";
-import {useCourseById} from "@/lib/useCourseById";
+import {useCourseById} from "@/hooks/courses/useCourseById";
 import Toast from "@/components/ui/Toast";
 import { useToast } from "@/hooks/cart/useToast";
 import { useCartContext } from "@/app/context/CartContext";

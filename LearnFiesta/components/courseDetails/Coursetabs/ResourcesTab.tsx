@@ -1,7 +1,7 @@
 import React from "react";
 import {View, Text, StyleSheet, Pressable, Linking,} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useResources } from "@/lib/useResources";
+import { useResources } from "@/hooks/resources/useResources";
 import { ResourceType } from "@/types/lesson";
 
 type Props = {

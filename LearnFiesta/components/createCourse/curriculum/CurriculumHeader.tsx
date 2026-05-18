@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/colors";
-import { formatDuration } from "@/api/services/curriculumService";
+import { formatDuration } from "@/api/services/curriculum/curriculumService";
 import { curriculumStyles as styles } from "./styles";
 
 type Props = {

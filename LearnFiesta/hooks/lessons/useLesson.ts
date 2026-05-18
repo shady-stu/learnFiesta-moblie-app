@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   subscribeToLearningLesson,
   type LearningLesson,
-} from "@/api/services/lessonService";
+} from "@/api/services/lesson/lessonService";
 
 type UseLessonParams = {
   id?: string;

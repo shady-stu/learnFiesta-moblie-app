@@ -25,6 +25,7 @@ export default function FoundationPricingCard({ control, errors }: Props) {
           onChangeText={priceField.onChange}
           onBlur={priceField.onBlur}
           keyboardType="numeric"
+          returnKeyType="done"
           style={{ flex: 1, marginBottom: 0 }}
         />
 

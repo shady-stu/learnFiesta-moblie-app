@@ -1,5 +1,5 @@
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/themed/themed-text';
 import type { Course } from '@/types/course';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';

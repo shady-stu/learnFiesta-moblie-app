@@ -57,6 +57,7 @@ const CreditCardForm = ({control,}: CreditCardFormProps) => {
                         control={control}
                         name="cvv"
                         keyboardType="numeric"
+                        returnKeyType="done"
                         rules={{
                             required: "CVV is required",
                             minLength: {

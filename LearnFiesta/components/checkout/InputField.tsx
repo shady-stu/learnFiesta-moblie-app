@@ -1,5 +1,13 @@
 import React from "react";
-import {View, Text, TextInput, StyleSheet, KeyboardTypeOptions,} from "react-native";
+import {
+    Keyboard,
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    KeyboardTypeOptions,
+    ReturnKeyTypeOptions,
+} from "react-native";
 import {Controller, Control, RegisterOptions,} from "react-hook-form";
 import { Colors } from "@/constants/colors";
 import {CheckoutFormData} from "@/types/CheckoutFormData";
@@ -12,9 +20,19 @@ type InputFieldProps = {
     name: keyof CheckoutFormData;
     rules?: RegisterOptions<CheckoutFormData, keyof CheckoutFormData>;
     keyboardType?: KeyboardTypeOptions;
+    returnKeyType?: ReturnKeyTypeOptions;
 }
 
-const InputField = ({label, placeholder, secureTextEntry = false, control, name, rules = {}, keyboardType = "default",}: InputFieldProps) => {
+const InputField = ({
+    label,
+    placeholder,
+    secureTextEntry = false,
+    control,
+    name,
+    rules = {},
+    keyboardType = "default",
+    returnKeyType = "next",
+}: InputFieldProps) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
@@ -32,6 +50,9 @@ const InputField = ({label, placeholder, secureTextEntry = false, control, name,
                             value={value}
                             onChangeText={onChange}
                             onBlur={onBlur}
+                            returnKeyType={returnKeyType}
+                            blurOnSubmit
+                            onSubmitEditing={Keyboard.dismiss}
                             style={[
                                 styles.input,
                                 error && styles.inputError,

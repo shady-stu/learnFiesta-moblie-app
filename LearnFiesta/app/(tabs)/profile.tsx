@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { auth, db } from '@/api/services/firebase';
+
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { logoutUser } from '@/api/services/authService/authService';
 import { profileStyles as styles } from '@/components/profile/styles';
@@ -12,7 +12,7 @@ import StatsCard from '@/components/profile/StatsCard';
 import SettingsList from '@/components/profile/SettingsList';
 import InstructorAccessCard from '@/components/profile/InstructorAccessCard';
 import { useCurrentUserRole } from '@/hooks/role/useCurrentUserRole';
-
+import { auth, db } from '../../api/services/firebase/firebase';
 type UserProfile = {
     name: string;
     email: string;
@@ -31,7 +31,10 @@ export default function ProfileScreen() {
 
     const fetchProfile = async () => {
         const user = auth.currentUser;
-        if (!user) return router.replace('/(auth)/login');
+        if (!user) {
+            setLoading(false);
+            return;
+        }
         try {
             const docSnap = await getDoc(doc(db, 'users', user.uid));
             if (docSnap.exists()) setProfile(docSnap.data() as UserProfile);
@@ -70,7 +73,6 @@ export default function ProfileScreen() {
                 style: 'destructive',
                 onPress: async () => {
                     await logoutUser();
-                    router.replace('/(auth)/login');
                 }
             }
         ]);

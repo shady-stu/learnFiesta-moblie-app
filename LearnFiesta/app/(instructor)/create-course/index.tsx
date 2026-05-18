@@ -9,6 +9,7 @@ import ThumbnailCard from "@/components/createCourse/foundation/ThumbnailCard";
 import { foundationStyles as styles } from "@/components/createCourse/foundation/styles";
 import LoadingView from "@/components/ui/LoadingView";
 import { useCourseFoundationForm } from "@/hooks/createCourse/useCourseFoundationForm";
+import KeyboardNavigator from "@/components/common/KeyboardNavigator";
 
 export default function CreateCourseScreen() {
   const foundation = useCourseFoundationForm();
@@ -30,38 +31,41 @@ export default function CreateCourseScreen() {
         onBackPress={foundation.goBackToCourses}
       />
 
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{ paddingBottom: 40 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <CourseFoundationHeader isEditing={foundation.isEditing} />
+      <KeyboardNavigator>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <CourseFoundationHeader isEditing={foundation.isEditing} />
 
-        <FoundationDetailsCard
-          control={foundation.control}
-          errors={foundation.errors}
-          categories={foundation.categories}
-          isLoadingCategories={foundation.isLoadingCategories}
-          learningPoints={foundation.learningPoints}
-          onAddLearningPoint={foundation.addLearningPoint}
-          onUpdateLearningPoint={foundation.updateLearningPoint}
-          onRemoveLearningPoint={foundation.removeLearningPoint}
-        />
+          <FoundationDetailsCard
+            control={foundation.control}
+            errors={foundation.errors}
+            categories={foundation.categories}
+            isLoadingCategories={foundation.isLoadingCategories}
+            learningPoints={foundation.learningPoints}
+            onAddLearningPoint={foundation.addLearningPoint}
+            onUpdateLearningPoint={foundation.updateLearningPoint}
+            onRemoveLearningPoint={foundation.removeLearningPoint}
+          />
 
-        <FoundationPricingCard control={foundation.control} errors={foundation.errors} />
+          <FoundationPricingCard control={foundation.control} errors={foundation.errors} />
 
-        <ThumbnailCard
-          thumbnail={foundation.thumbnail}
-          error={foundation.errors.thumbnail?.message}
-          onUploaded={foundation.updateThumbnail}
-        />
+          <ThumbnailCard
+            thumbnail={foundation.thumbnail}
+            error={foundation.errors.thumbnail?.message}
+            onUploaded={foundation.updateThumbnail}
+          />
 
-        <FoundationFooter
-          isEditing={foundation.isEditing}
-          isPending={foundation.isPending}
-          onSubmit={foundation.submit}
-        />
-      </ScrollView>
+          <FoundationFooter
+            isEditing={foundation.isEditing}
+            isPending={foundation.isPending}
+            onSubmit={foundation.submit}
+          />
+        </ScrollView>
+      </KeyboardNavigator>
     </SafeAreaView>
   );
 }

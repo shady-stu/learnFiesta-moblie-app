@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   publishCourseCurriculum,
   type CurriculumMetrics,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
 
 export function useCurriculumPublishing(courseId?: string) {
   // Local saving keeps the returned API stable while React Query handles mutation state.

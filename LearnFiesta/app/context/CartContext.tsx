@@ -25,22 +25,23 @@ const CartContext = createContext<CartContextType | null>(null);
 
 
 type Props = {
-  userId: string;
+  userId?: string | null;
   children: ReactNode;
 };
 
 export  default function CartProvider({ userId, children }: Props) {
+  const safeUserId = userId ?? "";
   const {
     data: items = [],
     isLoading,
     isError,
-  } = useCartQuery(userId);
+  } = useCartQuery(safeUserId);
 
 const { mutateAsync: addMutateAsync, isPending: isAdding } =
-  useAddToCart(userId);
+  useAddToCart(safeUserId);
 
 const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
-  useRemoveFromCart(userId);
+  useRemoveFromCart(safeUserId);
 
   const cart: Cart = useMemo(() => ({
     items,
@@ -52,7 +53,19 @@ const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
   const isInCart = (courseId: string) =>
     items.some((item) => item.courseId === courseId);
 
+  const addItem = async (item: Omit<CartItem, 'addedAt'>) => {
+    if (!userId) throw new Error('Please log in to use the cart.');
+    await addMutateAsync(item);
+  };
+
+  const removeItem = async (courseId: string) => {
+    if (!userId) return;
+    await removeMutateAsync(courseId);
+  };
+
   const clearCart = async () => {
+    if (!userId) return;
+
     for (const item of items) {
       await removeMutateAsync(item.courseId);
     }
@@ -60,10 +73,10 @@ const { mutateAsync: removeMutateAsync, isPending: isRemoving } =
 
   const value: CartContextType = {
     cart,
-    isLoading,
-    isError,
-    addItem: addMutateAsync,
-    removeItem: removeMutateAsync,
+    isLoading: userId ? isLoading : false,
+    isError: userId ? isError : false,
+    addItem,
+    removeItem,
     clearCart,
     isInCart,
     isAdding,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { subscribeToUserInstructors } from "@/api/services/instructor/instructorService";
-import { fetchInstructorById } from "@/api/services/fetchCourseById";
+import { fetchInstructorById } from "@/api/services/courses/fetchCourseById";
 import type { Instructor } from "@/types/Instructor";
 import {useQuery} from "@tanstack/react-query";
 

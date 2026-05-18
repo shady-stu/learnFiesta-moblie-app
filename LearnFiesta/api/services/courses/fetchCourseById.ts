@@ -1,6 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/api/services/firebase";
+
 import { Course } from "@/types/course";
+import { db } from "../firebase/firebase";
+
 
 const normalizeLearningOutcomes = (value: unknown): string[] => {
     if (!Array.isArray(value)) return [];

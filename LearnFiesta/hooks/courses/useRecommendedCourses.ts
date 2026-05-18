@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { subscribeToRecommendedCourses } from '@/api/services/courseService';
+import { subscribeToRecommendedCourses } from '@/api/services/courses/courseService';
 import type { Course } from '@/types/course';
 
 export function useRecommendedCourses(limitCount = 10) {

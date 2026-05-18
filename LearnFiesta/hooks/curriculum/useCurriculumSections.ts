@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   listenToCourseSections,
   type CurriculumSection,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
 
 export function useCurriculumSections(courseId?: string) {
   // This hook only reads curriculum data: sections, loading, errors, and totals.

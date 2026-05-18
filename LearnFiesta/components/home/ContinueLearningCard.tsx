@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/themed/themed-text';
 import type { Enrollment } from '@/types/Enrollment';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';

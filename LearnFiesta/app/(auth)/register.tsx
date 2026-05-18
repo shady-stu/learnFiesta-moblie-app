@@ -123,7 +123,7 @@ export default function Register() {
                     <Button title={loading ? "Creating Account..." : "Sign Up →"} onPress={handleSubmit(onSubmit)} style={styles.signUpButton} />
 
                     <Text style={styles.footer}>
-                        Already have an account? <Text style={styles.link} onPress={() => router.push("/(auth)/login")}>Login</Text>
+                        Already have an account? <Text style={styles.link} onPress={() => router.push("/login")}>Login</Text>
                     </Text>
 
                     <View style={styles.dividerContainer}>

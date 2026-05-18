@@ -14,6 +14,7 @@ import {CheckoutFormData} from "@/types/CheckoutFormData";
 import { useCartContext } from "./context/CartContext";
 import { purchaseCourses } from "@/api/services/enrollments/enrollmentService"
 import { useRouter } from "expo-router";
+import KeyboardNavigator from "@/components/common/KeyboardNavigator";
 export default function Checkout  ()  {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
     const router = useRouter();
@@ -45,15 +46,18 @@ export default function Checkout  ()  {
     return (
         <SafeAreaView style={styles.container}>
             <CheckoutHeader />
-            <ScrollView
-                contentContainerStyle={styles.content}
-                showsVerticalScrollIndicator={false}
-            >
+            <KeyboardNavigator>
+                <ScrollView
+                    contentContainerStyle={styles.content}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                >
                 <SectionTitle title="Course Summary" />
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.list}
+                    keyboardShouldPersistTaps="handled"
                 >
                     {cart.items.map((item) => (
                         <View
@@ -91,7 +95,8 @@ export default function Checkout  ()  {
                     }}
                 />
                 <TrustBadges />
-            </ScrollView>
+                </ScrollView>
+            </KeyboardNavigator>
         </SafeAreaView>
     );
 };
