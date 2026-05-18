@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/colors";
-import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculumService";
+import type { CurriculumLesson, CurriculumSection } from "@/api/services/curriculum/curriculumService";
 import { getLessonIcon } from "./options";
 import { curriculumStyles as styles } from "./styles";
 

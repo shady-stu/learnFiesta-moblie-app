@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import type { LessonType, ResourceType } from "@/api/services/curriculumService";
+import type { LessonType, ResourceType } from "@/api/services/curriculum/curriculumService";
 
 export type MaterialIconName = React.ComponentProps<typeof MaterialIcons>["name"];
 

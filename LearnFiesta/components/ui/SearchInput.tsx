@@ -1,5 +1,12 @@
 import React from "react";
-import {View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    Keyboard,
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    TouchableOpacity,
+} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useCartContext } from "@/app/context/CartContext";
 
@@ -25,6 +32,9 @@ export default function SearchInput({value, onChange, onBackPress, onCartPress,}
                     placeholderTextColor="#9ca3af"
                     value={value}
                     onChangeText={onChange}
+                    returnKeyType="search"
+                    blurOnSubmit
+                    onSubmitEditing={Keyboard.dismiss}
                 />
 
                 {value.length > 0 && (

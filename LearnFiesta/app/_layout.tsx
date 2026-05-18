@@ -1,7 +1,13 @@
-import { Stack, Redirect, useSegments } from 'expo-router';
+import {
+  Stack,
+  usePathname,
+  useRootNavigationState,
+  useRouter,
+  useSegments,
+} from 'expo-router';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/api/services/firebase';
+import { auth } from '../api/services/firebase/firebase';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 import CartProvider from '@/app/context/CartContext';
@@ -11,6 +17,9 @@ export default function RootLayout() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const segments = useSegments();
+  const pathname = usePathname();
+  const router = useRouter();
+  const rootNavigationState = useRootNavigationState();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -21,30 +30,37 @@ export default function RootLayout() {
     return unsub;
   }, []);
 
+  useEffect(() => {
+    if (loading || !rootNavigationState?.key) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+    const atRoot = pathname === '/';
+
+    if (!user && !inAuthGroup) {
+      router.replace('/login');
+      return;
+    }
+
+    if (user && atRoot) {
+      router.replace('/(tabs)');
+      return;
+    }
+
+    if (user && inAuthGroup) {
+      router.replace('/post-login-splash');
+    }
+  }, [loading, pathname, rootNavigationState?.key, router, segments, user]);
+
   if (loading) {
     return null;
-  }
-
-  const inAuthGroup = segments[0] === '(auth)';
-
-  if (!user && !inAuthGroup) {
-    return <Redirect href="/login" />;
-  }
-
-  if (user && inAuthGroup) {
-    return <Redirect href="/post-login-splash" />;
   }
 
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
-        {user ? (
-          <CartProvider userId={user.uid}>
-            <Stack screenOptions={{ headerShown: false }} />
-          </CartProvider>
-        ) : (
+        <CartProvider userId={user?.uid}>
           <Stack screenOptions={{ headerShown: false }} />
-        )}
+        </CartProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
   );

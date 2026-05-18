@@ -3,8 +3,8 @@ import { View, Image, TouchableOpacity, Alert, ActivityIndicator, Text } from 'r
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '@/api/services/firebase';
-import { uploadToCloudinary } from '@/api/services/cloudinary';
+import { auth, db } from '@/api/services/firebase/firebase';
+import { uploadToCloudinary } from '@/api/upload/cloudinary';
 import { Colors } from '@/constants/colors';
 import { profileStyles as styles } from './styles';
 

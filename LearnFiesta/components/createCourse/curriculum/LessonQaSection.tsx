@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, Text, TextInput, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/colors";
 import { curriculumStyles as styles } from "./styles";
@@ -43,6 +43,9 @@ export default function LessonQaSection({
               onChangeText={(value) => onChangeQaField(index, "question", value)}
               placeholder="Question"
               placeholderTextColor={Colors.textSecondary}
+              returnKeyType="next"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
               style={styles.input}
             />
             {errors?.qa?.[index]?.question?.message ? (
@@ -57,6 +60,8 @@ export default function LessonQaSection({
               placeholder="Answer"
               placeholderTextColor={Colors.textSecondary}
               multiline
+              returnKeyType="default"
+              blurOnSubmit={false}
               style={[styles.input, styles.textArea]}
             />
             {errors?.qa?.[index]?.answer?.message ? (

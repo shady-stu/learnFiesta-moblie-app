@@ -1,7 +1,7 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, type TextInputProps } from "react-native";
 import { Colors } from "@/constants/colors";
 
-interface Props {
+interface Props extends TextInputProps {
   label: string;
   value?: string;
   onChangeText: (text: string) => void;
@@ -15,59 +15,59 @@ export default function TextAreaField({
   onChangeText,
   placeholder,
   error,
+  returnKeyType,
+  blurOnSubmit,
+  ...rest
 }: Props) {
   return (
     <View style={styles.container}>
-
       <Text style={styles.label}>{label}</Text>
 
       <TextInput
+        {...rest}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={Colors.textSecondary}
         multiline
         numberOfLines={4}
-        style={[styles.input, error && styles.inputError]}  // ✅ بدون inline object
+        returnKeyType={returnKeyType ?? "default"}
+        blurOnSubmit={blurOnSubmit ?? false}
+        style={[styles.input, error && styles.inputError]}
       />
 
       {error && <Text style={styles.errorText}>{error}</Text>}
-
     </View>
   );
 }
 
-const ERROR_COLOR = "red"; // ✅ مصدر واحد للون
+const ERROR_COLOR = "red";
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
-
   label: {
     marginBottom: 6,
     fontWeight: "600",
     color: Colors.textPrimary,
   },
-
   input: {
     borderWidth: 1,
     borderRadius: 10,
     padding: 12,
-    height: 120,                    
-    textAlignVertical: "top",       
+    height: 120,
+    textAlignVertical: "top",
     borderColor: Colors.border,
     backgroundColor: Colors.surface,
     color: Colors.textPrimary,
   },
-
   inputError: {
-    borderColor: ERROR_COLOR,       
+    borderColor: ERROR_COLOR,
   },
-
   errorText: {
     marginTop: 4,
     fontSize: 12,
-    color: ERROR_COLOR,             
+    color: ERROR_COLOR,
   },
 });

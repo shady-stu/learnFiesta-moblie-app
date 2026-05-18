@@ -29,7 +29,7 @@ export default function EditProfileModal({ visible, onClose, currentName, onSave
     };
 
     return (
-        <Modal isVisible={visible} onBackdropPress={onClose}>
+        <Modal isVisible={visible} onBackdropPress={onClose} avoidKeyboard>
             <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Edit Name</Text>
                 <Input
@@ -37,6 +37,8 @@ export default function EditProfileModal({ visible, onClose, currentName, onSave
                     value={editName}
                     onChangeText={setEditName}
                     placeholder="Enter your name"
+                    returnKeyType="done"
+                    onSubmitEditing={handleSave}
                 />
                 <View style={styles.modalButtons}>
                     <Button title="Cancel" onPress={onClose} type="outline" />

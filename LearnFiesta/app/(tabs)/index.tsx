@@ -8,9 +8,8 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { router } from "expo-router";
-import { onAuthStateChanged } from "firebase/auth";
 
 import AppHeader from "@/components/ui/AppHeader";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -18,10 +17,8 @@ import HeroBanner from "@/components/home/HeroBanner";
 import ContinueLearningCard from "@/components/home/ContinueLearningCard";
 import CourseCard from "@/components/home/CourseCard";
 import CategoryCard from "@/components/home/CategoryCard";
-
 import { Colors } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
-import { auth } from "@/api/services/firebase";
 import { useRecommendedCourses } from "@/hooks/courses/useRecommendedCourses";
 import { useCategories } from "@/hooks/category/useCategories";
 import { useOfflineCourses } from "@/hooks/courses/useOfflineCourses";
@@ -44,14 +41,6 @@ const chooseFeaturedCourse = (courses: Course[] = []) => {
 };
 
 export default function HomeScreen() {
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) router.replace("/login");
-    });
-
-    return unsubscribe;
-  }, []);
-
   const {
     data: categories,
     isLoading: loadingCategories,

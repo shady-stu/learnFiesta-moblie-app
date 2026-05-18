@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, View, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/themed/themed-text';
 import { Colors } from '@/constants/colors';
 import { Radius } from '@/constants/radius';
 import { Spacing } from '@/constants/spacing';

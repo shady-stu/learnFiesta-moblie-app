@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native";
+import {
+  Keyboard,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+} from "react-native";
 import { Colors } from "@/constants/colors";
 
 interface Props extends TextInputProps {
@@ -11,6 +18,9 @@ export default function TextInputField({
   label,
   error,
   style,
+  returnKeyType,
+  onSubmitEditing,
+  blurOnSubmit,
   ...rest
 }: Props) {
   return (
@@ -20,6 +30,9 @@ export default function TextInputField({
 
       <TextInput
         {...rest}
+        returnKeyType={returnKeyType ?? "next"}
+        blurOnSubmit={blurOnSubmit ?? !rest.multiline}
+        onSubmitEditing={onSubmitEditing ?? Keyboard.dismiss}
         style={[
           styles.input,
           error && styles.inputError,

@@ -3,7 +3,7 @@ import type {
   CurriculumLesson,
   LessonType,
   ResourceType,
-} from "@/api/services/curriculumService";
+} from "@/api/services/curriculum/curriculumService";
 
 export type ResourceFormState = {
   id?: string;

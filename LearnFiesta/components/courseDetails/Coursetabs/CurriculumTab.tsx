@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import CourseContentHeader from "@/components/courseDetails/CourseContentHeader";
 import SectionCard from "@/components/courseDetails/SectionCard";
 import LectureRow from "@/components/courseDetails/ LectureRow";
-import { useLessons } from "@/lib/useLessons";
+import { useLessons } from "@/hooks/lessons/useLessons";
 type Props = {
     courseId: string;
 };

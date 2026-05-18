@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCourseById } from "@/api/services/fetchCourseById";
+import { fetchCourseById } from "@/api/services/courses/fetchCourseById";
 
 export const useCourseById = (id: string) => {
     return useQuery({

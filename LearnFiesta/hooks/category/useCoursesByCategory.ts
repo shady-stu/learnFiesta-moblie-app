@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { subscribeToCoursesByCategory } from '@/api/services/courseService';
+import { subscribeToCoursesByCategory } from '@/api/services/courses/courseService';
 import type { Course } from '@/types/course';
 
 export const useCoursesByCategory = (categoryId: string) => {

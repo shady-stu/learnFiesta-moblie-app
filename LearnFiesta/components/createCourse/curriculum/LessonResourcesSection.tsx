@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, Text, TextInput, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/colors";
 import { RESOURCE_TYPES } from "./options";
@@ -50,6 +50,9 @@ export default function LessonResourcesSection({
               onChangeText={(value) => onChangeResourceField(index, "title", value)}
               placeholder="Resource title"
               placeholderTextColor={Colors.textSecondary}
+              returnKeyType="next"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
               style={styles.input}
             />
             {errors?.resources?.[index]?.title?.message ? (
@@ -91,6 +94,10 @@ export default function LessonResourcesSection({
               placeholder="https://..."
               placeholderTextColor={Colors.textSecondary}
               autoCapitalize="none"
+              autoCorrect={false}
+              returnKeyType="done"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
               style={styles.input}
             />
             {errors?.resources?.[index]?.url?.message ? (

@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import { Course } from '@/types/course';
 
 export const getCoursesByCategory = async (categoryId: string): Promise<Course[]> => {
