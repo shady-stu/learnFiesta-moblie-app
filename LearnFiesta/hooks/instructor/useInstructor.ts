@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { subscribeToUserInstructors } from "@/api/services/instructor/instructorService";
-import { fetchInstructorById } from "@/api/services/courses/fetchCourseById";
-import type { Instructor } from "@/types/Instructor";
 import {useQuery} from "@tanstack/react-query";
+import { fetchInstructorById } from "@/api/services/courses/fetchCourseById";
+import { Instructor } from "@/components/instructor/InstructorCourseCard";
 
 export const useInstructor = () => {
   const [data, setData] = useState<Instructor[]>([]);
